@@ -147,6 +147,8 @@ public interface WebAssemblyTypes {
   IElementType STRUCTGET = new WebAssemblyTokenType("STRUCTGET");
   IElementType STRUCTKEY = new WebAssemblyTokenType("STRUCTKEY");
   IElementType STRUCTNEW = new WebAssemblyTokenType("STRUCTNEW");
+  IElementType SUBKEY = new WebAssemblyTokenType("SUBKEY");
+  IElementType FINALKEY = new WebAssemblyTokenType("FINALKEY");
   IElementType STRUCTSET = new WebAssemblyTokenType("STRUCTSET");
   IElementType TABLECOPYINSTR = new WebAssemblyTokenType("TABLECOPYINSTR");
   IElementType TABLEINITINSTR = new WebAssemblyTokenType("TABLEINITINSTR");

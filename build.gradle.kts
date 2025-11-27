@@ -19,13 +19,21 @@ intellij {
 
 sourceSets {
     main {
-        java.srcDirs("src/main/gen")
+        java.srcDirs("src/main/gen", "src/main/java")
+        kotlin.srcDirs("src/main/kotlin")
     }
 }
 
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
+    }
+
+    compileJava {
+        options.release.set(17)
+        // Java compilation needs to see the compiled Kotlin classes
+        dependsOn(compileKotlin)
+        classpath += files(compileKotlin.get().destinationDirectory)
     }
 
     compileTestKotlin {

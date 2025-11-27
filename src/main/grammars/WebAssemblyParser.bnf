@@ -266,7 +266,11 @@ type ::= LPAR type_aux_ RPAR {
     implements="org.jetbrains.webstorm.lang.psi.WebAssemblyNamedElement"
     methods=[setName getNameIdentifier]
 }
-private type_aux_ ::= TYPEKEY IDENTIFIER? (functype | structtype | arraytype) { pin=1 recoverWhile='item_recover_' }
+private type_aux_ ::= TYPEKEY IDENTIFIER? subtype_decl_? (functype | structtype | arraytype) { pin=1 recoverWhile='item_recover_' }
+
+// Subtyping declarations (WebAssembly GC)
+private subtype_decl_ ::= LPAR subtype_kind_ typeuse_inline_? RPAR
+private subtype_kind_ ::= SUBKEY FINALKEY? | FINALKEY
 
 
 // imports

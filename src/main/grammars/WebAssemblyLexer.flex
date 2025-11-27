@@ -1,7 +1,8 @@
-package org.jetbrains.webstorm.lang.lexer;
+package com.intellij.webassembly.lang.lexer;
 
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
+import static com.intellij.webassembly.lang.psi.WebAssemblyTypes.*;
 
 %%
 
