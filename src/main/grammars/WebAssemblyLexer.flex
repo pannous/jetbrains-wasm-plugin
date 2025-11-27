@@ -187,6 +187,8 @@ NUMERICINSTR = i(32 | 64)\.(c[lt]z | popcnt | add | sub | mul | (div | rem | shr
     "param"                     { return PARAMKEY; }
     "result"                    { return RESULTKEY; }
     "mut"                       { return MUTKEY; }
+    "ref"                       { return REFKEY; }
+    "null"                      { return NULLKEY; }
     "struct"                    { return STRUCTKEY; }
     "array"                     { return ARRAYKEY; }
     "field"                     { return FIELDKEY; }

@@ -24,12 +24,17 @@ idx ::= UNSIGNED | IDENTIFIER
 
 
 // TYPES
-valtype ::= NUMTYPE | REFTYPE
+valtype ::= NUMTYPE | REFTYPE | reftype_ref_
 storagetype ::= valtype | PACKEDTYPE
+
+// Reference types with optional type index: (ref $typename) or (ref null $typename)
+reftype_ref_ ::= LPAR REFKEY NULLKEY? idx RPAR { pin=2 }
 
 // GC composite types
 structtype ::= LPAR STRUCTKEY fieldtype* RPAR { pin=2 }
-arraytype ::= LPAR ARRAYKEY fieldtype RPAR { pin=2 }
+arraytype ::= LPAR ARRAYKEY fieldtype RPAR
+            | LPAR ARRAYKEY storagetype RPAR
+            | LPAR ARRAYKEY LPAR MUTKEY storagetype RPAR RPAR { pin=2 }
 
 fieldtype ::= LPAR FIELDKEY IDENTIFIER? storagetype RPAR
             | LPAR FIELDKEY IDENTIFIER? LPAR MUTKEY storagetype RPAR RPAR

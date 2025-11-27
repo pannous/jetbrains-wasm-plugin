@@ -91,16 +91,16 @@ echo ""
 echo "🔄 Restarting JetBrains IDEs..."
 
 # Kill running JetBrains IDEs
-pkill -f "CLion" 2>/dev/null || true
+# pkill -f "CLion" 2>/dev/null || true
 pkill -f "RustRover" 2>/dev/null || true
-pkill -f "IntelliJ IDEA" 2>/dev/null || true
+# pkill -f "IntelliJ IDEA" 2>/dev/null || true
 sleep 2
 
 # Restart CLion if it exists
-if [ -d "/Applications/CLion.app" ]; then
-    echo "   Starting CLion..."
-    open -a "CLion" 2>/dev/null || echo "   ℹ️  CLion failed to start"
-fi
+# if [ -d "/Applications/CLion.app" ]; then
+#     echo "   Starting CLion..."
+#     open -a "CLion" 2>/dev/null || echo "   ℹ️  CLion failed to start"
+# fi
 
 # Restart RustRover if it exists
 if [ -d "/Applications/RustRover.app" ]; then
