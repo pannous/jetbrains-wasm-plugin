@@ -23,9 +23,36 @@ sourceSets {
     }
 }
 
+tasks.register<org.jetbrains.grammarkit.tasks.GenerateLexerTask>("generateWebAssemblyLexer") {
+    sourceFile.set(file("src/main/grammars/WebAssemblyLexer.flex"))
+    targetOutputDir.set(file("src/main/gen/com/intellij/webassembly/lang/lexer"))
+    purgeOldFiles.set(true)
+}
+
+tasks.register<org.jetbrains.grammarkit.tasks.GenerateParserTask>("generateWebAssemblyParser") {
+    sourceFile.set(file("src/main/grammars/WebAssemblyParser.bnf"))
+    targetRootOutputDir.set(file("src/main/gen"))
+    pathToParser.set("/com/intellij/webassembly/lang/parser/WebAssemblyParser.java")
+    pathToPsiRoot.set("/org/jetbrains/webstorm/lang/psi")
+    purgeOldFiles.set(true)
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-proc:none")
+}
+
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
+    }
+
+    compileJava {
+        dependsOn("generateWebAssemblyLexer", "generateWebAssemblyParser")
+    }
+
+    // Ensure generated files exist before Kotlin compilation
+    named("compileKotlin") {
+        dependsOn("generateWebAssemblyLexer", "generateWebAssemblyParser")
     }
 
     compileTestKotlin {

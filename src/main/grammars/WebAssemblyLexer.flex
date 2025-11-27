@@ -16,7 +16,6 @@ import com.intellij.psi.TokenType;
 %unicode
 %function advance
 %type IElementType
-%unicode
 
 %{
     private int blockCommentStart;

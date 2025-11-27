@@ -3,530 +3,624 @@ package com.intellij.webassembly.lang.parser;
 
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-
-import com.intellij.lang.parser.GeneratedParserUtilBase;
+import static com.intellij.webassembly.lang.psi.WebAssemblyTypes.*;
+import static com.intellij.webassembly.lang.parser.WebAssemblyParserUtil.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
 import com.intellij.lang.LightPsiParser;
-import com.intellij.webassembly.lang.psi.WebAssemblyTypes;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class WebAssemblyParser implements PsiParser, LightPsiParser {
 
-  public ASTNode parse(IElementType t, PsiBuilder b) {
-    parseLight(t, b);
-    return b.getTreeBuilt();
+  public ASTNode parse(IElementType root_, PsiBuilder builder_) {
+    parseLight(root_, builder_);
+    return builder_.getTreeBuilt();
   }
 
-  public void parseLight(IElementType t, PsiBuilder b) {
-    boolean r;
-    b = GeneratedParserUtilBase.adapt_builder_(t, b, this, null);
-    Marker m = GeneratedParserUtilBase.enter_section_(b, 0, GeneratedParserUtilBase._COLLAPSE_, null);
-    r = parse_root_(t, b);
-    GeneratedParserUtilBase.exit_section_(b, 0, m, t, r, true, GeneratedParserUtilBase.TRUE_CONDITION);
+  public void parseLight(IElementType root_, PsiBuilder builder_) {
+    boolean result_;
+    builder_ = adapt_builder_(root_, builder_, this, null);
+    Marker marker_ = enter_section_(builder_, 0, _COLLAPSE_, null);
+    result_ = parse_root_(root_, builder_);
+    exit_section_(builder_, 0, marker_, root_, result_, true, TRUE_CONDITION);
   }
 
-  protected boolean parse_root_(IElementType t, PsiBuilder b) {
-    return parse_root_(t, b, 0);
+  protected boolean parse_root_(IElementType root_, PsiBuilder builder_) {
+    return parse_root_(root_, builder_, 0);
   }
 
-  static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
-    return webAssemblyFile(b, l + 1);
+  static boolean parse_root_(IElementType root_, PsiBuilder builder_, int level_) {
+    return webAssemblyFile(builder_, level_ + 1);
   }
 
   /* ********************************************************** */
   // ALIGNEQKEY UNSIGNED
-  public static boolean aligneq(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "aligneq")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.ALIGNEQ, "<aligneq>");
-    r = GeneratedParserUtilBase.consumeTokens(b, 1, WebAssemblyTypes.ALIGNEQKEY, WebAssemblyTypes.UNSIGNED);
-    p = r; // pin = 1
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::aligneq_recover_);
-    return r || p;
+  public static boolean aligneq(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "aligneq")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, ALIGNEQ, "<aligneq>");
+    result_ = consumeTokens(builder_, 1, ALIGNEQKEY, UNSIGNED);
+    pinned_ = result_; // pin = 1
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::aligneq_recover_);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // !(instr | RPAR | <<eof>>)
-  static boolean aligneq_recover_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "aligneq_recover_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NOT_);
-    r = !aligneq_recover__0(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  static boolean aligneq_recover_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "aligneq_recover_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !aligneq_recover__0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // instr | RPAR | <<eof>>
-  private static boolean aligneq_recover__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "aligneq_recover__0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = instr(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    if (!r) r = GeneratedParserUtilBase.eof(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean aligneq_recover__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "aligneq_recover__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = instr(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, RPAR);
+    if (!result_) result_ = eof(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // ARRAYGET idx
+  public static boolean array_get_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "array_get_instr")) return false;
+    if (!nextTokenIs(builder_, ARRAYGET)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, ARRAY_GET_INSTR, null);
+    result_ = consumeToken(builder_, ARRAYGET);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // ARRAYNEW idx
+  public static boolean array_new_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "array_new_instr")) return false;
+    if (!nextTokenIs(builder_, ARRAYNEW)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, ARRAY_NEW_INSTR, null);
+    result_ = consumeToken(builder_, ARRAYNEW);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // ARRAYSET idx
+  public static boolean array_set_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "array_set_instr")) return false;
+    if (!nextTokenIs(builder_, ARRAYSET)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, ARRAY_SET_INSTR, null);
+    result_ = consumeToken(builder_, ARRAYSET);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // LPAR ARRAYKEY fieldtype RPAR
+  //             | LPAR ARRAYKEY storagetype RPAR
+  //             | LPAR ARRAYKEY LPAR MUTKEY storagetype RPAR RPAR
+  public static boolean arraytype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "arraytype")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = arraytype_0(builder_, level_ + 1);
+    if (!result_) result_ = arraytype_1(builder_, level_ + 1);
+    if (!result_) result_ = arraytype_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, ARRAYTYPE, result_);
+    return result_;
+  }
+
+  // LPAR ARRAYKEY fieldtype RPAR
+  private static boolean arraytype_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "arraytype_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, ARRAYKEY);
+    result_ = result_ && fieldtype(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // LPAR ARRAYKEY storagetype RPAR
+  private static boolean arraytype_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "arraytype_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, ARRAYKEY);
+    result_ = result_ && storagetype(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // LPAR ARRAYKEY LPAR MUTKEY storagetype RPAR RPAR
+  private static boolean arraytype_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "arraytype_2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, ARRAYKEY, LPAR, MUTKEY);
+    result_ = result_ && storagetype(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RPAR, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // blockinstr_block_ | blockinstr_loop_ | blockinstr_if_
-  public static boolean blockinstr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.BLOCKINSTR, "<blockinstr>");
-    r = blockinstr_block_(b, l + 1);
-    if (!r) r = blockinstr_loop_(b, l + 1);
-    if (!r) r = blockinstr_if_(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean blockinstr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, BLOCKINSTR, "<blockinstr>");
+    result_ = blockinstr_block_(builder_, level_ + 1);
+    if (!result_) result_ = blockinstr_loop_(builder_, level_ + 1);
+    if (!result_) result_ = blockinstr_if_(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // BLOCKKEY blockinstr_block_aux_ ENDKEY IDENTIFIER?
-  static boolean blockinstr_block_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_block_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.BLOCKKEY)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.BLOCKKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, blockinstr_block_aux_(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ENDKEY)) && r;
-    r = p && blockinstr_block__3(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean blockinstr_block_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_block_")) return false;
+    if (!nextTokenIs(builder_, BLOCKKEY)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, BLOCKKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, blockinstr_block_aux_(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, ENDKEY)) && result_;
+    result_ = pinned_ && blockinstr_block__3(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean blockinstr_block__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_block__3")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean blockinstr_block__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_block__3")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   /* ********************************************************** */
   // IDENTIFIER? blocktype? instr*
-  static boolean blockinstr_block_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_block_aux_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = blockinstr_block_aux__0(b, l + 1);
-    r = r && blockinstr_block_aux__1(b, l + 1);
-    r = r && blockinstr_block_aux__2(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, WebAssemblyParser::blockinstr_recover_);
-    return r;
+  static boolean blockinstr_block_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_block_aux_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = blockinstr_block_aux__0(builder_, level_ + 1);
+    result_ = result_ && blockinstr_block_aux__1(builder_, level_ + 1);
+    result_ = result_ && blockinstr_block_aux__2(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, WebAssemblyParser::blockinstr_recover_);
+    return result_;
   }
 
   // IDENTIFIER?
-  private static boolean blockinstr_block_aux__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_block_aux__0")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean blockinstr_block_aux__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_block_aux__0")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // blocktype?
-  private static boolean blockinstr_block_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_block_aux__1")) return false;
-    blocktype(b, l + 1);
+  private static boolean blockinstr_block_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_block_aux__1")) return false;
+    blocktype(builder_, level_ + 1);
     return true;
   }
 
   // instr*
-  private static boolean blockinstr_block_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_block_aux__2")) return false;
+  private static boolean blockinstr_block_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_block_aux__2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "blockinstr_block_aux__2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "blockinstr_block_aux__2", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // foldeinstr* IFKEY blockinstr_if_aux_ ENDKEY IDENTIFIER?
-  static boolean blockinstr_if_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, "", WebAssemblyTypes.IFKEY, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = blockinstr_if__0(b, l + 1);
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IFKEY);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.report_error_(b, blockinstr_if_aux_(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ENDKEY)) && r;
-    r = p && blockinstr_if__4(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean blockinstr_if_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_")) return false;
+    if (!nextTokenIs(builder_, "", IFKEY, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = blockinstr_if__0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, IFKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, blockinstr_if_aux_(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, ENDKEY)) && result_;
+    result_ = pinned_ && blockinstr_if__4(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // foldeinstr*
-  private static boolean blockinstr_if__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if__0")) return false;
+  private static boolean blockinstr_if__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if__0")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!foldeinstr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "blockinstr_if__0", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!foldeinstr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "blockinstr_if__0", pos_)) break;
     }
     return true;
   }
 
   // IDENTIFIER?
-  private static boolean blockinstr_if__4(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if__4")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean blockinstr_if__4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if__4")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   /* ********************************************************** */
   // IDENTIFIER? blocktype? instr* (ELSEKEY IDENTIFIER? instr*)?
-  static boolean blockinstr_if_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_aux_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = blockinstr_if_aux__0(b, l + 1);
-    r = r && blockinstr_if_aux__1(b, l + 1);
-    r = r && blockinstr_if_aux__2(b, l + 1);
-    r = r && blockinstr_if_aux__3(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, WebAssemblyParser::blockinstr_recover_);
-    return r;
+  static boolean blockinstr_if_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_aux_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = blockinstr_if_aux__0(builder_, level_ + 1);
+    result_ = result_ && blockinstr_if_aux__1(builder_, level_ + 1);
+    result_ = result_ && blockinstr_if_aux__2(builder_, level_ + 1);
+    result_ = result_ && blockinstr_if_aux__3(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, WebAssemblyParser::blockinstr_recover_);
+    return result_;
   }
 
   // IDENTIFIER?
-  private static boolean blockinstr_if_aux__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_aux__0")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean blockinstr_if_aux__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_aux__0")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // blocktype?
-  private static boolean blockinstr_if_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_aux__1")) return false;
-    blocktype(b, l + 1);
+  private static boolean blockinstr_if_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_aux__1")) return false;
+    blocktype(builder_, level_ + 1);
     return true;
   }
 
   // instr*
-  private static boolean blockinstr_if_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_aux__2")) return false;
+  private static boolean blockinstr_if_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_aux__2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "blockinstr_if_aux__2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "blockinstr_if_aux__2", pos_)) break;
     }
     return true;
   }
 
   // (ELSEKEY IDENTIFIER? instr*)?
-  private static boolean blockinstr_if_aux__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_aux__3")) return false;
-    blockinstr_if_aux__3_0(b, l + 1);
+  private static boolean blockinstr_if_aux__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_aux__3")) return false;
+    blockinstr_if_aux__3_0(builder_, level_ + 1);
     return true;
   }
 
   // ELSEKEY IDENTIFIER? instr*
-  private static boolean blockinstr_if_aux__3_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_aux__3_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ELSEKEY);
-    r = r && blockinstr_if_aux__3_0_1(b, l + 1);
-    r = r && blockinstr_if_aux__3_0_2(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean blockinstr_if_aux__3_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_aux__3_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ELSEKEY);
+    result_ = result_ && blockinstr_if_aux__3_0_1(builder_, level_ + 1);
+    result_ = result_ && blockinstr_if_aux__3_0_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // IDENTIFIER?
-  private static boolean blockinstr_if_aux__3_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_aux__3_0_1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean blockinstr_if_aux__3_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_aux__3_0_1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // instr*
-  private static boolean blockinstr_if_aux__3_0_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_if_aux__3_0_2")) return false;
+  private static boolean blockinstr_if_aux__3_0_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_if_aux__3_0_2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "blockinstr_if_aux__3_0_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "blockinstr_if_aux__3_0_2", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LOOPKEY blockinstr_loop_aux_ ENDKEY IDENTIFIER?
-  static boolean blockinstr_loop_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_loop_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LOOPKEY)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LOOPKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, blockinstr_loop_aux_(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ENDKEY)) && r;
-    r = p && blockinstr_loop__3(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean blockinstr_loop_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_loop_")) return false;
+    if (!nextTokenIs(builder_, LOOPKEY)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LOOPKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, blockinstr_loop_aux_(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, ENDKEY)) && result_;
+    result_ = pinned_ && blockinstr_loop__3(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean blockinstr_loop__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_loop__3")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean blockinstr_loop__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_loop__3")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   /* ********************************************************** */
   // IDENTIFIER? blocktype? instr*
-  static boolean blockinstr_loop_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_loop_aux_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = blockinstr_loop_aux__0(b, l + 1);
-    r = r && blockinstr_loop_aux__1(b, l + 1);
-    r = r && blockinstr_loop_aux__2(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, WebAssemblyParser::blockinstr_recover_);
-    return r;
+  static boolean blockinstr_loop_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_loop_aux_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = blockinstr_loop_aux__0(builder_, level_ + 1);
+    result_ = result_ && blockinstr_loop_aux__1(builder_, level_ + 1);
+    result_ = result_ && blockinstr_loop_aux__2(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, WebAssemblyParser::blockinstr_recover_);
+    return result_;
   }
 
   // IDENTIFIER?
-  private static boolean blockinstr_loop_aux__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_loop_aux__0")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean blockinstr_loop_aux__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_loop_aux__0")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // blocktype?
-  private static boolean blockinstr_loop_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_loop_aux__1")) return false;
-    blocktype(b, l + 1);
+  private static boolean blockinstr_loop_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_loop_aux__1")) return false;
+    blocktype(builder_, level_ + 1);
     return true;
   }
 
   // instr*
-  private static boolean blockinstr_loop_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_loop_aux__2")) return false;
+  private static boolean blockinstr_loop_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_loop_aux__2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "blockinstr_loop_aux__2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "blockinstr_loop_aux__2", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // !(ENDKEY | <<eof>>)
-  static boolean blockinstr_recover_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_recover_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NOT_);
-    r = !blockinstr_recover__0(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  static boolean blockinstr_recover_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_recover_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !blockinstr_recover__0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // ENDKEY | <<eof>>
-  private static boolean blockinstr_recover__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blockinstr_recover__0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ENDKEY);
-    if (!r) r = GeneratedParserUtilBase.eof(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean blockinstr_recover__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blockinstr_recover__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ENDKEY);
+    if (!result_) result_ = eof(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // result | typeuse
-  public static boolean blocktype(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "blocktype")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = result(b, l + 1);
-    if (!r) r = typeuse(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.BLOCKTYPE, r);
-    return r;
+  public static boolean blocktype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "blocktype")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = result(builder_, level_ + 1);
+    if (!result_) result_ = typeuse(builder_, level_ + 1);
+    exit_section_(builder_, marker_, BLOCKTYPE, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // CALLINDIRECTINSTR idx? typeuse?
-  public static boolean call_indirect_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "call_indirect_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.CALLINDIRECTINSTR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.CALL_INDIRECT_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.CALLINDIRECTINSTR);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, call_indirect_instr_1(b, l + 1));
-    r = p && call_indirect_instr_2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean call_indirect_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "call_indirect_instr")) return false;
+    if (!nextTokenIs(builder_, CALLINDIRECTINSTR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, CALL_INDIRECT_INSTR, null);
+    result_ = consumeToken(builder_, CALLINDIRECTINSTR);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, call_indirect_instr_1(builder_, level_ + 1));
+    result_ = pinned_ && call_indirect_instr_2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // idx?
-  private static boolean call_indirect_instr_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "call_indirect_instr_1")) return false;
-    idx(b, l + 1);
+  private static boolean call_indirect_instr_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "call_indirect_instr_1")) return false;
+    idx(builder_, level_ + 1);
     return true;
   }
 
   // typeuse?
-  private static boolean call_indirect_instr_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "call_indirect_instr_2")) return false;
-    typeuse(b, l + 1);
+  private static boolean call_indirect_instr_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "call_indirect_instr_2")) return false;
+    typeuse(builder_, level_ + 1);
     return true;
   }
 
   /* ********************************************************** */
   // CALLINSTR idx
-  public static boolean call_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "call_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.CALLINSTR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.CALL_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.CALLINSTR);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean call_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "call_instr")) return false;
+    if (!nextTokenIs(builder_, CALLINSTR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, CALL_INSTR, null);
+    result_ = consumeToken(builder_, CALLINSTR);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // LINE_COMMENT | BLOCK_COMMENT
-  public static boolean comment(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "comment")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, "<comment>", WebAssemblyTypes.BLOCK_COMMENT, WebAssemblyTypes.LINE_COMMENT)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.COMMENT, "<comment>");
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LINE_COMMENT);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.BLOCK_COMMENT);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean comment(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "comment")) return false;
+    if (!nextTokenIs(builder_, "<comment>", BLOCK_COMMENT, LINE_COMMENT)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, COMMENT, "<comment>");
+    result_ = consumeToken(builder_, LINE_COMMENT);
+    if (!result_) result_ = consumeToken(builder_, BLOCK_COMMENT);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR data_aux_ RPAR
-  public static boolean data(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.DATA, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && data_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean data(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, DATA, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && data_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // DATAKEY IDENTIFIER? (memuse_? (instr | LPAR OFFSETKEY instr* RPAR))? STRING*
-  static boolean data_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.DATAKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, data_aux__1(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, data_aux__2(b, l + 1)) && r;
-    r = p && data_aux__3(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean data_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, DATAKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, data_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, data_aux__2(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && data_aux__3(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean data_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean data_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // (memuse_? (instr | LPAR OFFSETKEY instr* RPAR))?
-  private static boolean data_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux__2")) return false;
-    data_aux__2_0(b, l + 1);
+  private static boolean data_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux__2")) return false;
+    data_aux__2_0(builder_, level_ + 1);
     return true;
   }
 
   // memuse_? (instr | LPAR OFFSETKEY instr* RPAR)
-  private static boolean data_aux__2_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux__2_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = data_aux__2_0_0(b, l + 1);
-    r = r && data_aux__2_0_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean data_aux__2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux__2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = data_aux__2_0_0(builder_, level_ + 1);
+    result_ = result_ && data_aux__2_0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // memuse_?
-  private static boolean data_aux__2_0_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux__2_0_0")) return false;
-    memuse_(b, l + 1);
+  private static boolean data_aux__2_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux__2_0_0")) return false;
+    memuse_(builder_, level_ + 1);
     return true;
   }
 
   // instr | LPAR OFFSETKEY instr* RPAR
-  private static boolean data_aux__2_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux__2_0_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = instr(b, l + 1);
-    if (!r) r = data_aux__2_0_1_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean data_aux__2_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux__2_0_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = instr(builder_, level_ + 1);
+    if (!result_) result_ = data_aux__2_0_1_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // LPAR OFFSETKEY instr* RPAR
-  private static boolean data_aux__2_0_1_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux__2_0_1_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeTokens(b, 0, WebAssemblyTypes.LPAR, WebAssemblyTypes.OFFSETKEY);
-    r = r && data_aux__2_0_1_1_2(b, l + 1);
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean data_aux__2_0_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux__2_0_1_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, OFFSETKEY);
+    result_ = result_ && data_aux__2_0_1_1_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // instr*
-  private static boolean data_aux__2_0_1_1_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux__2_0_1_1_2")) return false;
+  private static boolean data_aux__2_0_1_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux__2_0_1_1_2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "data_aux__2_0_1_1_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "data_aux__2_0_1_1_2", pos_)) break;
     }
     return true;
   }
 
   // STRING*
-  private static boolean data_aux__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "data_aux__3")) return false;
+  private static boolean data_aux__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "data_aux__3")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.STRING)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "data_aux__3", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!consumeToken(builder_, STRING)) break;
+      if (!empty_element_parsed_guard_(builder_, "data_aux__3", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR elem_aux_ RPAR
-  public static boolean elem(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.ELEM, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && elem_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean elem(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, ELEM, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && elem_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
@@ -534,23 +628,23 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   //                          (LPAR TABLEKEY idx RPAR)? (instr | LPAR OFFSETKEY instr* RPAR)
   //                        | DECLAREKEY
   //                       )? elemlist
-  static boolean elem_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ELEMKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, elem_aux__1(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, elem_aux__2(b, l + 1)) && r;
-    r = p && elemlist(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean elem_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, ELEMKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, elem_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, elem_aux__2(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && elemlist(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean elem_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean elem_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
@@ -558,683 +652,738 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   //                          (LPAR TABLEKEY idx RPAR)? (instr | LPAR OFFSETKEY instr* RPAR)
   //                        | DECLAREKEY
   //                       )?
-  private static boolean elem_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__2")) return false;
-    elem_aux__2_0(b, l + 1);
+  private static boolean elem_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__2")) return false;
+    elem_aux__2_0(builder_, level_ + 1);
     return true;
   }
 
   // (LPAR TABLEKEY idx RPAR)? (instr | LPAR OFFSETKEY instr* RPAR)
   //                        | DECLAREKEY
-  private static boolean elem_aux__2_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__2_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = elem_aux__2_0_0(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.DECLAREKEY);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elem_aux__2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = elem_aux__2_0_0(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, DECLAREKEY);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (LPAR TABLEKEY idx RPAR)? (instr | LPAR OFFSETKEY instr* RPAR)
-  private static boolean elem_aux__2_0_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__2_0_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = elem_aux__2_0_0_0(b, l + 1);
-    r = r && elem_aux__2_0_0_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elem_aux__2_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__2_0_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = elem_aux__2_0_0_0(builder_, level_ + 1);
+    result_ = result_ && elem_aux__2_0_0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (LPAR TABLEKEY idx RPAR)?
-  private static boolean elem_aux__2_0_0_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__2_0_0_0")) return false;
-    elem_aux__2_0_0_0_0(b, l + 1);
+  private static boolean elem_aux__2_0_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__2_0_0_0")) return false;
+    elem_aux__2_0_0_0_0(builder_, level_ + 1);
     return true;
   }
 
   // LPAR TABLEKEY idx RPAR
-  private static boolean elem_aux__2_0_0_0_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__2_0_0_0_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeTokens(b, 0, WebAssemblyTypes.LPAR, WebAssemblyTypes.TABLEKEY);
-    r = r && idx(b, l + 1);
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elem_aux__2_0_0_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__2_0_0_0_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, TABLEKEY);
+    result_ = result_ && idx(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // instr | LPAR OFFSETKEY instr* RPAR
-  private static boolean elem_aux__2_0_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__2_0_0_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = instr(b, l + 1);
-    if (!r) r = elem_aux__2_0_0_1_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elem_aux__2_0_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__2_0_0_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = instr(builder_, level_ + 1);
+    if (!result_) result_ = elem_aux__2_0_0_1_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // LPAR OFFSETKEY instr* RPAR
-  private static boolean elem_aux__2_0_0_1_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__2_0_0_1_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeTokens(b, 0, WebAssemblyTypes.LPAR, WebAssemblyTypes.OFFSETKEY);
-    r = r && elem_aux__2_0_0_1_1_2(b, l + 1);
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elem_aux__2_0_0_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__2_0_0_1_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, OFFSETKEY);
+    result_ = result_ && elem_aux__2_0_0_1_1_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // instr*
-  private static boolean elem_aux__2_0_0_1_1_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_aux__2_0_0_1_1_2")) return false;
+  private static boolean elem_aux__2_0_0_1_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_aux__2_0_0_1_1_2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "elem_aux__2_0_0_1_1_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "elem_aux__2_0_0_1_1_2", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // ELEMDROPINSTR idx
-  public static boolean elem_drop_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elem_drop_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.ELEMDROPINSTR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.ELEM_DROP_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ELEMDROPINSTR);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean elem_drop_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elem_drop_instr")) return false;
+    if (!nextTokenIs(builder_, ELEMDROPINSTR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, ELEM_DROP_INSTR, null);
+    result_ = consumeToken(builder_, ELEMDROPINSTR);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // REFTYPE (instr | LPAR ITEMKEY instr* RPAR)* | FUNCKEY? idx*
-  public static boolean elemlist(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.ELEMLIST, "<elemlist>");
-    r = elemlist_0(b, l + 1);
-    if (!r) r = elemlist_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean elemlist(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, ELEMLIST, "<elemlist>");
+    result_ = elemlist_0(builder_, level_ + 1);
+    if (!result_) result_ = elemlist_1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // REFTYPE (instr | LPAR ITEMKEY instr* RPAR)*
-  private static boolean elemlist_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFTYPE);
-    r = r && elemlist_0_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elemlist_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, REFTYPE);
+    result_ = result_ && elemlist_0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (instr | LPAR ITEMKEY instr* RPAR)*
-  private static boolean elemlist_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist_0_1")) return false;
+  private static boolean elemlist_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist_0_1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!elemlist_0_1_0(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "elemlist_0_1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!elemlist_0_1_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "elemlist_0_1", pos_)) break;
     }
     return true;
   }
 
   // instr | LPAR ITEMKEY instr* RPAR
-  private static boolean elemlist_0_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist_0_1_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = instr(b, l + 1);
-    if (!r) r = elemlist_0_1_0_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elemlist_0_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist_0_1_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = instr(builder_, level_ + 1);
+    if (!result_) result_ = elemlist_0_1_0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // LPAR ITEMKEY instr* RPAR
-  private static boolean elemlist_0_1_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist_0_1_0_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeTokens(b, 0, WebAssemblyTypes.LPAR, WebAssemblyTypes.ITEMKEY);
-    r = r && elemlist_0_1_0_1_2(b, l + 1);
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elemlist_0_1_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist_0_1_0_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, ITEMKEY);
+    result_ = result_ && elemlist_0_1_0_1_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // instr*
-  private static boolean elemlist_0_1_0_1_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist_0_1_0_1_2")) return false;
+  private static boolean elemlist_0_1_0_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist_0_1_0_1_2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "elemlist_0_1_0_1_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "elemlist_0_1_0_1_2", pos_)) break;
     }
     return true;
   }
 
   // FUNCKEY? idx*
-  private static boolean elemlist_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = elemlist_1_0(b, l + 1);
-    r = r && elemlist_1_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean elemlist_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = elemlist_1_0(builder_, level_ + 1);
+    result_ = result_ && elemlist_1_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // FUNCKEY?
-  private static boolean elemlist_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist_1_0")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.FUNCKEY);
+  private static boolean elemlist_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist_1_0")) return false;
+    consumeToken(builder_, FUNCKEY);
     return true;
   }
 
   // idx*
-  private static boolean elemlist_1_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "elemlist_1_1")) return false;
+  private static boolean elemlist_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "elemlist_1_1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!idx(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "elemlist_1_1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!idx(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "elemlist_1_1", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR export_aux_ RPAR
-  public static boolean export(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "export")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.EXPORT, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && export_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean export(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "export")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, EXPORT, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && export_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // EXPORTKEY string_aux_ exportdesc
-  static boolean export_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "export_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.EXPORTKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, string_aux_(b, l + 1));
-    r = p && exportdesc(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean export_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "export_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, EXPORTKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, string_aux_(builder_, level_ + 1));
+    result_ = pinned_ && exportdesc(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // exportdesc_func_ | exportdesc_table_ | exportdesc_memory_ | exportdesc_global_
-  public static boolean exportdesc(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = exportdesc_func_(b, l + 1);
-    if (!r) r = exportdesc_table_(b, l + 1);
-    if (!r) r = exportdesc_memory_(b, l + 1);
-    if (!r) r = exportdesc_global_(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.EXPORTDESC, r);
-    return r;
+  public static boolean exportdesc(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = exportdesc_func_(builder_, level_ + 1);
+    if (!result_) result_ = exportdesc_table_(builder_, level_ + 1);
+    if (!result_) result_ = exportdesc_memory_(builder_, level_ + 1);
+    if (!result_) result_ = exportdesc_global_(builder_, level_ + 1);
+    exit_section_(builder_, marker_, EXPORTDESC, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR exportdesc_func_aux_ RPAR
-  static boolean exportdesc_func_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc_func_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && exportdesc_func_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean exportdesc_func_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc_func_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && exportdesc_func_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // FUNCKEY idx
-  static boolean exportdesc_func_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc_func_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.FUNCKEY);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean exportdesc_func_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc_func_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, FUNCKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // LPAR exportdesc_global_aux_ RPAR
-  static boolean exportdesc_global_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc_global_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && exportdesc_global_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean exportdesc_global_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc_global_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && exportdesc_global_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // GLOBALKEY idx
-  static boolean exportdesc_global_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc_global_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.GLOBALKEY);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean exportdesc_global_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc_global_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, GLOBALKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // LPAR exportdesc_memory_aux_ RPAR
-  static boolean exportdesc_memory_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc_memory_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && exportdesc_memory_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean exportdesc_memory_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc_memory_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && exportdesc_memory_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // MEMORYKEY idx
-  static boolean exportdesc_memory_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc_memory_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYKEY);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean exportdesc_memory_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc_memory_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, MEMORYKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // LPAR exportdesc_table_aux_ RPAR
-  static boolean exportdesc_table_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc_table_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && exportdesc_table_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean exportdesc_table_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc_table_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && exportdesc_table_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // TABLEKEY idx
-  static boolean exportdesc_table_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "exportdesc_table_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLEKEY);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean exportdesc_table_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "exportdesc_table_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, TABLEKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // LPAR FIELDKEY IDENTIFIER? storagetype RPAR
+  //             | LPAR FIELDKEY IDENTIFIER? LPAR MUTKEY storagetype RPAR RPAR
+  public static boolean fieldtype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "fieldtype")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = fieldtype_0(builder_, level_ + 1);
+    if (!result_) result_ = fieldtype_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, FIELDTYPE, result_);
+    return result_;
+  }
+
+  // LPAR FIELDKEY IDENTIFIER? storagetype RPAR
+  private static boolean fieldtype_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "fieldtype_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, FIELDKEY);
+    result_ = result_ && fieldtype_0_2(builder_, level_ + 1);
+    result_ = result_ && storagetype(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // IDENTIFIER?
+  private static boolean fieldtype_0_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "fieldtype_0_2")) return false;
+    consumeToken(builder_, IDENTIFIER);
+    return true;
+  }
+
+  // LPAR FIELDKEY IDENTIFIER? LPAR MUTKEY storagetype RPAR RPAR
+  private static boolean fieldtype_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "fieldtype_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, FIELDKEY);
+    result_ = result_ && fieldtype_1_2(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, LPAR, MUTKEY);
+    result_ = result_ && storagetype(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RPAR, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // IDENTIFIER?
+  private static boolean fieldtype_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "fieldtype_1_2")) return false;
+    consumeToken(builder_, IDENTIFIER);
+    return true;
   }
 
   /* ********************************************************** */
   // foldeinstr_plaininstr_ | foldeinstr_block_ | foldeinstr_loop_ | foldeinstr_if_
-  public static boolean foldeinstr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = foldeinstr_plaininstr_(b, l + 1);
-    if (!r) r = foldeinstr_block_(b, l + 1);
-    if (!r) r = foldeinstr_loop_(b, l + 1);
-    if (!r) r = foldeinstr_if_(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.FOLDEINSTR, r);
-    return r;
+  public static boolean foldeinstr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = foldeinstr_plaininstr_(builder_, level_ + 1);
+    if (!result_) result_ = foldeinstr_block_(builder_, level_ + 1);
+    if (!result_) result_ = foldeinstr_loop_(builder_, level_ + 1);
+    if (!result_) result_ = foldeinstr_if_(builder_, level_ + 1);
+    exit_section_(builder_, marker_, FOLDEINSTR, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR foldeinstr_block_aux_ RPAR IDENTIFIER?
-  static boolean foldeinstr_block_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_block_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && foldeinstr_block_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.report_error_(b, GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR));
-    r = p && foldeinstr_block__3(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean foldeinstr_block_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_block_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && foldeinstr_block_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, consumeToken(builder_, RPAR));
+    result_ = pinned_ && foldeinstr_block__3(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean foldeinstr_block__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_block__3")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean foldeinstr_block__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_block__3")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   /* ********************************************************** */
   // BLOCKKEY IDENTIFIER? blocktype? instr*
-  static boolean foldeinstr_block_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_block_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.BLOCKKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, foldeinstr_block_aux__1(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, foldeinstr_block_aux__2(b, l + 1)) && r;
-    r = p && foldeinstr_block_aux__3(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean foldeinstr_block_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_block_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, BLOCKKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, foldeinstr_block_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, foldeinstr_block_aux__2(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && foldeinstr_block_aux__3(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean foldeinstr_block_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_block_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean foldeinstr_block_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_block_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // blocktype?
-  private static boolean foldeinstr_block_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_block_aux__2")) return false;
-    blocktype(b, l + 1);
+  private static boolean foldeinstr_block_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_block_aux__2")) return false;
+    blocktype(builder_, level_ + 1);
     return true;
   }
 
   // instr*
-  private static boolean foldeinstr_block_aux__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_block_aux__3")) return false;
+  private static boolean foldeinstr_block_aux__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_block_aux__3")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "foldeinstr_block_aux__3", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "foldeinstr_block_aux__3", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR foldeinstr_if_aux_ RPAR
-  static boolean foldeinstr_if_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && foldeinstr_if_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean foldeinstr_if_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && foldeinstr_if_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // IFKEY IDENTIFIER? blocktype? foldeinstr* foldeinstr_if_then_ foldeinstr_if_else_
-  static boolean foldeinstr_if_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IFKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, foldeinstr_if_aux__1(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, foldeinstr_if_aux__2(b, l + 1)) && r;
-    r = p && GeneratedParserUtilBase.report_error_(b, foldeinstr_if_aux__3(b, l + 1)) && r;
-    r = p && GeneratedParserUtilBase.report_error_(b, foldeinstr_if_then_(b, l + 1)) && r;
-    r = p && foldeinstr_if_else_(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean foldeinstr_if_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, IFKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, foldeinstr_if_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, foldeinstr_if_aux__2(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && report_error_(builder_, foldeinstr_if_aux__3(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && report_error_(builder_, foldeinstr_if_then_(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && foldeinstr_if_else_(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean foldeinstr_if_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean foldeinstr_if_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // blocktype?
-  private static boolean foldeinstr_if_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_aux__2")) return false;
-    blocktype(b, l + 1);
+  private static boolean foldeinstr_if_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_aux__2")) return false;
+    blocktype(builder_, level_ + 1);
     return true;
   }
 
   // foldeinstr*
-  private static boolean foldeinstr_if_aux__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_aux__3")) return false;
+  private static boolean foldeinstr_if_aux__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_aux__3")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!foldeinstr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "foldeinstr_if_aux__3", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!foldeinstr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "foldeinstr_if_aux__3", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR foldeinstr_if_else_aux_ RPAR
-  static boolean foldeinstr_if_else_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_else_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && foldeinstr_if_else_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean foldeinstr_if_else_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_else_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && foldeinstr_if_else_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // ELSEKEY instr*
-  static boolean foldeinstr_if_else_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_else_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ELSEKEY);
-    p = r; // pin = 1
-    r = r && foldeinstr_if_else_aux__1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean foldeinstr_if_else_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_else_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, ELSEKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && foldeinstr_if_else_aux__1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // instr*
-  private static boolean foldeinstr_if_else_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_else_aux__1")) return false;
+  private static boolean foldeinstr_if_else_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_else_aux__1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "foldeinstr_if_else_aux__1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "foldeinstr_if_else_aux__1", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR foldeinstr_if_then_aux_ RPAR
-  static boolean foldeinstr_if_then_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_then_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && foldeinstr_if_then_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean foldeinstr_if_then_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_then_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && foldeinstr_if_then_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // THENKEY instr*
-  static boolean foldeinstr_if_then_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_then_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.THENKEY);
-    p = r; // pin = 1
-    r = r && foldeinstr_if_then_aux__1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean foldeinstr_if_then_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_then_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, THENKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && foldeinstr_if_then_aux__1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // instr*
-  private static boolean foldeinstr_if_then_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_if_then_aux__1")) return false;
+  private static boolean foldeinstr_if_then_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_if_then_aux__1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "foldeinstr_if_then_aux__1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "foldeinstr_if_then_aux__1", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR foldeinstr_loop_aux_ RPAR IDENTIFIER?
-  static boolean foldeinstr_loop_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_loop_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && foldeinstr_loop_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.report_error_(b, GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR));
-    r = p && foldeinstr_loop__3(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean foldeinstr_loop_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_loop_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && foldeinstr_loop_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, consumeToken(builder_, RPAR));
+    result_ = pinned_ && foldeinstr_loop__3(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean foldeinstr_loop__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_loop__3")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean foldeinstr_loop__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_loop__3")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   /* ********************************************************** */
   // LOOPKEY IDENTIFIER? blocktype? instr*
-  static boolean foldeinstr_loop_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_loop_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LOOPKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, foldeinstr_loop_aux__1(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, foldeinstr_loop_aux__2(b, l + 1)) && r;
-    r = p && foldeinstr_loop_aux__3(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean foldeinstr_loop_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_loop_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LOOPKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, foldeinstr_loop_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, foldeinstr_loop_aux__2(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && foldeinstr_loop_aux__3(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean foldeinstr_loop_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_loop_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean foldeinstr_loop_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_loop_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // blocktype?
-  private static boolean foldeinstr_loop_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_loop_aux__2")) return false;
-    blocktype(b, l + 1);
+  private static boolean foldeinstr_loop_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_loop_aux__2")) return false;
+    blocktype(builder_, level_ + 1);
     return true;
   }
 
   // instr*
-  private static boolean foldeinstr_loop_aux__3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_loop_aux__3")) return false;
+  private static boolean foldeinstr_loop_aux__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_loop_aux__3")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "foldeinstr_loop_aux__3", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "foldeinstr_loop_aux__3", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR foldeinstr_plaininstr_aux_ RPAR
-  static boolean foldeinstr_plaininstr_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_plaininstr_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && foldeinstr_plaininstr_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean foldeinstr_plaininstr_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_plaininstr_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && foldeinstr_plaininstr_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // plaininstr foldeinstr*
-  static boolean foldeinstr_plaininstr_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_plaininstr_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = plaininstr(b, l + 1);
-    p = r; // pin = 1
-    r = r && foldeinstr_plaininstr_aux__1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean foldeinstr_plaininstr_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_plaininstr_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = plaininstr(builder_, level_ + 1);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && foldeinstr_plaininstr_aux__1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // foldeinstr*
-  private static boolean foldeinstr_plaininstr_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "foldeinstr_plaininstr_aux__1")) return false;
+  private static boolean foldeinstr_plaininstr_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "foldeinstr_plaininstr_aux__1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!foldeinstr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "foldeinstr_plaininstr_aux__1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!foldeinstr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "foldeinstr_plaininstr_aux__1", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR func_aux_ RPAR
-  public static boolean func(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.FUNC, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && func_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean func(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, FUNC, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && func_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
@@ -1242,217 +1391,217 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   //                          inline_import typeuse?
   //                        | (inline_export (inline_export | inline_import)?)? typeuse? local* instr*
   //                       )
-  static boolean func_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.FUNCKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, func_aux__1(b, l + 1));
-    r = p && func_aux__2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean func_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, FUNCKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, func_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && func_aux__2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // func_aux_ident_?
-  private static boolean func_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__1")) return false;
-    func_aux_ident_(b, l + 1);
+  private static boolean func_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__1")) return false;
+    func_aux_ident_(builder_, level_ + 1);
     return true;
   }
 
   // inline_import typeuse?
   //                        | (inline_export (inline_export | inline_import)?)? typeuse? local* instr*
-  private static boolean func_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = func_aux__2_0(b, l + 1);
-    if (!r) r = func_aux__2_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean func_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = func_aux__2_0(builder_, level_ + 1);
+    if (!result_) result_ = func_aux__2_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // inline_import typeuse?
-  private static boolean func_aux__2_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_import(b, l + 1);
-    r = r && func_aux__2_0_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean func_aux__2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_import(builder_, level_ + 1);
+    result_ = result_ && func_aux__2_0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // typeuse?
-  private static boolean func_aux__2_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_0_1")) return false;
-    typeuse(b, l + 1);
+  private static boolean func_aux__2_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_0_1")) return false;
+    typeuse(builder_, level_ + 1);
     return true;
   }
 
   // (inline_export (inline_export | inline_import)?)? typeuse? local* instr*
-  private static boolean func_aux__2_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = func_aux__2_1_0(b, l + 1);
-    r = r && func_aux__2_1_1(b, l + 1);
-    r = r && func_aux__2_1_2(b, l + 1);
-    r = r && func_aux__2_1_3(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean func_aux__2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = func_aux__2_1_0(builder_, level_ + 1);
+    result_ = result_ && func_aux__2_1_1(builder_, level_ + 1);
+    result_ = result_ && func_aux__2_1_2(builder_, level_ + 1);
+    result_ = result_ && func_aux__2_1_3(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (inline_export (inline_export | inline_import)?)?
-  private static boolean func_aux__2_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_1_0")) return false;
-    func_aux__2_1_0_0(b, l + 1);
+  private static boolean func_aux__2_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_1_0")) return false;
+    func_aux__2_1_0_0(builder_, level_ + 1);
     return true;
   }
 
   // inline_export (inline_export | inline_import)?
-  private static boolean func_aux__2_1_0_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_1_0_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_export(b, l + 1);
-    r = r && func_aux__2_1_0_0_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean func_aux__2_1_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_1_0_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_export(builder_, level_ + 1);
+    result_ = result_ && func_aux__2_1_0_0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (inline_export | inline_import)?
-  private static boolean func_aux__2_1_0_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_1_0_0_1")) return false;
-    func_aux__2_1_0_0_1_0(b, l + 1);
+  private static boolean func_aux__2_1_0_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_1_0_0_1")) return false;
+    func_aux__2_1_0_0_1_0(builder_, level_ + 1);
     return true;
   }
 
   // inline_export | inline_import
-  private static boolean func_aux__2_1_0_0_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_1_0_0_1_0")) return false;
-    boolean r;
-    r = inline_export(b, l + 1);
-    if (!r) r = inline_import(b, l + 1);
-    return r;
+  private static boolean func_aux__2_1_0_0_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_1_0_0_1_0")) return false;
+    boolean result_;
+    result_ = inline_export(builder_, level_ + 1);
+    if (!result_) result_ = inline_import(builder_, level_ + 1);
+    return result_;
   }
 
   // typeuse?
-  private static boolean func_aux__2_1_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_1_1")) return false;
-    typeuse(b, l + 1);
+  private static boolean func_aux__2_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_1_1")) return false;
+    typeuse(builder_, level_ + 1);
     return true;
   }
 
   // local*
-  private static boolean func_aux__2_1_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_1_2")) return false;
+  private static boolean func_aux__2_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_1_2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!local(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "func_aux__2_1_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!local(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "func_aux__2_1_2", pos_)) break;
     }
     return true;
   }
 
   // instr*
-  private static boolean func_aux__2_1_3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux__2_1_3")) return false;
+  private static boolean func_aux__2_1_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux__2_1_3")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "func_aux__2_1_3", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "func_aux__2_1_3", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // IDENTIFIER
-  static boolean func_aux_ident_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux_ident_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, WebAssemblyParser::func_aux_ident_recover_);
-    return r;
+  static boolean func_aux_ident_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux_ident_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, IDENTIFIER);
+    exit_section_(builder_, level_, marker_, result_, false, WebAssemblyParser::func_aux_ident_recover_);
+    return result_;
   }
 
   /* ********************************************************** */
   // !(LPAR | RPAR | instr_key_ | <<eof>>)
-  static boolean func_aux_ident_recover_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux_ident_recover_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NOT_);
-    r = !func_aux_ident_recover__0(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  static boolean func_aux_ident_recover_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux_ident_recover_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !func_aux_ident_recover__0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // LPAR | RPAR | instr_key_ | <<eof>>
-  private static boolean func_aux_ident_recover__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "func_aux_ident_recover__0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    if (!r) r = instr_key_(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.eof(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean func_aux_ident_recover__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "func_aux_ident_recover__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LPAR);
+    if (!result_) result_ = consumeToken(builder_, RPAR);
+    if (!result_) result_ = instr_key_(builder_, level_ + 1);
+    if (!result_) result_ = eof(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR FUNCKEY param* result* RPAR
-  public static boolean functype(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "functype")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.FUNCTYPE, null);
-    r = GeneratedParserUtilBase.consumeTokens(b, 2, WebAssemblyTypes.LPAR, WebAssemblyTypes.FUNCKEY);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.report_error_(b, functype_2(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, functype_3(b, l + 1)) && r;
-    r = p && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean functype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "functype")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, FUNCTYPE, null);
+    result_ = consumeTokens(builder_, 2, LPAR, FUNCKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, functype_2(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, functype_3(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && consumeToken(builder_, RPAR) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // param*
-  private static boolean functype_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "functype_2")) return false;
+  private static boolean functype_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "functype_2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!param(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "functype_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!param(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "functype_2", pos_)) break;
     }
     return true;
   }
 
   // result*
-  private static boolean functype_3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "functype_3")) return false;
+  private static boolean functype_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "functype_3")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!result(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "functype_3", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!result(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "functype_3", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR global_aux_ RPAR
-  public static boolean global(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.GLOBAL, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && global_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean global(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, GLOBAL, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && global_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
@@ -1460,665 +1609,686 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   //                            inline_import globaltype
   //                          | (inline_export (inline_import | inline_export)?)? globaltype instr*
   //                         )
-  static boolean global_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.GLOBALKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, global_aux__1(b, l + 1));
-    r = p && global_aux__2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean global_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, GLOBALKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, global_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && global_aux__2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean global_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean global_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // inline_import globaltype
   //                          | (inline_export (inline_import | inline_export)?)? globaltype instr*
-  private static boolean global_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__2")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = global_aux__2_0(b, l + 1);
-    if (!r) r = global_aux__2_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean global_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = global_aux__2_0(builder_, level_ + 1);
+    if (!result_) result_ = global_aux__2_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // inline_import globaltype
-  private static boolean global_aux__2_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__2_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_import(b, l + 1);
-    r = r && globaltype(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean global_aux__2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__2_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_import(builder_, level_ + 1);
+    result_ = result_ && globaltype(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (inline_export (inline_import | inline_export)?)? globaltype instr*
-  private static boolean global_aux__2_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__2_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = global_aux__2_1_0(b, l + 1);
-    r = r && globaltype(b, l + 1);
-    r = r && global_aux__2_1_2(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean global_aux__2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__2_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = global_aux__2_1_0(builder_, level_ + 1);
+    result_ = result_ && globaltype(builder_, level_ + 1);
+    result_ = result_ && global_aux__2_1_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (inline_export (inline_import | inline_export)?)?
-  private static boolean global_aux__2_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__2_1_0")) return false;
-    global_aux__2_1_0_0(b, l + 1);
+  private static boolean global_aux__2_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__2_1_0")) return false;
+    global_aux__2_1_0_0(builder_, level_ + 1);
     return true;
   }
 
   // inline_export (inline_import | inline_export)?
-  private static boolean global_aux__2_1_0_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__2_1_0_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_export(b, l + 1);
-    r = r && global_aux__2_1_0_0_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean global_aux__2_1_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__2_1_0_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_export(builder_, level_ + 1);
+    result_ = result_ && global_aux__2_1_0_0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (inline_import | inline_export)?
-  private static boolean global_aux__2_1_0_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__2_1_0_0_1")) return false;
-    global_aux__2_1_0_0_1_0(b, l + 1);
+  private static boolean global_aux__2_1_0_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__2_1_0_0_1")) return false;
+    global_aux__2_1_0_0_1_0(builder_, level_ + 1);
     return true;
   }
 
   // inline_import | inline_export
-  private static boolean global_aux__2_1_0_0_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__2_1_0_0_1_0")) return false;
-    boolean r;
-    r = inline_import(b, l + 1);
-    if (!r) r = inline_export(b, l + 1);
-    return r;
+  private static boolean global_aux__2_1_0_0_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__2_1_0_0_1_0")) return false;
+    boolean result_;
+    result_ = inline_import(builder_, level_ + 1);
+    if (!result_) result_ = inline_export(builder_, level_ + 1);
+    return result_;
   }
 
   // instr*
-  private static boolean global_aux__2_1_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_aux__2_1_2")) return false;
+  private static boolean global_aux__2_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_aux__2_1_2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "global_aux__2_1_2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "global_aux__2_1_2", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // GLOBALINSTR idx
-  public static boolean global_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "global_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.GLOBALINSTR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.GLOBAL_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.GLOBALINSTR);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean global_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "global_instr")) return false;
+    if (!nextTokenIs(builder_, GLOBALINSTR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, GLOBAL_INSTR, null);
+    result_ = consumeToken(builder_, GLOBALINSTR);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // valtype | globaltype_mut_
-  public static boolean globaltype(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "globaltype")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.GLOBALTYPE, "<globaltype>");
-    r = valtype(b, l + 1);
-    if (!r) r = globaltype_mut_(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean globaltype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "globaltype")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, GLOBALTYPE, "<globaltype>");
+    result_ = valtype(builder_, level_ + 1);
+    if (!result_) result_ = globaltype_mut_(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR MUTKEY valtype RPAR
-  static boolean globaltype_mut_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "globaltype_mut_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeTokens(b, 2, WebAssemblyTypes.LPAR, WebAssemblyTypes.MUTKEY);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.report_error_(b, valtype(b, l + 1));
-    r = p && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean globaltype_mut_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "globaltype_mut_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeTokens(builder_, 2, LPAR, MUTKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, valtype(builder_, level_ + 1));
+    result_ = pinned_ && consumeToken(builder_, RPAR) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // UNSIGNED | IDENTIFIER
-  public static boolean idx(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "idx")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, "<idx>", WebAssemblyTypes.IDENTIFIER, WebAssemblyTypes.UNSIGNED)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.IDX, "<idx>");
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.UNSIGNED);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean idx(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "idx")) return false;
+    if (!nextTokenIs(builder_, "<idx>", IDENTIFIER, UNSIGNED)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, IDX, "<idx>");
+    result_ = consumeToken(builder_, UNSIGNED);
+    if (!result_) result_ = consumeToken(builder_, IDENTIFIER);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR import_aux_ RPAR
-  public static boolean import_$(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "import_$")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.IMPORT, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && import_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean import_$(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "import_$")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, IMPORT, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && import_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // IMPORTKEY string_fir_aux_ string_aux_ importdesc
-  static boolean import_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "import_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IMPORTKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, string_fir_aux_(b, l + 1));
-    r = p && GeneratedParserUtilBase.report_error_(b, string_aux_(b, l + 1)) && r;
-    r = p && importdesc(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean import_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "import_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, IMPORTKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, string_fir_aux_(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, string_aux_(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && importdesc(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // importdesc_func_ | importdesc_table_ | importdesc_memory_ | importdesc_global_
-  public static boolean importdesc(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = importdesc_func_(b, l + 1);
-    if (!r) r = importdesc_table_(b, l + 1);
-    if (!r) r = importdesc_memory_(b, l + 1);
-    if (!r) r = importdesc_global_(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.IMPORTDESC, r);
-    return r;
+  public static boolean importdesc(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = importdesc_func_(builder_, level_ + 1);
+    if (!result_) result_ = importdesc_table_(builder_, level_ + 1);
+    if (!result_) result_ = importdesc_memory_(builder_, level_ + 1);
+    if (!result_) result_ = importdesc_global_(builder_, level_ + 1);
+    exit_section_(builder_, marker_, IMPORTDESC, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR importdesc_func_aux_ RPAR
-  static boolean importdesc_func_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_func_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && importdesc_func_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean importdesc_func_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_func_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && importdesc_func_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // FUNCKEY IDENTIFIER? typeuse?
-  static boolean importdesc_func_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_func_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.FUNCKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, importdesc_func_aux__1(b, l + 1));
-    r = p && importdesc_func_aux__2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean importdesc_func_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_func_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, FUNCKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, importdesc_func_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && importdesc_func_aux__2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean importdesc_func_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_func_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean importdesc_func_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_func_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // typeuse?
-  private static boolean importdesc_func_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_func_aux__2")) return false;
-    typeuse(b, l + 1);
+  private static boolean importdesc_func_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_func_aux__2")) return false;
+    typeuse(builder_, level_ + 1);
     return true;
   }
 
   /* ********************************************************** */
   // LPAR importdesc_global_aux_ RPAR
-  static boolean importdesc_global_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_global_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && importdesc_global_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean importdesc_global_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_global_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && importdesc_global_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // GLOBALKEY IDENTIFIER? globaltype
-  static boolean importdesc_global_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_global_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.GLOBALKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, importdesc_global_aux__1(b, l + 1));
-    r = p && globaltype(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean importdesc_global_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_global_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, GLOBALKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, importdesc_global_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && globaltype(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean importdesc_global_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_global_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean importdesc_global_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_global_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   /* ********************************************************** */
   // LPAR importdesc_memory_aux_ RPAR
-  static boolean importdesc_memory_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_memory_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && importdesc_memory_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean importdesc_memory_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_memory_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && importdesc_memory_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // MEMORYKEY IDENTIFIER? memtype
-  static boolean importdesc_memory_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_memory_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, importdesc_memory_aux__1(b, l + 1));
-    r = p && memtype(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean importdesc_memory_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_memory_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, MEMORYKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, importdesc_memory_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && memtype(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean importdesc_memory_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_memory_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean importdesc_memory_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_memory_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   /* ********************************************************** */
   // LPAR importdesc_table_aux_ RPAR
-  static boolean importdesc_table_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_table_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && importdesc_table_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean importdesc_table_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_table_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && importdesc_table_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // TABLEKEY IDENTIFIER? tabletype
-  static boolean importdesc_table_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_table_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLEKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, importdesc_table_aux__1(b, l + 1));
-    r = p && tabletype(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean importdesc_table_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_table_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, TABLEKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, importdesc_table_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && tabletype(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean importdesc_table_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "importdesc_table_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean importdesc_table_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "importdesc_table_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   /* ********************************************************** */
   // LPAR inline_data_aux_ RPAR
-  public static boolean inline_data(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_data")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.INLINE_DATA, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && inline_data_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean inline_data(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_data")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, INLINE_DATA, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && inline_data_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // DATAKEY STRING*
-  static boolean inline_data_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_data_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.DATAKEY);
-    p = r; // pin = 1
-    r = r && inline_data_aux__1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean inline_data_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_data_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, DATAKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && inline_data_aux__1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // STRING*
-  private static boolean inline_data_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_data_aux__1")) return false;
+  private static boolean inline_data_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_data_aux__1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.STRING)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "inline_data_aux__1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!consumeToken(builder_, STRING)) break;
+      if (!empty_element_parsed_guard_(builder_, "inline_data_aux__1", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // REFTYPE LPAR inline_elem_aux_ RPAR
-  public static boolean inline_elem(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_elem")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.REFTYPE)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.INLINE_ELEM, null);
-    r = GeneratedParserUtilBase.consumeTokens(b, 0, WebAssemblyTypes.REFTYPE, WebAssemblyTypes.LPAR);
-    r = r && inline_elem_aux_(b, l + 1);
-    p = r; // pin = 3
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean inline_elem(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_elem")) return false;
+    if (!nextTokenIs(builder_, REFTYPE)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, INLINE_ELEM, null);
+    result_ = consumeTokens(builder_, 0, REFTYPE, LPAR);
+    result_ = result_ && inline_elem_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 3
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // ELEMKEY (instr+ | elemlist)?
-  static boolean inline_elem_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_elem_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ELEMKEY);
-    p = r; // pin = 1
-    r = r && inline_elem_aux__1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean inline_elem_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_elem_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, ELEMKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && inline_elem_aux__1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // (instr+ | elemlist)?
-  private static boolean inline_elem_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_elem_aux__1")) return false;
-    inline_elem_aux__1_0(b, l + 1);
+  private static boolean inline_elem_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_elem_aux__1")) return false;
+    inline_elem_aux__1_0(builder_, level_ + 1);
     return true;
   }
 
   // instr+ | elemlist
-  private static boolean inline_elem_aux__1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_elem_aux__1_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_elem_aux__1_0_0(b, l + 1);
-    if (!r) r = elemlist(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean inline_elem_aux__1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_elem_aux__1_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_elem_aux__1_0_0(builder_, level_ + 1);
+    if (!result_) result_ = elemlist(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // instr+
-  private static boolean inline_elem_aux__1_0_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_elem_aux__1_0_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = instr(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!instr(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "inline_elem_aux__1_0_0", c)) break;
+  private static boolean inline_elem_aux__1_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_elem_aux__1_0_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = instr(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!instr(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "inline_elem_aux__1_0_0", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR EXPORTKEY STRING RPAR
-  public static boolean inline_export(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_export")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.INLINE_EXPORT, null);
-    r = GeneratedParserUtilBase.consumeTokens(b, 2, WebAssemblyTypes.LPAR, WebAssemblyTypes.EXPORTKEY, WebAssemblyTypes.STRING, WebAssemblyTypes.RPAR);
-    p = r; // pin = 2
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean inline_export(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_export")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, INLINE_EXPORT, null);
+    result_ = consumeTokens(builder_, 2, LPAR, EXPORTKEY, STRING, RPAR);
+    pinned_ = result_; // pin = 2
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // LPAR IMPORTKEY STRING STRING RPAR
-  public static boolean inline_import(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "inline_import")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeTokens(b, 0, WebAssemblyTypes.LPAR, WebAssemblyTypes.IMPORTKEY, WebAssemblyTypes.STRING, WebAssemblyTypes.STRING, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.INLINE_IMPORT, r);
-    return r;
+  public static boolean inline_import(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inline_import")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeTokens(builder_, 0, LPAR, IMPORTKEY, STRING, STRING, RPAR);
+    exit_section_(builder_, marker_, INLINE_IMPORT, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // foldeinstr | plaininstr | blockinstr
-  public static boolean instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "instr")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.INSTR, "<instr>");
-    r = foldeinstr(b, l + 1);
-    if (!r) r = plaininstr(b, l + 1);
-    if (!r) r = blockinstr(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "instr")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, INSTR, "<instr>");
+    result_ = foldeinstr(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr(builder_, level_ + 1);
+    if (!result_) result_ = blockinstr(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // BLOCKKEY | LOOPKEY | IFKEY
   //                      | CONTROLINSTR | CONTROLINSTR_IDX | CALLINSTR | BRTABLEINSTR | CALLINDIRECTINSTR
   //                      | REFISNULLINST | REFNULLINSTR | REFFUNCINSTR
+  //                      | REFTEST | REFCAST | REFEQ | REFI31 | I31GET | REFASNONNULL | EXTERNCONVERT
   //                      | PARAMETRICINSTR
   //                      | LOCALINSTR | GLOBALINSTR
+  //                      | STRUCTNEW | STRUCTGET | STRUCTSET
+  //                      | ARRAYNEW | ARRAYGET | ARRAYSET | ARRAYLEN | ARRAYCOPY | ARRAYFILL | ARRAYINITDATA | ARRAYINITELEM
   //                      | TABLEINSTR_IDX | TABLECOPYINSTR | TABLEINITINSTR | ELEMDROPINSTR
   //                      | MEMORYINSTR | MEMORYINSTR_IDX | MEMORYINSTR_MEMARG
   //                      | ICONST | FCONST | NUMERICINSTR
-  static boolean instr_key_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "instr_key_")) return false;
-    boolean r;
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.BLOCKKEY);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LOOPKEY);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IFKEY);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.CONTROLINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.CONTROLINSTR_IDX);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.CALLINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.BRTABLEINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.CALLINDIRECTINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFISNULLINST);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFNULLINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFFUNCINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.PARAMETRICINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LOCALINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.GLOBALINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLEINSTR_IDX);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLECOPYINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLEINITINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ELEMDROPINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYINSTR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYINSTR_IDX);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYINSTR_MEMARG);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ICONST);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.FCONST);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.NUMERICINSTR);
-    return r;
+  static boolean instr_key_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "instr_key_")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, BLOCKKEY);
+    if (!result_) result_ = consumeToken(builder_, LOOPKEY);
+    if (!result_) result_ = consumeToken(builder_, IFKEY);
+    if (!result_) result_ = consumeToken(builder_, CONTROLINSTR);
+    if (!result_) result_ = consumeToken(builder_, CONTROLINSTR_IDX);
+    if (!result_) result_ = consumeToken(builder_, CALLINSTR);
+    if (!result_) result_ = consumeToken(builder_, BRTABLEINSTR);
+    if (!result_) result_ = consumeToken(builder_, CALLINDIRECTINSTR);
+    if (!result_) result_ = consumeToken(builder_, REFISNULLINST);
+    if (!result_) result_ = consumeToken(builder_, REFNULLINSTR);
+    if (!result_) result_ = consumeToken(builder_, REFFUNCINSTR);
+    if (!result_) result_ = consumeToken(builder_, REFTEST);
+    if (!result_) result_ = consumeToken(builder_, REFCAST);
+    if (!result_) result_ = consumeToken(builder_, REFEQ);
+    if (!result_) result_ = consumeToken(builder_, REFI31);
+    if (!result_) result_ = consumeToken(builder_, I31GET);
+    if (!result_) result_ = consumeToken(builder_, REFASNONNULL);
+    if (!result_) result_ = consumeToken(builder_, EXTERNCONVERT);
+    if (!result_) result_ = consumeToken(builder_, PARAMETRICINSTR);
+    if (!result_) result_ = consumeToken(builder_, LOCALINSTR);
+    if (!result_) result_ = consumeToken(builder_, GLOBALINSTR);
+    if (!result_) result_ = consumeToken(builder_, STRUCTNEW);
+    if (!result_) result_ = consumeToken(builder_, STRUCTGET);
+    if (!result_) result_ = consumeToken(builder_, STRUCTSET);
+    if (!result_) result_ = consumeToken(builder_, ARRAYNEW);
+    if (!result_) result_ = consumeToken(builder_, ARRAYGET);
+    if (!result_) result_ = consumeToken(builder_, ARRAYSET);
+    if (!result_) result_ = consumeToken(builder_, ARRAYLEN);
+    if (!result_) result_ = consumeToken(builder_, ARRAYCOPY);
+    if (!result_) result_ = consumeToken(builder_, ARRAYFILL);
+    if (!result_) result_ = consumeToken(builder_, ARRAYINITDATA);
+    if (!result_) result_ = consumeToken(builder_, ARRAYINITELEM);
+    if (!result_) result_ = consumeToken(builder_, TABLEINSTR_IDX);
+    if (!result_) result_ = consumeToken(builder_, TABLECOPYINSTR);
+    if (!result_) result_ = consumeToken(builder_, TABLEINITINSTR);
+    if (!result_) result_ = consumeToken(builder_, ELEMDROPINSTR);
+    if (!result_) result_ = consumeToken(builder_, MEMORYINSTR);
+    if (!result_) result_ = consumeToken(builder_, MEMORYINSTR_IDX);
+    if (!result_) result_ = consumeToken(builder_, MEMORYINSTR_MEMARG);
+    if (!result_) result_ = consumeToken(builder_, ICONST);
+    if (!result_) result_ = consumeToken(builder_, FCONST);
+    if (!result_) result_ = consumeToken(builder_, NUMERICINSTR);
+    return result_;
   }
 
   /* ********************************************************** */
   // module | modulefield
-  static boolean item_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "item_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r;
-    r = module(b, l + 1);
-    if (!r) r = modulefield(b, l + 1);
-    return r;
+  static boolean item_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "item_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    result_ = module(builder_, level_ + 1);
+    if (!result_) result_ = modulefield(builder_, level_ + 1);
+    return result_;
   }
 
   /* ********************************************************** */
   // !(RPAR | <<eof>>)
-  static boolean item_recover_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "item_recover_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NOT_);
-    r = !item_recover__0(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  static boolean item_recover_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "item_recover_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !item_recover__0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // RPAR | <<eof>>
-  private static boolean item_recover__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "item_recover__0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    if (!r) r = GeneratedParserUtilBase.eof(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean item_recover__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "item_recover__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, RPAR);
+    if (!result_) result_ = eof(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // BAD_TOKEN
-  public static boolean lexer_tokens(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "lexer_tokens")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.BAD_TOKEN)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.BAD_TOKEN);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.LEXER_TOKENS, r);
-    return r;
+  public static boolean lexer_tokens(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "lexer_tokens")) return false;
+    if (!nextTokenIs(builder_, BAD_TOKEN)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, BAD_TOKEN);
+    exit_section_(builder_, marker_, LEXER_TOKENS, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR local_aux_ RPAR
-  public static boolean local(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "local")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.LOCAL, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && local_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean local(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "local")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, LOCAL, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && local_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // LOCALKEY (IDENTIFIER valtype | valtype*)
-  static boolean local_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "local_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LOCALKEY);
-    p = r; // pin = 1
-    r = r && local_aux__1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean local_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "local_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, LOCALKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && local_aux__1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER valtype | valtype*
-  private static boolean local_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "local_aux__1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = local_aux__1_0(b, l + 1);
-    if (!r) r = local_aux__1_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean local_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "local_aux__1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = local_aux__1_0(builder_, level_ + 1);
+    if (!result_) result_ = local_aux__1_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // IDENTIFIER valtype
-  private static boolean local_aux__1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "local_aux__1_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
-    r = r && valtype(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean local_aux__1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "local_aux__1_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, IDENTIFIER);
+    result_ = result_ && valtype(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // valtype*
-  private static boolean local_aux__1_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "local_aux__1_1")) return false;
+  private static boolean local_aux__1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "local_aux__1_1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!valtype(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "local_aux__1_1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!valtype(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "local_aux__1_1", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LOCALINSTR idx
-  public static boolean local_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "local_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LOCALINSTR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.LOCAL_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LOCALINSTR);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean local_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "local_instr")) return false;
+    if (!nextTokenIs(builder_, LOCALINSTR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, LOCAL_INSTR, null);
+    result_ = consumeToken(builder_, LOCALINSTR);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // LPAR memaux_ RPAR
-  public static boolean mem(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "mem")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.MEM, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && memaux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean mem(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "mem")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, MEM, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && memaux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
@@ -2127,300 +2297,300 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   //                      | inline_import? memtype
   //                      | inline_export (inline_import | inline_export | inline_data)* memtype
   //                     )
-  static boolean memaux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memaux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, memaux__1(b, l + 1));
-    r = p && memaux__2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean memaux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memaux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, MEMORYKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, memaux__1(builder_, level_ + 1));
+    result_ = pinned_ && memaux__2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean memaux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memaux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean memaux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memaux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // inline_data
   //                      | inline_import? memtype
   //                      | inline_export (inline_import | inline_export | inline_data)* memtype
-  private static boolean memaux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memaux__2")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_data(b, l + 1);
-    if (!r) r = memaux__2_1(b, l + 1);
-    if (!r) r = memaux__2_2(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean memaux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memaux__2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_data(builder_, level_ + 1);
+    if (!result_) result_ = memaux__2_1(builder_, level_ + 1);
+    if (!result_) result_ = memaux__2_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // inline_import? memtype
-  private static boolean memaux__2_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memaux__2_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = memaux__2_1_0(b, l + 1);
-    r = r && memtype(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean memaux__2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memaux__2_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = memaux__2_1_0(builder_, level_ + 1);
+    result_ = result_ && memtype(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // inline_import?
-  private static boolean memaux__2_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memaux__2_1_0")) return false;
-    inline_import(b, l + 1);
+  private static boolean memaux__2_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memaux__2_1_0")) return false;
+    inline_import(builder_, level_ + 1);
     return true;
   }
 
   // inline_export (inline_import | inline_export | inline_data)* memtype
-  private static boolean memaux__2_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memaux__2_2")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_export(b, l + 1);
-    r = r && memaux__2_2_1(b, l + 1);
-    r = r && memtype(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean memaux__2_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memaux__2_2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_export(builder_, level_ + 1);
+    result_ = result_ && memaux__2_2_1(builder_, level_ + 1);
+    result_ = result_ && memtype(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (inline_import | inline_export | inline_data)*
-  private static boolean memaux__2_2_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memaux__2_2_1")) return false;
+  private static boolean memaux__2_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memaux__2_2_1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!memaux__2_2_1_0(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "memaux__2_2_1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!memaux__2_2_1_0(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "memaux__2_2_1", pos_)) break;
     }
     return true;
   }
 
   // inline_import | inline_export | inline_data
-  private static boolean memaux__2_2_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memaux__2_2_1_0")) return false;
-    boolean r;
-    r = inline_import(b, l + 1);
-    if (!r) r = inline_export(b, l + 1);
-    if (!r) r = inline_data(b, l + 1);
-    return r;
+  private static boolean memaux__2_2_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memaux__2_2_1_0")) return false;
+    boolean result_;
+    result_ = inline_import(builder_, level_ + 1);
+    if (!result_) result_ = inline_export(builder_, level_ + 1);
+    if (!result_) result_ = inline_data(builder_, level_ + 1);
+    return result_;
   }
 
   /* ********************************************************** */
   // MEMORYINSTR_IDX idx
-  public static boolean memory_idx_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memory_idx_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.MEMORYINSTR_IDX)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.MEMORY_IDX_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYINSTR_IDX);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean memory_idx_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memory_idx_instr")) return false;
+    if (!nextTokenIs(builder_, MEMORYINSTR_IDX)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, MEMORY_IDX_INSTR, null);
+    result_ = consumeToken(builder_, MEMORYINSTR_IDX);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // UNSIGNED UNSIGNED?
-  public static boolean memtype(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memtype")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.UNSIGNED)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.UNSIGNED);
-    r = r && memtype_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.MEMTYPE, r);
-    return r;
+  public static boolean memtype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memtype")) return false;
+    if (!nextTokenIs(builder_, UNSIGNED)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, UNSIGNED);
+    result_ = result_ && memtype_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, MEMTYPE, result_);
+    return result_;
   }
 
   // UNSIGNED?
-  private static boolean memtype_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memtype_1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.UNSIGNED);
+  private static boolean memtype_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memtype_1")) return false;
+    consumeToken(builder_, UNSIGNED);
     return true;
   }
 
   /* ********************************************************** */
   // LPAR MEMORYKEY idx RPAR
-  static boolean memuse_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "memuse_")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeTokens(b, 2, WebAssemblyTypes.LPAR, WebAssemblyTypes.MEMORYKEY);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.report_error_(b, idx(b, l + 1));
-    r = p && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  static boolean memuse_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "memuse_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeTokens(builder_, 2, LPAR, MEMORYKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, idx(builder_, level_ + 1));
+    result_ = pinned_ && consumeToken(builder_, RPAR) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // LPAR module_aux_ RPAR
-  public static boolean module(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "module")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.MODULE, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && module_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean module(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "module")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, MODULE, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && module_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // MODULEKEY IDENTIFIER? modulefield*
-  static boolean module_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "module_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MODULEKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, module_aux__1(b, l + 1));
-    r = p && module_aux__2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean module_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "module_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, MODULEKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, module_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && module_aux__2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean module_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "module_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean module_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "module_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
   }
 
   // modulefield*
-  private static boolean module_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "module_aux__2")) return false;
+  private static boolean module_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "module_aux__2")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!modulefield(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "module_aux__2", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!modulefield(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "module_aux__2", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // type | import | func | table | mem | global | export | start | elem | data
-  public static boolean modulefield(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "modulefield")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = type(b, l + 1);
-    if (!r) r = import_$(b, l + 1);
-    if (!r) r = func(b, l + 1);
-    if (!r) r = table(b, l + 1);
-    if (!r) r = mem(b, l + 1);
-    if (!r) r = global(b, l + 1);
-    if (!r) r = export(b, l + 1);
-    if (!r) r = start(b, l + 1);
-    if (!r) r = elem(b, l + 1);
-    if (!r) r = data(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.MODULEFIELD, r);
-    return r;
+  public static boolean modulefield(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "modulefield")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = type(builder_, level_ + 1);
+    if (!result_) result_ = import_$(builder_, level_ + 1);
+    if (!result_) result_ = func(builder_, level_ + 1);
+    if (!result_) result_ = table(builder_, level_ + 1);
+    if (!result_) result_ = mem(builder_, level_ + 1);
+    if (!result_) result_ = global(builder_, level_ + 1);
+    if (!result_) result_ = export(builder_, level_ + 1);
+    if (!result_) result_ = start(builder_, level_ + 1);
+    if (!result_) result_ = elem(builder_, level_ + 1);
+    if (!result_) result_ = data(builder_, level_ + 1);
+    exit_section_(builder_, marker_, MODULEFIELD, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // OFFSETEQKEY UNSIGNED
-  public static boolean offseteq(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "offseteq")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.OFFSETEQ, "<offseteq>");
-    r = GeneratedParserUtilBase.consumeTokens(b, 1, WebAssemblyTypes.OFFSETEQKEY, WebAssemblyTypes.UNSIGNED);
-    p = r; // pin = 1
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::offseteq_recover_);
-    return r || p;
+  public static boolean offseteq(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "offseteq")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, OFFSETEQ, "<offseteq>");
+    result_ = consumeTokens(builder_, 1, OFFSETEQKEY, UNSIGNED);
+    pinned_ = result_; // pin = 1
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::offseteq_recover_);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // !(aligneq | instr | RPAR | <<eof>>)
-  static boolean offseteq_recover_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "offseteq_recover_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NOT_);
-    r = !offseteq_recover__0(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  static boolean offseteq_recover_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "offseteq_recover_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !offseteq_recover__0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // aligneq | instr | RPAR | <<eof>>
-  private static boolean offseteq_recover__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "offseteq_recover__0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = aligneq(b, l + 1);
-    if (!r) r = instr(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    if (!r) r = GeneratedParserUtilBase.eof(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean offseteq_recover__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "offseteq_recover__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = aligneq(builder_, level_ + 1);
+    if (!result_) result_ = instr(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, RPAR);
+    if (!result_) result_ = eof(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR param_aux_ RPAR
-  public static boolean param(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "param")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.PARAM, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && param_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean param(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "param")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, PARAM, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && param_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // PARAMKEY (IDENTIFIER valtype | valtype*)
-  static boolean param_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "param_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.PARAMKEY);
-    p = r; // pin = 1
-    r = r && param_aux__1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean param_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "param_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, PARAMKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && param_aux__1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER valtype | valtype*
-  private static boolean param_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "param_aux__1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = param_aux__1_0(b, l + 1);
-    if (!r) r = param_aux__1_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean param_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "param_aux__1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = param_aux__1_0(builder_, level_ + 1);
+    if (!result_) result_ = param_aux__1_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // IDENTIFIER valtype
-  private static boolean param_aux__1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "param_aux__1_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
-    r = r && valtype(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean param_aux__1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "param_aux__1_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, IDENTIFIER);
+    result_ = result_ && valtype(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // valtype*
-  private static boolean param_aux__1_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "param_aux__1_1")) return false;
+  private static boolean param_aux__1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "param_aux__1_1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!valtype(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "param_aux__1_1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!valtype(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "param_aux__1_1", pos_)) break;
     }
     return true;
   }
@@ -2429,332 +2599,542 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   // CONTROLINSTR | CONTROLINSTR_IDX idx | call_instr | BRTABLEINSTR idx+ | call_indirect_instr
   //              // reference
   //              | REFISNULLINST | REFNULLINSTR (FUNCKEY | EXTERNKEY) | ref_func_instr
+  //              | REFTEST idx | REFCAST idx | REFEQ | REFI31 | I31GET | REFASNONNULL | EXTERNCONVERT
   //              // parametric
   //              | PARAMETRICINSTR
   //              // variable
   //              | local_instr | global_instr
+  //              // GC struct
+  //              | struct_new_instr | struct_get_instr | struct_set_instr
+  //              // GC array
+  //              | array_new_instr | array_get_instr | array_set_instr
+  //              | ARRAYLEN idx | ARRAYCOPY idx idx | ARRAYFILL idx
+  //              | ARRAYINITDATA idx idx | ARRAYINITELEM idx idx
   //              // table
   //              | table_idx_instr | table_copy_instr | table_init_instr | elem_drop_instr
   //              // memory
   //              | MEMORYINSTR | memory_idx_instr | MEMORYINSTR_MEMARG offseteq? aligneq?
   //              // numeric
   //              | ICONST (UNSIGNED | SIGNED) | FCONST (FLOAT | UNSIGNED | SIGNED) | NUMERICINSTR
-  public static boolean plaininstr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.PLAININSTR, "<plaininstr>");
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.CONTROLINSTR);
-    if (!r) r = plaininstr_1(b, l + 1);
-    if (!r) r = call_instr(b, l + 1);
-    if (!r) r = plaininstr_3(b, l + 1);
-    if (!r) r = call_indirect_instr(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFISNULLINST);
-    if (!r) r = plaininstr_6(b, l + 1);
-    if (!r) r = ref_func_instr(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.PARAMETRICINSTR);
-    if (!r) r = local_instr(b, l + 1);
-    if (!r) r = global_instr(b, l + 1);
-    if (!r) r = table_idx_instr(b, l + 1);
-    if (!r) r = table_copy_instr(b, l + 1);
-    if (!r) r = table_init_instr(b, l + 1);
-    if (!r) r = elem_drop_instr(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYINSTR);
-    if (!r) r = memory_idx_instr(b, l + 1);
-    if (!r) r = plaininstr_17(b, l + 1);
-    if (!r) r = plaininstr_18(b, l + 1);
-    if (!r) r = plaininstr_19(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.NUMERICINSTR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  public static boolean plaininstr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, PLAININSTR, "<plaininstr>");
+    result_ = consumeToken(builder_, CONTROLINSTR);
+    if (!result_) result_ = plaininstr_1(builder_, level_ + 1);
+    if (!result_) result_ = call_instr(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_3(builder_, level_ + 1);
+    if (!result_) result_ = call_indirect_instr(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, REFISNULLINST);
+    if (!result_) result_ = plaininstr_6(builder_, level_ + 1);
+    if (!result_) result_ = ref_func_instr(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_8(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_9(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, REFEQ);
+    if (!result_) result_ = consumeToken(builder_, REFI31);
+    if (!result_) result_ = consumeToken(builder_, I31GET);
+    if (!result_) result_ = consumeToken(builder_, REFASNONNULL);
+    if (!result_) result_ = consumeToken(builder_, EXTERNCONVERT);
+    if (!result_) result_ = consumeToken(builder_, PARAMETRICINSTR);
+    if (!result_) result_ = local_instr(builder_, level_ + 1);
+    if (!result_) result_ = global_instr(builder_, level_ + 1);
+    if (!result_) result_ = struct_new_instr(builder_, level_ + 1);
+    if (!result_) result_ = struct_get_instr(builder_, level_ + 1);
+    if (!result_) result_ = struct_set_instr(builder_, level_ + 1);
+    if (!result_) result_ = array_new_instr(builder_, level_ + 1);
+    if (!result_) result_ = array_get_instr(builder_, level_ + 1);
+    if (!result_) result_ = array_set_instr(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_24(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_25(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_26(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_27(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_28(builder_, level_ + 1);
+    if (!result_) result_ = table_idx_instr(builder_, level_ + 1);
+    if (!result_) result_ = table_copy_instr(builder_, level_ + 1);
+    if (!result_) result_ = table_init_instr(builder_, level_ + 1);
+    if (!result_) result_ = elem_drop_instr(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, MEMORYINSTR);
+    if (!result_) result_ = memory_idx_instr(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_35(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_36(builder_, level_ + 1);
+    if (!result_) result_ = plaininstr_37(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, NUMERICINSTR);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // CONTROLINSTR_IDX idx
-  private static boolean plaininstr_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.CONTROLINSTR_IDX);
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean plaininstr_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, CONTROLINSTR_IDX);
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // BRTABLEINSTR idx+
-  private static boolean plaininstr_3(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_3")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.BRTABLEINSTR);
-    r = r && plaininstr_3_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean plaininstr_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_3")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, BRTABLEINSTR);
+    result_ = result_ && plaininstr_3_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // idx+
-  private static boolean plaininstr_3_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_3_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = idx(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!idx(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "plaininstr_3_1", c)) break;
+  private static boolean plaininstr_3_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_3_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = idx(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!idx(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "plaininstr_3_1", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // REFNULLINSTR (FUNCKEY | EXTERNKEY)
-  private static boolean plaininstr_6(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_6")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFNULLINSTR);
-    r = r && plaininstr_6_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean plaininstr_6(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_6")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, REFNULLINSTR);
+    result_ = result_ && plaininstr_6_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // FUNCKEY | EXTERNKEY
-  private static boolean plaininstr_6_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_6_1")) return false;
-    boolean r;
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.FUNCKEY);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.EXTERNKEY);
-    return r;
+  private static boolean plaininstr_6_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_6_1")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, FUNCKEY);
+    if (!result_) result_ = consumeToken(builder_, EXTERNKEY);
+    return result_;
+  }
+
+  // REFTEST idx
+  private static boolean plaininstr_8(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_8")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, REFTEST);
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // REFCAST idx
+  private static boolean plaininstr_9(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_9")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, REFCAST);
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // ARRAYLEN idx
+  private static boolean plaininstr_24(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_24")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ARRAYLEN);
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // ARRAYCOPY idx idx
+  private static boolean plaininstr_25(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_25")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ARRAYCOPY);
+    result_ = result_ && idx(builder_, level_ + 1);
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // ARRAYFILL idx
+  private static boolean plaininstr_26(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_26")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ARRAYFILL);
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // ARRAYINITDATA idx idx
+  private static boolean plaininstr_27(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_27")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ARRAYINITDATA);
+    result_ = result_ && idx(builder_, level_ + 1);
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // ARRAYINITELEM idx idx
+  private static boolean plaininstr_28(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_28")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ARRAYINITELEM);
+    result_ = result_ && idx(builder_, level_ + 1);
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // MEMORYINSTR_MEMARG offseteq? aligneq?
-  private static boolean plaininstr_17(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_17")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.MEMORYINSTR_MEMARG);
-    r = r && plaininstr_17_1(b, l + 1);
-    r = r && plaininstr_17_2(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean plaininstr_35(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_35")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, MEMORYINSTR_MEMARG);
+    result_ = result_ && plaininstr_35_1(builder_, level_ + 1);
+    result_ = result_ && plaininstr_35_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // offseteq?
-  private static boolean plaininstr_17_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_17_1")) return false;
-    offseteq(b, l + 1);
+  private static boolean plaininstr_35_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_35_1")) return false;
+    offseteq(builder_, level_ + 1);
     return true;
   }
 
   // aligneq?
-  private static boolean plaininstr_17_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_17_2")) return false;
-    aligneq(b, l + 1);
+  private static boolean plaininstr_35_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_35_2")) return false;
+    aligneq(builder_, level_ + 1);
     return true;
   }
 
   // ICONST (UNSIGNED | SIGNED)
-  private static boolean plaininstr_18(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_18")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.ICONST);
-    r = r && plaininstr_18_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean plaininstr_36(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_36")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ICONST);
+    result_ = result_ && plaininstr_36_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // UNSIGNED | SIGNED
-  private static boolean plaininstr_18_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_18_1")) return false;
-    boolean r;
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.UNSIGNED);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.SIGNED);
-    return r;
+  private static boolean plaininstr_36_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_36_1")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, UNSIGNED);
+    if (!result_) result_ = consumeToken(builder_, SIGNED);
+    return result_;
   }
 
   // FCONST (FLOAT | UNSIGNED | SIGNED)
-  private static boolean plaininstr_19(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_19")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.FCONST);
-    r = r && plaininstr_19_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean plaininstr_37(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_37")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, FCONST);
+    result_ = result_ && plaininstr_37_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // FLOAT | UNSIGNED | SIGNED
-  private static boolean plaininstr_19_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "plaininstr_19_1")) return false;
-    boolean r;
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.FLOAT);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.UNSIGNED);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.SIGNED);
-    return r;
+  private static boolean plaininstr_37_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "plaininstr_37_1")) return false;
+    boolean result_;
+    result_ = consumeToken(builder_, FLOAT);
+    if (!result_) result_ = consumeToken(builder_, UNSIGNED);
+    if (!result_) result_ = consumeToken(builder_, SIGNED);
+    return result_;
   }
 
   /* ********************************************************** */
   // REFFUNCINSTR idx
-  public static boolean ref_func_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "ref_func_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.REFFUNCINSTR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.REF_FUNC_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFFUNCINSTR);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean ref_func_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "ref_func_instr")) return false;
+    if (!nextTokenIs(builder_, REFFUNCINSTR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, REF_FUNC_INSTR, null);
+    result_ = consumeToken(builder_, REFFUNCINSTR);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // LPAR REFKEY NULLKEY? idx RPAR
+  public static boolean reftype_ref_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "reftype_ref_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, REFTYPE_REF_, null);
+    result_ = consumeTokens(builder_, 2, LPAR, REFKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, reftype_ref__2(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, idx(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && consumeToken(builder_, RPAR) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  // NULLKEY?
+  private static boolean reftype_ref__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "reftype_ref__2")) return false;
+    consumeToken(builder_, NULLKEY);
+    return true;
   }
 
   /* ********************************************************** */
   // LPAR result_aux_ RPAR
-  public static boolean result(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "result")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.RESULT, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && result_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean result(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "result")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, RESULT, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && result_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // RESULTKEY valtype*
-  static boolean result_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "result_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RESULTKEY);
-    p = r; // pin = 1
-    r = r && result_aux__1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean result_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "result_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, RESULTKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && result_aux__1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // valtype*
-  private static boolean result_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "result_aux__1")) return false;
+  private static boolean result_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "result_aux__1")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!valtype(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "result_aux__1", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!valtype(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "result_aux__1", pos_)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // LPAR start_aux_ RPAR
-  public static boolean start(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "start")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.START, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && start_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean start(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "start")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, START, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && start_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
   // STARTKEY idx
-  static boolean start_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "start_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.STARTKEY);
-    p = r; // pin = 1
-    r = r && idx(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean start_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "start_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, STARTKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // valtype | PACKEDTYPE
+  public static boolean storagetype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "storagetype")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, STORAGETYPE, "<storagetype>");
+    result_ = valtype(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, PACKEDTYPE);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // STRING
-  static boolean string_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "string_aux_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.STRING);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, WebAssemblyParser::string_recover_);
-    return r;
+  static boolean string_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "string_aux_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, STRING);
+    exit_section_(builder_, level_, marker_, result_, false, WebAssemblyParser::string_recover_);
+    return result_;
   }
 
   /* ********************************************************** */
   // STRING
-  static boolean string_fir_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "string_fir_aux_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.STRING);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, WebAssemblyParser::string_fir_recover_);
-    return r;
+  static boolean string_fir_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "string_fir_aux_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, STRING);
+    exit_section_(builder_, level_, marker_, result_, false, WebAssemblyParser::string_fir_recover_);
+    return result_;
   }
 
   /* ********************************************************** */
   // !(STRING | LPAR | RPAR | <<eof>>)
-  static boolean string_fir_recover_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "string_fir_recover_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NOT_);
-    r = !string_fir_recover__0(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  static boolean string_fir_recover_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "string_fir_recover_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !string_fir_recover__0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // STRING | LPAR | RPAR | <<eof>>
-  private static boolean string_fir_recover__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "string_fir_recover__0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.STRING);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    if (!r) r = GeneratedParserUtilBase.eof(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean string_fir_recover__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "string_fir_recover__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, STRING);
+    if (!result_) result_ = consumeToken(builder_, LPAR);
+    if (!result_) result_ = consumeToken(builder_, RPAR);
+    if (!result_) result_ = eof(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // !(LPAR | RPAR | <<eof>>)
-  static boolean string_recover_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "string_recover_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NOT_);
-    r = !string_recover__0(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  static boolean string_recover_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "string_recover_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !string_recover__0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // LPAR | RPAR | <<eof>>
-  private static boolean string_recover__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "string_recover__0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    if (!r) r = GeneratedParserUtilBase.eof(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean string_recover__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "string_recover__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LPAR);
+    if (!result_) result_ = consumeToken(builder_, RPAR);
+    if (!result_) result_ = eof(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // STRUCTGET idx idx
+  public static boolean struct_get_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "struct_get_instr")) return false;
+    if (!nextTokenIs(builder_, STRUCTGET)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, STRUCT_GET_INSTR, null);
+    result_ = consumeToken(builder_, STRUCTGET);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, idx(builder_, level_ + 1));
+    result_ = pinned_ && idx(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // STRUCTNEW idx
+  public static boolean struct_new_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "struct_new_instr")) return false;
+    if (!nextTokenIs(builder_, STRUCTNEW)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, STRUCT_NEW_INSTR, null);
+    result_ = consumeToken(builder_, STRUCTNEW);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // STRUCTSET idx idx
+  public static boolean struct_set_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "struct_set_instr")) return false;
+    if (!nextTokenIs(builder_, STRUCTSET)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, STRUCT_SET_INSTR, null);
+    result_ = consumeToken(builder_, STRUCTSET);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, idx(builder_, level_ + 1));
+    result_ = pinned_ && idx(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  /* ********************************************************** */
+  // LPAR STRUCTKEY fieldtype* RPAR
+  public static boolean structtype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "structtype")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, STRUCTTYPE, null);
+    result_ = consumeTokens(builder_, 2, LPAR, STRUCTKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, structtype_2(builder_, level_ + 1));
+    result_ = pinned_ && consumeToken(builder_, RPAR) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  // fieldtype*
+  private static boolean structtype_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "structtype_2")) return false;
+    while (true) {
+      int pos_ = current_position_(builder_);
+      if (!fieldtype(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "structtype_2", pos_)) break;
+    }
+    return true;
   }
 
   /* ********************************************************** */
   // LPAR table_aux_ RPAR
-  public static boolean table(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.TABLE, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && table_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean table(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TABLE, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && table_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
@@ -2763,240 +3143,250 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   //                         | inline_import? tabletype
   //                         | inline_export (inline_import | inline_export | inline_elem)?
   //                        )
-  static boolean table_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLEKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, table_aux__1(b, l + 1));
-    r = p && table_aux__2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  static boolean table_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, TABLEKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, table_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && table_aux__2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // table_aux_ident_?
-  private static boolean table_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux__1")) return false;
-    table_aux_ident_(b, l + 1);
+  private static boolean table_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux__1")) return false;
+    table_aux_ident_(builder_, level_ + 1);
     return true;
   }
 
   // inline_elem
   //                         | inline_import? tabletype
   //                         | inline_export (inline_import | inline_export | inline_elem)?
-  private static boolean table_aux__2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux__2")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_elem(b, l + 1);
-    if (!r) r = table_aux__2_1(b, l + 1);
-    if (!r) r = table_aux__2_2(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean table_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux__2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_elem(builder_, level_ + 1);
+    if (!result_) result_ = table_aux__2_1(builder_, level_ + 1);
+    if (!result_) result_ = table_aux__2_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // inline_import? tabletype
-  private static boolean table_aux__2_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux__2_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = table_aux__2_1_0(b, l + 1);
-    r = r && tabletype(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean table_aux__2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux__2_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = table_aux__2_1_0(builder_, level_ + 1);
+    result_ = result_ && tabletype(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // inline_import?
-  private static boolean table_aux__2_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux__2_1_0")) return false;
-    inline_import(b, l + 1);
+  private static boolean table_aux__2_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux__2_1_0")) return false;
+    inline_import(builder_, level_ + 1);
     return true;
   }
 
   // inline_export (inline_import | inline_export | inline_elem)?
-  private static boolean table_aux__2_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux__2_2")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = inline_export(b, l + 1);
-    r = r && table_aux__2_2_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean table_aux__2_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux__2_2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = inline_export(builder_, level_ + 1);
+    result_ = result_ && table_aux__2_2_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // (inline_import | inline_export | inline_elem)?
-  private static boolean table_aux__2_2_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux__2_2_1")) return false;
-    table_aux__2_2_1_0(b, l + 1);
+  private static boolean table_aux__2_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux__2_2_1")) return false;
+    table_aux__2_2_1_0(builder_, level_ + 1);
     return true;
   }
 
   // inline_import | inline_export | inline_elem
-  private static boolean table_aux__2_2_1_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux__2_2_1_0")) return false;
-    boolean r;
-    r = inline_import(b, l + 1);
-    if (!r) r = inline_export(b, l + 1);
-    if (!r) r = inline_elem(b, l + 1);
-    return r;
+  private static boolean table_aux__2_2_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux__2_2_1_0")) return false;
+    boolean result_;
+    result_ = inline_import(builder_, level_ + 1);
+    if (!result_) result_ = inline_export(builder_, level_ + 1);
+    if (!result_) result_ = inline_elem(builder_, level_ + 1);
+    return result_;
   }
 
   /* ********************************************************** */
   // IDENTIFIER
-  static boolean table_aux_ident_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux_ident_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, WebAssemblyParser::table_aux_ident_recover_);
-    return r;
+  static boolean table_aux_ident_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux_ident_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, IDENTIFIER);
+    exit_section_(builder_, level_, marker_, result_, false, WebAssemblyParser::table_aux_ident_recover_);
+    return result_;
   }
 
   /* ********************************************************** */
   // !(LPAR | RPAR | REFTYPE | memtype | <<eof>>)
-  static boolean table_aux_ident_recover_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux_ident_recover_")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NOT_);
-    r = !table_aux_ident_recover__0(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  static boolean table_aux_ident_recover_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux_ident_recover_")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NOT_);
+    result_ = !table_aux_ident_recover__0(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   // LPAR | RPAR | REFTYPE | memtype | <<eof>>
-  private static boolean table_aux_ident_recover__0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_aux_ident_recover__0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFTYPE);
-    if (!r) r = memtype(b, l + 1);
-    if (!r) r = GeneratedParserUtilBase.eof(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean table_aux_ident_recover__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_aux_ident_recover__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LPAR);
+    if (!result_) result_ = consumeToken(builder_, RPAR);
+    if (!result_) result_ = consumeToken(builder_, REFTYPE);
+    if (!result_) result_ = memtype(builder_, level_ + 1);
+    if (!result_) result_ = eof(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // TABLECOPYINSTR idx? idx?
-  public static boolean table_copy_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_copy_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.TABLECOPYINSTR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.TABLE_COPY_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLECOPYINSTR);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, table_copy_instr_1(b, l + 1));
-    r = p && table_copy_instr_2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean table_copy_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_copy_instr")) return false;
+    if (!nextTokenIs(builder_, TABLECOPYINSTR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TABLE_COPY_INSTR, null);
+    result_ = consumeToken(builder_, TABLECOPYINSTR);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, table_copy_instr_1(builder_, level_ + 1));
+    result_ = pinned_ && table_copy_instr_2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // idx?
-  private static boolean table_copy_instr_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_copy_instr_1")) return false;
-    idx(b, l + 1);
+  private static boolean table_copy_instr_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_copy_instr_1")) return false;
+    idx(builder_, level_ + 1);
     return true;
   }
 
   // idx?
-  private static boolean table_copy_instr_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_copy_instr_2")) return false;
-    idx(b, l + 1);
+  private static boolean table_copy_instr_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_copy_instr_2")) return false;
+    idx(builder_, level_ + 1);
     return true;
   }
 
   /* ********************************************************** */
   // TABLEINSTR_IDX idx?
-  public static boolean table_idx_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_idx_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.TABLEINSTR_IDX)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.TABLE_IDX_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLEINSTR_IDX);
-    p = r; // pin = 1
-    r = r && table_idx_instr_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean table_idx_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_idx_instr")) return false;
+    if (!nextTokenIs(builder_, TABLEINSTR_IDX)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TABLE_IDX_INSTR, null);
+    result_ = consumeToken(builder_, TABLEINSTR_IDX);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && table_idx_instr_1(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // idx?
-  private static boolean table_idx_instr_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_idx_instr_1")) return false;
-    idx(b, l + 1);
+  private static boolean table_idx_instr_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_idx_instr_1")) return false;
+    idx(builder_, level_ + 1);
     return true;
   }
 
   /* ********************************************************** */
   // TABLEINITINSTR idx idx?
-  public static boolean table_init_instr(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_init_instr")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.TABLEINITINSTR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.TABLE_INIT_INSTR, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TABLEINITINSTR);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, idx(b, l + 1));
-    r = p && table_init_instr_2(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean table_init_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_init_instr")) return false;
+    if (!nextTokenIs(builder_, TABLEINITINSTR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TABLE_INIT_INSTR, null);
+    result_ = consumeToken(builder_, TABLEINITINSTR);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, idx(builder_, level_ + 1));
+    result_ = pinned_ && table_init_instr_2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   // idx?
-  private static boolean table_init_instr_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "table_init_instr_2")) return false;
-    idx(b, l + 1);
+  private static boolean table_init_instr_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_init_instr_2")) return false;
+    idx(builder_, level_ + 1);
     return true;
   }
 
   /* ********************************************************** */
   // memtype REFTYPE
-  public static boolean tabletype(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "tabletype")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.UNSIGNED)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = memtype(b, l + 1);
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFTYPE);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.TABLETYPE, r);
-    return r;
+  public static boolean tabletype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "tabletype")) return false;
+    if (!nextTokenIs(builder_, UNSIGNED)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = memtype(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, REFTYPE);
+    exit_section_(builder_, marker_, TABLETYPE, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR type_aux_ RPAR
-  public static boolean type(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "type")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.TYPE, null);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.LPAR);
-    r = r && type_aux_(b, l + 1);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean type(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "type")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TYPE, null);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && type_aux_(builder_, level_ + 1);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
-  // TYPEKEY IDENTIFIER? functype
-  static boolean type_aux_(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "type_aux_")) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_);
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.TYPEKEY);
-    p = r; // pin = 1
-    r = r && GeneratedParserUtilBase.report_error_(b, type_aux__1(b, l + 1));
-    r = p && functype(b, l + 1) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, WebAssemblyParser::item_recover_);
-    return r || p;
+  // TYPEKEY IDENTIFIER? (functype | structtype | arraytype)
+  static boolean type_aux_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "type_aux_")) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_);
+    result_ = consumeToken(builder_, TYPEKEY);
+    pinned_ = result_; // pin = 1
+    result_ = result_ && report_error_(builder_, type_aux__1(builder_, level_ + 1));
+    result_ = pinned_ && type_aux__2(builder_, level_ + 1) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
+    return result_ || pinned_;
   }
 
   // IDENTIFIER?
-  private static boolean type_aux__1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "type_aux__1")) return false;
-    GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.IDENTIFIER);
+  private static boolean type_aux__1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "type_aux__1")) return false;
+    consumeToken(builder_, IDENTIFIER);
     return true;
+  }
+
+  // functype | structtype | arraytype
+  private static boolean type_aux__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "type_aux__2")) return false;
+    boolean result_;
+    result_ = functype(builder_, level_ + 1);
+    if (!result_) result_ = structtype(builder_, level_ + 1);
+    if (!result_) result_ = arraytype(builder_, level_ + 1);
+    return result_;
   }
 
   /* ********************************************************** */
@@ -3007,223 +3397,223 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   //           |                 param+ result+
   //           |                 param+
   //           |                        result+
-  public static boolean typeuse(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = typeuse_0(b, l + 1);
-    if (!r) r = typeuse_1(b, l + 1);
-    if (!r) r = typeuse_2(b, l + 1);
-    if (!r) r = typeuse_typeref(b, l + 1);
-    if (!r) r = typeuse_4(b, l + 1);
-    if (!r) r = typeuse_5(b, l + 1);
-    if (!r) r = typeuse_6(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, WebAssemblyTypes.TYPEUSE, r);
-    return r;
+  public static boolean typeuse(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = typeuse_0(builder_, level_ + 1);
+    if (!result_) result_ = typeuse_1(builder_, level_ + 1);
+    if (!result_) result_ = typeuse_2(builder_, level_ + 1);
+    if (!result_) result_ = typeuse_typeref(builder_, level_ + 1);
+    if (!result_) result_ = typeuse_4(builder_, level_ + 1);
+    if (!result_) result_ = typeuse_5(builder_, level_ + 1);
+    if (!result_) result_ = typeuse_6(builder_, level_ + 1);
+    exit_section_(builder_, marker_, TYPEUSE, result_);
+    return result_;
   }
 
   // typeuse_typeref param+ result+
-  private static boolean typeuse_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = typeuse_typeref(b, l + 1);
-    r = r && typeuse_0_1(b, l + 1);
-    r = r && typeuse_0_2(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean typeuse_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = typeuse_typeref(builder_, level_ + 1);
+    result_ = result_ && typeuse_0_1(builder_, level_ + 1);
+    result_ = result_ && typeuse_0_2(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // param+
-  private static boolean typeuse_0_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_0_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = param(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!param(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "typeuse_0_1", c)) break;
+  private static boolean typeuse_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_0_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = param(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!param(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "typeuse_0_1", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // result+
-  private static boolean typeuse_0_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_0_2")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = result(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!result(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "typeuse_0_2", c)) break;
+  private static boolean typeuse_0_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_0_2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = result(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!result(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "typeuse_0_2", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // typeuse_typeref param+
-  private static boolean typeuse_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = typeuse_typeref(b, l + 1);
-    r = r && typeuse_1_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean typeuse_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = typeuse_typeref(builder_, level_ + 1);
+    result_ = result_ && typeuse_1_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // param+
-  private static boolean typeuse_1_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_1_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = param(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!param(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "typeuse_1_1", c)) break;
+  private static boolean typeuse_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_1_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = param(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!param(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "typeuse_1_1", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // typeuse_typeref        result+
-  private static boolean typeuse_2(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_2")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = typeuse_typeref(b, l + 1);
-    r = r && typeuse_2_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean typeuse_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_2")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = typeuse_typeref(builder_, level_ + 1);
+    result_ = result_ && typeuse_2_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // result+
-  private static boolean typeuse_2_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_2_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = result(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!result(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "typeuse_2_1", c)) break;
+  private static boolean typeuse_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_2_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = result(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!result(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "typeuse_2_1", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // param+ result+
-  private static boolean typeuse_4(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_4")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = typeuse_4_0(b, l + 1);
-    r = r && typeuse_4_1(b, l + 1);
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+  private static boolean typeuse_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_4")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = typeuse_4_0(builder_, level_ + 1);
+    result_ = result_ && typeuse_4_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // param+
-  private static boolean typeuse_4_0(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_4_0")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = param(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!param(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "typeuse_4_0", c)) break;
+  private static boolean typeuse_4_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_4_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = param(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!param(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "typeuse_4_0", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // result+
-  private static boolean typeuse_4_1(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_4_1")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = result(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!result(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "typeuse_4_1", c)) break;
+  private static boolean typeuse_4_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_4_1")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = result(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!result(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "typeuse_4_1", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // param+
-  private static boolean typeuse_5(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_5")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = param(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!param(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "typeuse_5", c)) break;
+  private static boolean typeuse_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_5")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = param(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!param(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "typeuse_5", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   // result+
-  private static boolean typeuse_6(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_6")) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b);
-    r = result(b, l + 1);
-    while (r) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!result(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "typeuse_6", c)) break;
+  private static boolean typeuse_6(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_6")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = result(builder_, level_ + 1);
+    while (result_) {
+      int pos_ = current_position_(builder_);
+      if (!result(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "typeuse_6", pos_)) break;
     }
-    GeneratedParserUtilBase.exit_section_(b, m, null, r);
-    return r;
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
   }
 
   /* ********************************************************** */
   // LPAR TYPEKEY idx RPAR
-  public static boolean typeuse_typeref(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "typeuse_typeref")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, WebAssemblyTypes.LPAR)) return false;
-    boolean r, p;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.TYPEUSE_TYPEREF, null);
-    r = GeneratedParserUtilBase.consumeTokens(b, 2, WebAssemblyTypes.LPAR, WebAssemblyTypes.TYPEKEY);
-    p = r; // pin = 2
-    r = r && GeneratedParserUtilBase.report_error_(b, idx(b, l + 1));
-    r = p && GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.RPAR) && r;
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, p, null);
-    return r || p;
+  public static boolean typeuse_typeref(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "typeuse_typeref")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, TYPEUSE_TYPEREF, null);
+    result_ = consumeTokens(builder_, 2, LPAR, TYPEKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, idx(builder_, level_ + 1));
+    result_ = pinned_ && consumeToken(builder_, RPAR) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */
-  // NUMTYPE | REFTYPE
-  public static boolean valtype(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "valtype")) return false;
-    if (!GeneratedParserUtilBase.nextTokenIs(b, "<valtype>", WebAssemblyTypes.NUMTYPE, WebAssemblyTypes.REFTYPE)) return false;
-    boolean r;
-    Marker m = GeneratedParserUtilBase.enter_section_(b, l, GeneratedParserUtilBase._NONE_, WebAssemblyTypes.VALTYPE, "<valtype>");
-    r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.NUMTYPE);
-    if (!r) r = GeneratedParserUtilBase.consumeToken(b, WebAssemblyTypes.REFTYPE);
-    GeneratedParserUtilBase.exit_section_(b, l, m, r, false, null);
-    return r;
+  // NUMTYPE | REFTYPE | reftype_ref_
+  public static boolean valtype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "valtype")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, VALTYPE, "<valtype>");
+    result_ = consumeToken(builder_, NUMTYPE);
+    if (!result_) result_ = consumeToken(builder_, REFTYPE);
+    if (!result_) result_ = reftype_ref_(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
   }
 
   /* ********************************************************** */
   // item_*
-  static boolean webAssemblyFile(PsiBuilder b, int l) {
-    if (!GeneratedParserUtilBase.recursion_guard_(b, l, "webAssemblyFile")) return false;
+  static boolean webAssemblyFile(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "webAssemblyFile")) return false;
     while (true) {
-      int c = GeneratedParserUtilBase.current_position_(b);
-      if (!item_(b, l + 1)) break;
-      if (!GeneratedParserUtilBase.empty_element_parsed_guard_(b, "webAssemblyFile", c)) break;
+      int pos_ = current_position_(builder_);
+      if (!item_(builder_, level_ + 1)) break;
+      if (!empty_element_parsed_guard_(builder_, "webAssemblyFile", pos_)) break;
     }
     return true;
   }

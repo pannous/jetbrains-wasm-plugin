@@ -1,0 +1,36 @@
+// This is a generated file. Not intended for manual editing.
+package org.jetbrains.webstorm.lang.psi.impl;
+
+import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static com.intellij.webassembly.lang.psi.WebAssemblyTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.jetbrains.webstorm.lang.psi.*;
+
+public class WebAssemblyStructtypeImpl extends ASTWrapperPsiElement implements WebAssemblyStructtype {
+
+  public WebAssemblyStructtypeImpl(@NotNull ASTNode node) {
+    super(node);
+  }
+
+  public void accept(@NotNull WebAssemblyVisitor visitor) {
+    visitor.visitStructtype(this);
+  }
+
+  @Override
+  public void accept(@NotNull PsiElementVisitor visitor) {
+    if (visitor instanceof WebAssemblyVisitor) accept((WebAssemblyVisitor)visitor);
+    else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public List<WebAssemblyFieldtype> getFieldtypeList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WebAssemblyFieldtype.class);
+  }
+
+}
