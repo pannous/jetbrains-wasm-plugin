@@ -127,8 +127,8 @@ plaininstr ::=
              // GC struct
              | struct_new_instr | struct_get_instr | struct_set_instr
              // GC array
-             | array_new_instr | array_get_instr | array_set_instr
-             | ARRAYLEN idx | ARRAYCOPY idx idx | ARRAYFILL idx
+             | array_new_instr | array_get_instr | array_set_instr | array_len_instr
+             | ARRAYCOPY idx idx | ARRAYFILL idx
              | ARRAYINITDATA idx idx | ARRAYINITELEM idx idx
              // table
              | table_idx_instr | table_copy_instr | table_init_instr | elem_drop_instr
@@ -249,6 +249,11 @@ array_set_instr ::= ARRAYSET idx {
     mixin="org.jetbrains.webstorm.lang.psi.impl.WebAssemblyNamedReferencedElementImpl"
     implements="org.jetbrains.webstorm.lang.psi.WebAssemblyReferencedElement"
     methods=[getReference getReferences]
+}
+
+// array.len - gets length of array (no type parameter, works on stack value)
+array_len_instr ::= ARRAYLEN {
+    pin=1
 }
 
 offseteq                  ::= OFFSETEQKEY UNSIGNED { pin=1 recoverWhile='offseteq_recover_' }

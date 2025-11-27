@@ -85,6 +85,18 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // ARRAYLEN
+  public static boolean array_len_instr(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "array_len_instr")) return false;
+    if (!nextTokenIs(builder_, ARRAYLEN)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ARRAYLEN);
+    exit_section_(builder_, marker_, ARRAY_LEN_INSTR, result_);
+    return result_;
+  }
+
+  /* ********************************************************** */
   // ARRAYNEW idx
   public static boolean array_new_instr(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "array_new_instr")) return false;
@@ -2593,8 +2605,8 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   //              // GC struct
   //              | struct_new_instr | struct_get_instr | struct_set_instr
   //              // GC array
-  //              | array_new_instr | array_get_instr | array_set_instr
-  //              | ARRAYLEN idx | ARRAYCOPY idx idx | ARRAYFILL idx
+  //              | array_new_instr | array_get_instr | array_set_instr | array_len_instr
+  //              | ARRAYCOPY idx idx | ARRAYFILL idx
   //              | ARRAYINITDATA idx idx | ARRAYINITELEM idx idx
   //              // table
   //              | table_idx_instr | table_copy_instr | table_init_instr | elem_drop_instr
@@ -2630,7 +2642,7 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = array_new_instr(builder_, level_ + 1);
     if (!result_) result_ = array_get_instr(builder_, level_ + 1);
     if (!result_) result_ = array_set_instr(builder_, level_ + 1);
-    if (!result_) result_ = plaininstr_24(builder_, level_ + 1);
+    if (!result_) result_ = array_len_instr(builder_, level_ + 1);
     if (!result_) result_ = plaininstr_25(builder_, level_ + 1);
     if (!result_) result_ = plaininstr_26(builder_, level_ + 1);
     if (!result_) result_ = plaininstr_27(builder_, level_ + 1);
@@ -2723,17 +2735,6 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = consumeToken(builder_, REFCAST);
-    result_ = result_ && idx(builder_, level_ + 1);
-    exit_section_(builder_, marker_, null, result_);
-    return result_;
-  }
-
-  // ARRAYLEN idx
-  private static boolean plaininstr_24(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "plaininstr_24")) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = consumeToken(builder_, ARRAYLEN);
     result_ = result_ && idx(builder_, level_ + 1);
     exit_section_(builder_, marker_, null, result_);
     return result_;

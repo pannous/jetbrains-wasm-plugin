@@ -13,6 +13,7 @@ public interface WebAssemblyTypes {
   IElementType ALIGNEQ = new WebAssemblyElementType("ALIGNEQ");
   IElementType ARRAYTYPE = new WebAssemblyElementType("ARRAYTYPE");
   IElementType ARRAY_GET_INSTR = new WebAssemblyElementType("ARRAY_GET_INSTR");
+  IElementType ARRAY_LEN_INSTR = new WebAssemblyElementType("ARRAY_LEN_INSTR");
   IElementType ARRAY_NEW_INSTR = new WebAssemblyElementType("ARRAY_NEW_INSTR");
   IElementType ARRAY_SET_INSTR = new WebAssemblyElementType("ARRAY_SET_INSTR");
   IElementType BLOCKINSTR = new WebAssemblyElementType("BLOCKINSTR");
@@ -170,6 +171,9 @@ public interface WebAssemblyTypes {
       }
       else if (type == ARRAY_GET_INSTR) {
         return new WebAssemblyArrayGetInstrImpl(node);
+      }
+      else if (type == ARRAY_LEN_INSTR) {
+        return new WebAssemblyArrayLenInstrImpl(node);
       }
       else if (type == ARRAY_NEW_INSTR) {
         return new WebAssemblyArrayNewInstrImpl(node);

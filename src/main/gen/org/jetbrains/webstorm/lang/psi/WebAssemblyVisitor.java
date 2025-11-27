@@ -15,6 +15,10 @@ public class WebAssemblyVisitor extends PsiElementVisitor {
     visitReferencedElement(o);
   }
 
+  public void visitArrayLenInstr(@NotNull WebAssemblyArrayLenInstr o) {
+    visitPsiElement(o);
+  }
+
   public void visitArrayNewInstr(@NotNull WebAssemblyArrayNewInstr o) {
     visitReferencedElement(o);
   }

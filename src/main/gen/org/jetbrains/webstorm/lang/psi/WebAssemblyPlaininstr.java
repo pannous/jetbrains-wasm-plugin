@@ -14,6 +14,9 @@ public interface WebAssemblyPlaininstr extends PsiElement {
   WebAssemblyArrayGetInstr getArrayGetInstr();
 
   @Nullable
+  WebAssemblyArrayLenInstr getArrayLenInstr();
+
+  @Nullable
   WebAssemblyArrayNewInstr getArrayNewInstr();
 
   @Nullable

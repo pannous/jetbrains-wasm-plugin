@@ -41,6 +41,12 @@ public class WebAssemblyPlaininstrImpl extends ASTWrapperPsiElement implements W
 
   @Override
   @Nullable
+  public WebAssemblyArrayLenInstr getArrayLenInstr() {
+    return findChildByClass(WebAssemblyArrayLenInstr.class);
+  }
+
+  @Override
+  @Nullable
   public WebAssemblyArrayNewInstr getArrayNewInstr() {
     return findChildByClass(WebAssemblyArrayNewInstr.class);
   }

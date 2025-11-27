@@ -50,4 +50,7 @@ class WebAssemblyTestFile : WebAssemblyTestBase("file") {
 
     @Test
     fun testGcMut() = doTest()
+
+    @Test
+    fun testArrayLen() = doTest()
 }

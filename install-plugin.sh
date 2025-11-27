@@ -79,10 +79,10 @@ echo "🔄 Restarting JetBrains IDEs..."
 
 # Kill all running JetBrains IDEs to ensure plugin is loaded
 pkill -f "RustRover" 2>/dev/null || true
-pkill -f "CLion" 2>/dev/null || true
-pkill -f "IntelliJ IDEA" 2>/dev/null || true
-pkill -f "WebStorm" 2>/dev/null || true
-pkill -f "Rider" 2>/dev/null || true
+# pkill -f "CLion" 2>/dev/null || true
+# pkill -f "IntelliJ IDEA" 2>/dev/null || true
+# pkill -f "WebStorm" 2>/dev/null || true
+# pkill -f "Rider" 2>/dev/null || true
 sleep 2
 
 # Restart RustRover if it exists
