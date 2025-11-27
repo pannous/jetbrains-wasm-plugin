@@ -131,37 +131,41 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   // LPAR ARRAYKEY fieldtype RPAR
   private static boolean arraytype_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "arraytype_0")) return false;
-    boolean result_;
+    boolean result_, pinned_;
     Marker marker_ = enter_section_(builder_);
-    result_ = consumeTokens(builder_, 0, LPAR, ARRAYKEY);
+    result_ = consumeTokens(builder_, 2, LPAR, ARRAYKEY);
+    pinned_ = result_; // pin = 2
     result_ = result_ && fieldtype(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RPAR);
+    result_ = pinned_ && result_ && consumeToken(builder_, RPAR);
     exit_section_(builder_, marker_, null, result_);
-    return result_;
+    return result_ || pinned_;
   }
 
   // LPAR ARRAYKEY storagetype RPAR
   private static boolean arraytype_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "arraytype_1")) return false;
-    boolean result_;
+    boolean result_, pinned_;
     Marker marker_ = enter_section_(builder_);
-    result_ = consumeTokens(builder_, 0, LPAR, ARRAYKEY);
+    result_ = consumeTokens(builder_, 2, LPAR, ARRAYKEY);
+    pinned_ = result_; // pin = 2
     result_ = result_ && storagetype(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RPAR);
+    result_ = pinned_ && result_ && consumeToken(builder_, RPAR);
     exit_section_(builder_, marker_, null, result_);
-    return result_;
+    return result_ || pinned_;
   }
 
   // LPAR ARRAYKEY LPAR MUTKEY storagetype RPAR RPAR
   private static boolean arraytype_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "arraytype_2")) return false;
-    boolean result_;
+    boolean result_, pinned_;
     Marker marker_ = enter_section_(builder_);
-    result_ = consumeTokens(builder_, 0, LPAR, ARRAYKEY, LPAR, MUTKEY);
-    result_ = result_ && storagetype(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, RPAR, RPAR);
+    result_ = consumeTokens(builder_, 2, LPAR, ARRAYKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && consumeTokens(builder_, 0, LPAR, MUTKEY);
+    result_ = pinned_ && result_ && storagetype(builder_, level_ + 1);
+    result_ = pinned_ && result_ && consumeTokens(builder_, 0, RPAR, RPAR);
     exit_section_(builder_, marker_, null, result_);
-    return result_;
+    return result_ || pinned_;
   }
 
   /* ********************************************************** */

@@ -32,8 +32,8 @@ reftype_ref_ ::= LPAR REFKEY NULLKEY? idx RPAR { pin=2 }
 
 // GC composite types
 structtype ::= LPAR STRUCTKEY fieldtype* RPAR { pin=2 }
-arraytype ::= LPAR ARRAYKEY fieldtype RPAR
-            | LPAR ARRAYKEY storagetype RPAR
+arraytype ::= LPAR ARRAYKEY fieldtype RPAR { pin=2 }
+            | LPAR ARRAYKEY storagetype RPAR { pin=2 }
             | LPAR ARRAYKEY LPAR MUTKEY storagetype RPAR RPAR { pin=2 }
 
 fieldtype ::= LPAR FIELDKEY IDENTIFIER? storagetype RPAR
