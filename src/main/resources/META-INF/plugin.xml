@@ -56,6 +56,10 @@ For IntelliJ IDEA, you can check out this section in the <a href="https://www.je
     <completion.contributor language="WebAssembly"
                             implementationClass="com.intellij.webassembly.lang.WebAssemblyKeywordCompletionContributor"/>
 
+    <!-- Live Templates -->
+    <defaultLiveTemplates file="/liveTemplates/WebAssembly.xml"/>
+    <liveTemplateContext contextId="WebAssembly" implementation="com.intellij.webassembly.lang.WebAssemblyTemplateContextType"/>
+
     <!-- Run Configuration -->
     <configurationType implementation="com.intellij.webassembly.run.WebAssemblyRunConfigurationType"/>
     <runConfigurationProducer implementation="com.intellij.webassembly.run.WebAssemblyRunConfigurationProducer"/>

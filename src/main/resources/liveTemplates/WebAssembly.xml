@@ -1,0 +1,224 @@
+<templateSet group="WebAssembly">
+  <!-- Module template -->
+  <template name="module" value="(module $$NAME$&#10;  $END$&#10;)" description="WebAssembly module" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;myModule&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- Import template -->
+  <template name="import" value="(import &quot;$MODULE$&quot; &quot;$NAME$&quot; (func $$$FUNCNAME$ (type $TYPE$)))" description="Import function" toReformat="true" toShortenFQNames="true">
+    <variable name="MODULE" expression="" defaultValue="&quot;env&quot;" alwaysStopAt="true" />
+    <variable name="NAME" expression="" defaultValue="&quot;imported&quot;" alwaysStopAt="true" />
+    <variable name="FUNCNAME" expression="" defaultValue="&quot;imported&quot;" alwaysStopAt="true" />
+    <variable name="TYPE" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- Function template -->
+  <template name="func" value="(func $$$NAME$ (result $RESULT$)&#10;  (local $$$LOCAL$ $LOCALTYPE$)&#10;  $END$&#10;)" description="Function with result and local" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;main&quot;" alwaysStopAt="true" />
+    <variable name="RESULT" expression="" defaultValue="&quot;i64&quot;" alwaysStopAt="true" />
+    <variable name="LOCAL" expression="" defaultValue="&quot;result&quot;" alwaysStopAt="true" />
+    <variable name="LOCALTYPE" expression="" defaultValue="&quot;i64&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- Simple function template -->
+  <template name="fn" value="(func $$$NAME$&#10;  $END$&#10;)" description="Simple function" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;myFunc&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- Export template -->
+  <template name="export" value="(export &quot;$NAME$&quot; (func $$$FUNCNAME$))" description="Export function" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;main&quot;" alwaysStopAt="true" />
+    <variable name="FUNCNAME" expression="" defaultValue="&quot;main&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- i32.const template -->
+  <template name="i32" value="(i32.const $VALUE$)" description="i32 constant" toReformat="true" toShortenFQNames="true">
+    <variable name="VALUE" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- i64.const template -->
+  <template name="i64" value="(i64.const $VALUE$)" description="i64 constant" toReformat="true" toShortenFQNames="true">
+    <variable name="VALUE" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- f32.const template -->
+  <template name="f32" value="(f32.const $VALUE$)" description="f32 constant" toReformat="true" toShortenFQNames="true">
+    <variable name="VALUE" expression="" defaultValue="&quot;0.0&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- f64.const template -->
+  <template name="f64" value="(f64.const $VALUE$)" description="f64 constant" toReformat="true" toShortenFQNames="true">
+    <variable name="VALUE" expression="" defaultValue="&quot;0.0&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- local.get template -->
+  <template name="lget" value="(local.get $$$NAME$)" description="Get local variable" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;var&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- local.set template -->
+  <template name="lset" value="(local.set $$$NAME$ $END$)" description="Set local variable" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;var&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- local.tee template -->
+  <template name="ltee" value="(local.tee $$$NAME$ $END$)" description="Tee local variable" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;var&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- global.get template -->
+  <template name="gget" value="(global.get $$$NAME$)" description="Get global variable" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;global&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- global.set template -->
+  <template name="gset" value="(global.set $$$NAME$ $END$)" description="Set global variable" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;global&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- if template -->
+  <template name="if" value="(if (result $TYPE$)&#10;  $CONDITION$&#10;  (then $THEN$)&#10;  (else $ELSE$)&#10;)" description="If-then-else expression" toReformat="true" toShortenFQNames="true">
+    <variable name="TYPE" expression="" defaultValue="&quot;i32&quot;" alwaysStopAt="true" />
+    <variable name="CONDITION" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="THEN" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ELSE" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- loop template -->
+  <template name="loop" value="(loop $$$LABEL$&#10;  $END$&#10;)" description="Loop block" toReformat="true" toShortenFQNames="true">
+    <variable name="LABEL" expression="" defaultValue="&quot;loop&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- block template -->
+  <template name="block" value="(block $$$LABEL$ (result $TYPE$)&#10;  $END$&#10;)" description="Block" toReformat="true" toShortenFQNames="true">
+    <variable name="LABEL" expression="" defaultValue="&quot;block&quot;" alwaysStopAt="true" />
+    <variable name="TYPE" expression="" defaultValue="&quot;i32&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- call template -->
+  <template name="call" value="(call $$$NAME$ $END$)" description="Call function" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;func&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- memory.load template -->
+  <template name="load" value="($TYPE$.load $END$)" description="Load from memory" toReformat="true" toShortenFQNames="true">
+    <variable name="TYPE" expression="" defaultValue="&quot;i32&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- memory.store template -->
+  <template name="store" value="($TYPE$.store $END$)" description="Store to memory" toReformat="true" toShortenFQNames="true">
+    <variable name="TYPE" expression="" defaultValue="&quot;i32&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- memory template -->
+  <template name="memory" value="(memory $SIZE$)" description="Memory declaration" toReformat="true" toShortenFQNames="true">
+    <variable name="SIZE" expression="" defaultValue="&quot;1&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- table template -->
+  <template name="table" value="(table $SIZE$ funcref)" description="Table declaration" toReformat="true" toShortenFQNames="true">
+    <variable name="SIZE" expression="" defaultValue="&quot;1&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- global template -->
+  <template name="global" value="(global $$$NAME$ (mut $TYPE$) ($TYPE$.const $VALUE$))" description="Global variable declaration" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;global&quot;" alwaysStopAt="true" />
+    <variable name="TYPE" expression="" defaultValue="&quot;i32&quot;" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="&quot;0&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- local template -->
+  <template name="local" value="(local $$$NAME$ $TYPE$)" description="Local variable declaration" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;var&quot;" alwaysStopAt="true" />
+    <variable name="TYPE" expression="" defaultValue="&quot;i32&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- param template -->
+  <template name="param" value="(param $$$NAME$ $TYPE$)" description="Function parameter" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="&quot;param&quot;" alwaysStopAt="true" />
+    <variable name="TYPE" expression="" defaultValue="&quot;i32&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- result template -->
+  <template name="result" value="(result $TYPE$)" description="Function result type" toReformat="true" toShortenFQNames="true">
+    <variable name="TYPE" expression="" defaultValue="&quot;i32&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+</templateSet>
