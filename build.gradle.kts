@@ -41,7 +41,10 @@ tasks {
     }
 
     test {
-        systemProperty("idea.home.path", System.getProperty("user.home") + "/IdeaProjects")
+        // Use a temp directory for tests instead of a non-existent IdeaProjects directory
+        val tempDir = File(System.getProperty("java.io.tmpdir"), "idea-test-home")
+        tempDir.mkdirs()
+        systemProperty("idea.home.path", tempDir.absolutePath)
     }
 
     patchPluginXml {
