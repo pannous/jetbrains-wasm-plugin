@@ -8,7 +8,15 @@ https://github.com/JetBrains/intellij-plugins/tree/master/web-assembly-plugin
 
 # TODOs
 
-Completion templates for (module )
+Completion templates for 
+- (module $name ) 
+- (import "env" "toNode" (func $toNode (type 1)))
+-   (func $main (result i64)  (local $result i64) )
+-     (export "main" (func $main))
+-     ...
+
+  - "Go to Definition" might not work
+  - Symbol resolution needs investigation
 
 # IDEAs
 

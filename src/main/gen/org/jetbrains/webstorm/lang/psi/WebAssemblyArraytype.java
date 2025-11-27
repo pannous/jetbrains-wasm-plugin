@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface WebAssemblyArraytype extends PsiElement {
 
   @Nullable
-  WebAssemblyFieldtype getFieldtype();
-
-  @Nullable
   WebAssemblyStoragetype getStoragetype();
 
 }

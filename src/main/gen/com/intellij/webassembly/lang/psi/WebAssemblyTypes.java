@@ -100,6 +100,7 @@ public interface WebAssemblyTypes {
   IElementType EXTERNKEY = new WebAssemblyTokenType("EXTERNKEY");
   IElementType FCONST = new WebAssemblyTokenType("FCONST");
   IElementType FIELDKEY = new WebAssemblyTokenType("FIELDKEY");
+  IElementType FINALKEY = new WebAssemblyTokenType("FINALKEY");
   IElementType FLOAT = new WebAssemblyTokenType("FLOAT");
   IElementType FUNCKEY = new WebAssemblyTokenType("FUNCKEY");
   IElementType GLOBALINSTR = new WebAssemblyTokenType("GLOBALINSTR");
@@ -147,15 +148,15 @@ public interface WebAssemblyTypes {
   IElementType STRUCTGET = new WebAssemblyTokenType("STRUCTGET");
   IElementType STRUCTKEY = new WebAssemblyTokenType("STRUCTKEY");
   IElementType STRUCTNEW = new WebAssemblyTokenType("STRUCTNEW");
-  IElementType SUBKEY = new WebAssemblyTokenType("SUBKEY");
-  IElementType FINALKEY = new WebAssemblyTokenType("FINALKEY");
   IElementType STRUCTSET = new WebAssemblyTokenType("STRUCTSET");
+  IElementType SUBKEY = new WebAssemblyTokenType("SUBKEY");
   IElementType TABLECOPYINSTR = new WebAssemblyTokenType("TABLECOPYINSTR");
   IElementType TABLEINITINSTR = new WebAssemblyTokenType("TABLEINITINSTR");
   IElementType TABLEINSTR_IDX = new WebAssemblyTokenType("TABLEINSTR_IDX");
   IElementType TABLEKEY = new WebAssemblyTokenType("TABLEKEY");
   IElementType THENKEY = new WebAssemblyTokenType("THENKEY");
   IElementType TYPEKEY = new WebAssemblyTokenType("TYPEKEY");
+  IElementType TYPEUSE_INLINE_ = new WebAssemblyTokenType("typeuse_inline_");
   IElementType UNSIGNED = new WebAssemblyTokenType("UNSIGNED");
 
   class Factory {

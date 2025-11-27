@@ -32,9 +32,9 @@ reftype_ref_ ::= LPAR REFKEY NULLKEY? idx RPAR { pin=2 }
 
 // GC composite types
 structtype ::= LPAR STRUCTKEY fieldtype* RPAR { pin=2 }
-arraytype ::= LPAR ARRAYKEY fieldtype RPAR { pin=2 }
-            | LPAR ARRAYKEY storagetype RPAR { pin=2 }
-            | LPAR ARRAYKEY LPAR MUTKEY storagetype RPAR RPAR { pin=2 }
+// Array types: (array i32) or (array (mut i32))
+// Pin at 2 (ARRAYKEY) then try alternatives - mut variant must be first
+arraytype ::= LPAR ARRAYKEY (LPAR MUTKEY storagetype RPAR | storagetype) RPAR { pin=2 }
 
 fieldtype ::= LPAR FIELDKEY IDENTIFIER? storagetype RPAR
             | LPAR FIELDKEY IDENTIFIER? LPAR MUTKEY storagetype RPAR RPAR

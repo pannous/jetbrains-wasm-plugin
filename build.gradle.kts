@@ -1,3 +1,5 @@
+import org.jetbrains.grammarkit.tasks.GenerateParserTask
+
 plugins {
     id("org.jetbrains.intellij") version "1.17.3"
     id("org.jetbrains.kotlin.jvm") version "1.9.20"
@@ -22,6 +24,15 @@ sourceSets {
         java.srcDirs("src/main/gen", "src/main/java")
         kotlin.srcDirs("src/main/kotlin")
     }
+}
+
+// Configure Grammar-Kit parser generation
+tasks.register<GenerateParserTask>("generateWebAssemblyParser") {
+    sourceFile.set(file("src/main/grammars/WebAssemblyParser.bnf"))
+    targetRootOutputDir.set(file("src/main/gen"))
+    pathToParser.set("com/intellij/webassembly/lang/parser/WebAssemblyParser.java")
+    pathToPsiRoot.set("com/intellij/webassembly/lang/psi")
+    purgeOldFiles.set(false)  // Don't purge - only update parser
 }
 
 tasks {

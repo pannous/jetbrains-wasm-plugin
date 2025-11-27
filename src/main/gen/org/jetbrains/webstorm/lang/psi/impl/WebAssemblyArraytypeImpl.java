@@ -29,12 +29,6 @@ public class WebAssemblyArraytypeImpl extends ASTWrapperPsiElement implements We
 
   @Override
   @Nullable
-  public WebAssemblyFieldtype getFieldtype() {
-    return findChildByClass(WebAssemblyFieldtype.class);
-  }
-
-  @Override
-  @Nullable
   public WebAssemblyStoragetype getStoragetype() {
     return findChildByClass(WebAssemblyStoragetype.class);
   }

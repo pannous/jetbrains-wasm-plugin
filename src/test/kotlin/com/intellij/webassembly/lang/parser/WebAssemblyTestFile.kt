@@ -47,4 +47,7 @@ class WebAssemblyTestFile : WebAssemblyTestBase("file") {
 
     @Test
     fun testGc() = doTest()
+
+    @Test
+    fun testGcMut() = doTest()
 }

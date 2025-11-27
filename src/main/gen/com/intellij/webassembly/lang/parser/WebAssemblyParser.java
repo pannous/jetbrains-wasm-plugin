@@ -113,59 +113,41 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAR ARRAYKEY fieldtype RPAR
-  //             | LPAR ARRAYKEY storagetype RPAR
-  //             | LPAR ARRAYKEY LPAR MUTKEY storagetype RPAR RPAR
+  // LPAR ARRAYKEY (LPAR MUTKEY storagetype RPAR | storagetype) RPAR
   public static boolean arraytype(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "arraytype")) return false;
     if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_, pinned_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, ARRAYTYPE, null);
+    result_ = consumeTokens(builder_, 2, LPAR, ARRAYKEY);
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, arraytype_2(builder_, level_ + 1));
+    result_ = pinned_ && consumeToken(builder_, RPAR) && result_;
+    exit_section_(builder_, level_, marker_, result_, pinned_, null);
+    return result_ || pinned_;
+  }
+
+  // LPAR MUTKEY storagetype RPAR | storagetype
+  private static boolean arraytype_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "arraytype_2")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
-    result_ = arraytype_0(builder_, level_ + 1);
-    if (!result_) result_ = arraytype_1(builder_, level_ + 1);
-    if (!result_) result_ = arraytype_2(builder_, level_ + 1);
-    exit_section_(builder_, marker_, ARRAYTYPE, result_);
+    result_ = arraytype_2_0(builder_, level_ + 1);
+    if (!result_) result_ = storagetype(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
     return result_;
   }
 
-  // LPAR ARRAYKEY fieldtype RPAR
-  private static boolean arraytype_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "arraytype_0")) return false;
-    boolean result_, pinned_;
+  // LPAR MUTKEY storagetype RPAR
+  private static boolean arraytype_2_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "arraytype_2_0")) return false;
+    boolean result_;
     Marker marker_ = enter_section_(builder_);
-    result_ = consumeTokens(builder_, 2, LPAR, ARRAYKEY);
-    pinned_ = result_; // pin = 2
-    result_ = result_ && fieldtype(builder_, level_ + 1);
-    result_ = pinned_ && result_ && consumeToken(builder_, RPAR);
-    exit_section_(builder_, marker_, null, result_);
-    return result_ || pinned_;
-  }
-
-  // LPAR ARRAYKEY storagetype RPAR
-  private static boolean arraytype_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "arraytype_1")) return false;
-    boolean result_, pinned_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = consumeTokens(builder_, 2, LPAR, ARRAYKEY);
-    pinned_ = result_; // pin = 2
+    result_ = consumeTokens(builder_, 0, LPAR, MUTKEY);
     result_ = result_ && storagetype(builder_, level_ + 1);
-    result_ = pinned_ && result_ && consumeToken(builder_, RPAR);
+    result_ = result_ && consumeToken(builder_, RPAR);
     exit_section_(builder_, marker_, null, result_);
-    return result_ || pinned_;
-  }
-
-  // LPAR ARRAYKEY LPAR MUTKEY storagetype RPAR RPAR
-  private static boolean arraytype_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "arraytype_2")) return false;
-    boolean result_, pinned_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = consumeTokens(builder_, 2, LPAR, ARRAYKEY);
-    pinned_ = result_; // pin = 2
-    result_ = result_ && consumeTokens(builder_, 0, LPAR, MUTKEY);
-    result_ = pinned_ && result_ && storagetype(builder_, level_ + 1);
-    result_ = pinned_ && result_ && consumeTokens(builder_, 0, RPAR, RPAR);
-    exit_section_(builder_, marker_, null, result_);
-    return result_ || pinned_;
+    return result_;
   }
 
   /* ********************************************************** */
@@ -3127,6 +3109,59 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // LPAR subtype_kind_ typeuse_inline_? RPAR
+  static boolean subtype_decl_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "subtype_decl_")) return false;
+    if (!nextTokenIs(builder_, LPAR)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LPAR);
+    result_ = result_ && subtype_kind_(builder_, level_ + 1);
+    result_ = result_ && subtype_decl__2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAR);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // typeuse_inline_?
+  private static boolean subtype_decl__2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "subtype_decl__2")) return false;
+    consumeToken(builder_, TYPEUSE_INLINE_);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // SUBKEY FINALKEY? | FINALKEY
+  static boolean subtype_kind_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "subtype_kind_")) return false;
+    if (!nextTokenIs(builder_, "", FINALKEY, SUBKEY)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = subtype_kind__0(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, FINALKEY);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // SUBKEY FINALKEY?
+  private static boolean subtype_kind__0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "subtype_kind__0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, SUBKEY);
+    result_ = result_ && subtype_kind__0_1(builder_, level_ + 1);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // FINALKEY?
+  private static boolean subtype_kind__0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "subtype_kind__0_1")) return false;
+    consumeToken(builder_, FINALKEY);
+    return true;
+  }
+
+  /* ********************************************************** */
   // LPAR table_aux_ RPAR
   public static boolean table(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "table")) return false;
@@ -3363,7 +3398,7 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // TYPEKEY IDENTIFIER? (functype | structtype | arraytype)
+  // TYPEKEY IDENTIFIER? subtype_decl_? (functype | structtype | arraytype)
   static boolean type_aux_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "type_aux_")) return false;
     boolean result_, pinned_;
@@ -3371,7 +3406,8 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
     result_ = consumeToken(builder_, TYPEKEY);
     pinned_ = result_; // pin = 1
     result_ = result_ && report_error_(builder_, type_aux__1(builder_, level_ + 1));
-    result_ = pinned_ && type_aux__2(builder_, level_ + 1) && result_;
+    result_ = pinned_ && report_error_(builder_, type_aux__2(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && type_aux__3(builder_, level_ + 1) && result_;
     exit_section_(builder_, level_, marker_, result_, pinned_, WebAssemblyParser::item_recover_);
     return result_ || pinned_;
   }
@@ -3383,9 +3419,16 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // functype | structtype | arraytype
+  // subtype_decl_?
   private static boolean type_aux__2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "type_aux__2")) return false;
+    subtype_decl_(builder_, level_ + 1);
+    return true;
+  }
+
+  // functype | structtype | arraytype
+  private static boolean type_aux__3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "type_aux__3")) return false;
     boolean result_;
     result_ = functype(builder_, level_ + 1);
     if (!result_) result_ = structtype(builder_, level_ + 1);
