@@ -3,6 +3,7 @@ package com.intellij.webassembly.run
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.actions.LazyRunConfigurationProducer
 import com.intellij.execution.configurations.ConfigurationFactory
+import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.openapi.util.Ref
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -11,7 +12,9 @@ import com.intellij.webassembly.lang.psi.WebAssemblyFile
 class WebAssemblyRunConfigurationProducer : LazyRunConfigurationProducer<WebAssemblyRunConfiguration>() {
 
     override fun getConfigurationFactory(): ConfigurationFactory {
-        return WebAssemblyConfigurationFactory(WebAssemblyRunConfigurationType())
+        val configurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtension(WebAssemblyRunConfigurationType::class.java)
+            ?: error("WebAssemblyRunConfigurationType not registered")
+        return configurationType.configurationFactories[0]
     }
 
     override fun isConfigurationFromContext(

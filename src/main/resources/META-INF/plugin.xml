@@ -59,6 +59,7 @@ For IntelliJ IDEA, you can check out this section in the <a href="https://www.je
     <!-- Run Configuration -->
     <configurationType implementation="com.intellij.webassembly.run.WebAssemblyRunConfigurationType"/>
     <runConfigurationProducer implementation="com.intellij.webassembly.run.WebAssemblyRunConfigurationProducer"/>
+    <programRunner implementation="com.intellij.webassembly.run.WebAssemblyProgramRunner"/>
 
   </extensions>
 
