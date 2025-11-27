@@ -44,4 +44,7 @@ class WebAssemblyTestFile : WebAssemblyTestBase("file") {
 
     @Test
     fun testWasmTable() = doTest()
+
+    @Test
+    fun testGc() = doTest()
 }

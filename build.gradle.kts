@@ -41,7 +41,7 @@ tasks {
     }
 
     test {
-        systemProperty("idea.home.path", "\$HOME/IdeaProjects")
+        systemProperty("idea.home.path", System.getProperty("user.home") + "/IdeaProjects")
     }
 
     patchPluginXml {
