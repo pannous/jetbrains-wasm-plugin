@@ -22,8 +22,11 @@ The test verifies parsing of WebAssembly GC (Garbage Collection) proposal featur
    - Local variables with GC reference types
 
 3. **GC Instructions**
-   - `array.new` (line 114-118) - array creation
-   - `struct.new` (line 154-158) - struct creation
+   - `array.new` - array creation
+   - `array.len` - get array length (no type parameter)
+   - `array.get`, `array.set` - array element access
+   - `struct.new` - struct creation
+   - `struct.get`, `struct.set` - struct field access
    - Proper parsing of instruction operands
 
 4. **Type References**
@@ -45,9 +48,19 @@ All GC features now parse correctly without errors:
 
 ## Test Execution
 
-The test can be run with:
+Tests can be run with:
 ```bash
+# Comprehensive GC features test
 ./gradlew test --tests "com.intellij.webassembly.lang.parser.WebAssemblyTestFile.testGc"
+
+# Mutable/immutable array types
+./gradlew test --tests "com.intellij.webassembly.lang.parser.WebAssemblyTestFile.testGcMut"
+
+# array.len instruction
+./gradlew test --tests "com.intellij.webassembly.lang.parser.WebAssemblyTestFile.testArrayLen"
+
+# All parser tests
+./gradlew test --tests "com.intellij.webassembly.lang.parser.*"
 ```
 
 ## Parse Tree Location
