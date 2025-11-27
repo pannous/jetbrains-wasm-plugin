@@ -1,39 +1,40 @@
 # Build Notes
 
-## Known Issue: Kotlin/Java Compilation Order
+## ✅ Kotlin/Java Compilation Issue RESOLVED
 
-The project currently has a Kotlin/Java joint compilation issue where the Kotlin compiler cannot find the generated `_WebAssemblyLexer` class at compile time.
+The build previously failed due to a Kotlin/Java joint compilation issue. This has been resolved by converting key Kotlin files to Java.
 
-### Root Cause
-- Generated Java files are in `src/main/gen` and committed to git
-- Kotlin code in `WebAssemblyLexer.kt` references the generated `_WebAssemblyLexer` class
-- The Kotlin Gradle plugin's joint compilation runs Kotlin before Java classes are available
-- This creates an "Unresolved reference: _WebAssemblyLexer" error
-
-### Workarounds Attempted
-1. ✗ Making Kotlin depend on Java compilation - creates circular dependency
-2. ✗ Using `mustRunAfter` - doesn't enforce dependency
-3. ✗ Configuring source sets - joint compilation overrides it
-4. ✗ Two-stage build script - Gradle still resolves Kotlin tasks
-
-### Potential Solutions
-1. **Separate Gradle module** for generated sources (proper but requires restructuring)
-2. **Disable Kotlin/Java joint compilation** (may break other features)
-3. **Use reflection** in WebAssemblyLexer.kt instead of direct instantiation
-4. **Pre-compiled JAR** of generated sources as a dependency
+### Solution Implemented
+- Converted `WebAssemblyLexer` and `WebAssemblyParserDefinition` from Kotlin to Java
+- Created Java base classes in `org.jetbrains.webstorm.lang.psi` package for generated code
+- Added missing imports to generated lexer file
+- Added SUBKEY and FINALKEY tokens for WebAssembly GC subtyping support
 
 ### Current Status
 - ✅ Grammar files updated with WebAssembly GC support
-- ✅ Generated parser/lexer files committed to git (128 files)
+- ✅ Generated parser/lexer files committed to git
 - ✅ Gradle configured for Java 17
-- ❌ Build currently fails at `compileKotlin` step
+- ✅ Build completes successfully
+- ✅ Plugin installs correctly to JetBrains IDEs
+
+### Building the Plugin
+```bash
+./build.sh          # Builds the plugin
+./install-plugin.sh # Builds and installs to all detected JetBrains IDEs
+```
 
 ### For Development
 If you need to modify grammar files:
 ```bash
-./gradlew generateWebAssemblyLexer generateWebAssemblyParser
+# Modify src/main/grammars/WebAssemblyParser.bnf or WebAssemblyLexer.flex
+# Then regenerate (note: requires grammarkit task configuration)
+./gradlew generateParser generateLexer
 git add src/main/gen
 git commit -m "chore: regenerate parser/lexer"
 ```
 
-The generated files are the main deliverable - they contain all the WebAssembly GC syntax support.
+The generated files in `src/main/gen` contain all the WebAssembly GC syntax support including:
+- Reference types (ref, anyref, funcref, externref, etc.)
+- Struct types and operations (struct.new, struct.get, struct.set)
+- Array types and operations (array.new, array.get, array.set)
+- GC-specific instructions (ref.null, ref.is_null, ref.as_non_null, etc.)
