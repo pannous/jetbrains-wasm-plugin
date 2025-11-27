@@ -221,4 +221,240 @@
       <option name="WebAssembly" value="true" />
     </context>
   </template>
+
+  <!-- Type Conversion Operations -->
+
+  <!-- i32 conversions -->
+  <template name="i32.wrap_i64" value="(i32.wrap_i64)" description="Wrap i64 to i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.trunc_f32_s" value="(i32.trunc_f32_s)" description="Truncate f32 to signed i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.trunc_f32_u" value="(i32.trunc_f32_u)" description="Truncate f32 to unsigned i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.trunc_f64_s" value="(i32.trunc_f64_s)" description="Truncate f64 to signed i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.trunc_f64_u" value="(i32.trunc_f64_u)" description="Truncate f64 to unsigned i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.reinterpret_f32" value="(i32.reinterpret_f32)" description="Reinterpret f32 bits as i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- i64 conversions -->
+  <template name="i64.extend_i32_s" value="(i64.extend_i32_s)" description="Extend signed i32 to i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.extend_i32_u" value="(i64.extend_i32_u)" description="Extend unsigned i32 to i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.trunc_f32_s" value="(i64.trunc_f32_s)" description="Truncate f32 to signed i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.trunc_f32_u" value="(i64.trunc_f32_u)" description="Truncate f32 to unsigned i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.trunc_f64_s" value="(i64.trunc_f64_s)" description="Truncate f64 to signed i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.trunc_f64_u" value="(i64.trunc_f64_u)" description="Truncate f64 to unsigned i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.reinterpret_f64" value="(i64.reinterpret_f64)" description="Reinterpret f64 bits as i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- f32 conversions -->
+  <template name="f32.convert_i32_s" value="(f32.convert_i32_s)" description="Convert signed i32 to f32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f32.convert_i32_u" value="(f32.convert_i32_u)" description="Convert unsigned i32 to f32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f32.convert_i64_s" value="(f32.convert_i64_s)" description="Convert signed i64 to f32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f32.convert_i64_u" value="(f32.convert_i64_u)" description="Convert unsigned i64 to f32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f32.demote_f64" value="(f32.demote_f64)" description="Demote f64 to f32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f32.reinterpret_i32" value="(f32.reinterpret_i32)" description="Reinterpret i32 bits as f32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- f64 conversions -->
+  <template name="f64.convert_i32_s" value="(f64.convert_i32_s)" description="Convert signed i32 to f64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f64.convert_i32_u" value="(f64.convert_i32_u)" description="Convert unsigned i32 to f64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f64.convert_i64_s" value="(f64.convert_i64_s)" description="Convert signed i64 to f64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f64.convert_i64_u" value="(f64.convert_i64_u)" description="Convert unsigned i64 to f64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f64.promote_f32" value="(f64.promote_f32)" description="Promote f32 to f64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="f64.reinterpret_i64" value="(f64.reinterpret_i64)" description="Reinterpret i64 bits as f64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- Saturating truncation (nontrapping-float-to-int-conversions proposal) -->
+  <template name="i32.trunc_sat_f32_s" value="(i32.trunc_sat_f32_s)" description="Saturating truncate f32 to signed i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.trunc_sat_f32_u" value="(i32.trunc_sat_f32_u)" description="Saturating truncate f32 to unsigned i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.trunc_sat_f64_s" value="(i32.trunc_sat_f64_s)" description="Saturating truncate f64 to signed i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.trunc_sat_f64_u" value="(i32.trunc_sat_f64_u)" description="Saturating truncate f64 to unsigned i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.trunc_sat_f32_s" value="(i64.trunc_sat_f32_s)" description="Saturating truncate f32 to signed i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.trunc_sat_f32_u" value="(i64.trunc_sat_f32_u)" description="Saturating truncate f32 to unsigned i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.trunc_sat_f64_s" value="(i64.trunc_sat_f64_s)" description="Saturating truncate f64 to signed i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.trunc_sat_f64_u" value="(i64.trunc_sat_f64_u)" description="Saturating truncate f64 to unsigned i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <!-- Sign extension operations (sign-extension-ops proposal) -->
+  <template name="i32.extend8_s" value="(i32.extend8_s)" description="Sign-extend i8 to i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i32.extend16_s" value="(i32.extend16_s)" description="Sign-extend i16 to i32" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.extend8_s" value="(i64.extend8_s)" description="Sign-extend i8 to i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.extend16_s" value="(i64.extend16_s)" description="Sign-extend i16 to i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
+
+  <template name="i64.extend32_s" value="(i64.extend32_s)" description="Sign-extend i32 to i64" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="WebAssembly" value="true" />
+    </context>
+  </template>
 </templateSet>
