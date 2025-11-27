@@ -30,19 +30,18 @@ The test verifies parsing of WebAssembly GC (Garbage Collection) proposal featur
    - Type identifiers like `$my-array`, `$my-struct`
    - Reference type syntax in local declarations
 
-### ❌ Known Parse Errors
+### ✅ All Parse Errors Fixed!
 
-1. **Array Type Syntax** (line 15-22 in parse tree)
+All GC features now parse correctly without errors:
+
+1. **Array Type Syntax** - ✅ **FIXED**
    ```wat
-   (type $my-array (array i32))
+   (type $my-array (array i32))           ;; Immutable array ✅
+   (type $string (array (mut i8)))         ;; Mutable array ✅
    ```
-   - Error: `WebAssemblyTokenType.LPAR expected, got 'i32'`
-   - Location: `src/test/resources/parser/file/Gc.txt:20`
-   - The parser expects `(array (...))` but the spec allows `(array i32)` directly
-
-2. **Module closing paren** (line 190-191)
-   - Minor error with final closing parenthesis
-   - May be related to array type parse error propagation
+   - Both syntax variants now parse correctly
+   - Grammar updated to use choice operator for mut/immut alternatives
+   - Test: `testGcMut()` validates both forms
 
 ## Test Execution
 
