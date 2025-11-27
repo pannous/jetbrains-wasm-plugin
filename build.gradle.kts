@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("org.jetbrains.intellij") version "1.17.3"
     id("org.jetbrains.kotlin.jvm") version "1.9.20"
@@ -42,16 +44,13 @@ tasks.withType<JavaCompile> {
 }
 
 tasks {
-    compileKotlin {
+    // Generate grammar files before any compilation
+    withType<KotlinCompile>().configureEach {
         kotlinOptions.jvmTarget = "17"
-    }
-
-    compileJava {
         dependsOn("generateWebAssemblyLexer", "generateWebAssemblyParser")
     }
 
-    // Ensure generated files exist before Kotlin compilation
-    named("compileKotlin") {
+    compileJava {
         dependsOn("generateWebAssemblyLexer", "generateWebAssemblyParser")
     }
 
