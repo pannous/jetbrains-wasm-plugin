@@ -39,7 +39,19 @@ Before using the run configuration, you need to install:
 
 ## How to Use
 
-### Method 1: Create a Run Configuration Manually
+### Method 1: Quick Run from Context Menu (Recommended)
+
+1. Right-click on any `.wat` or `.wast` file in the project tree or editor
+2. Click **"More Run/Debug"** in the context menu
+3. Select **"Run 'filename.wat'"**
+
+The file will be automatically compiled and executed!
+
+**Alternative shortcuts:**
+- With the file open in editor: Press **Ctrl+Shift+F10** (Windows/Linux) or **Cmd+Shift+R** (Mac)
+- Click the green run icon in the editor gutter (if available)
+
+### Method 2: Create a Run Configuration Manually
 
 1. Open your `.wat` file in the IDE
 2. Go to **Run → Edit Configurations...**
@@ -48,10 +60,6 @@ Before using the run configuration, you need to install:
 5. Browse and select your `.wat` file
 6. Click **OK**
 7. Click the **Run** button (green play icon) or press Shift+F10
-
-### Method 2: Run from Context Menu (Future Enhancement)
-
-Right-click on a `.wat` file in the project tree and select **Run** (to be implemented).
 
 ## Example
 
@@ -109,11 +117,25 @@ The run configuration performs these steps:
    - Calls the exported `main()` function
    - Displays the result
 
+## What to Expect When Running
+
+When you run a `.wat` file, the IDE will:
+
+1. Show the Run tool window at the bottom
+2. Display compilation output from `wat2wasm`
+3. Show execution results from Node.js
+4. For the example file, you should see:
+   ```
+   Calling main()...
+   Result: 42n
+   main() executed successfully
+   ```
+
 ## Future Enhancements
 
 Planned improvements:
 - Support for custom import objects (WASI imports, custom env functions)
-- Debug configuration support
-- Context menu "Run" action for `.wat` files
+- Full debug configuration support with breakpoints
 - Custom entry point function names (not just `main`)
 - Input parameter support for the main function
+- Better error messages and diagnostics
