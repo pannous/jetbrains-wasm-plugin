@@ -1,5 +1,5 @@
 <idea-plugin package="com.intellij.webassembly">
-  <id>com.jetbrains.webstorm.web-assembly-plugin</id>
+  <id>com.jetbrains.webstorm.intellij-webassembly-plugin</id>
   <name>WebAssembly</name>
   <vendor>JetBrains</vendor>
 

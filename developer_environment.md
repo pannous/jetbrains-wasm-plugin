@@ -2,7 +2,7 @@
 #### Setting up a development environment
 
 * Fork this project, clone it to your machine
-* Launch IDEA and open the `web-assembly-plugin` directory using `File -> New -> Project from Existing Sources...`. Select 'Gradle' and accept the default settings.
+* Launch IDEA and open the `intellij-webassembly-plugin` directory using `File -> New -> Project from Existing Sources...`. Select 'Gradle' and accept the default settings.
 
 * At this point you should be ready to go! To **launch IDEA** with the plugin built from sources use `runIde` Gradle task (from the IDEA UI search for 'Execute Gradle Task' or run `./gradlew runIde` from the command line).
 

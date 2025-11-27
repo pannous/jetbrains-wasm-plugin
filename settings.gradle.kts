@@ -1,2 +1,2 @@
-rootProject.name = "web-assembly-plugin"
+rootProject.name = "intellij-webassembly-plugin"
 

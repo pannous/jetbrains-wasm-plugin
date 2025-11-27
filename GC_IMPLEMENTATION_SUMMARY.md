@@ -83,7 +83,7 @@ fieldtype ::= LPAR FIELDKEY IDENTIFIER? storagetype RPAR
 ## Installation
 
 The built plugin is located at:
-`build/distributions/web-assembly-plugin-1.5-gc.zip`
+`build/distributions/intellij-webassembly-plugin-1.5-gc.zip`
 
 Install via: Settings → Plugins → ⚙️ → Install Plugin from Disk
 
@@ -107,4 +107,4 @@ Before submitting to JetBrains:
 
 - [WebAssembly GC Proposal](https://github.com/WebAssembly/gc)
 - [JetBrains intellij-plugins Repository](https://github.com/JetBrains/intellij-plugins)
-- Original plugin location: `intellij-plugins/web-assembly-plugin`
+- Original plugin location: `intellij-plugins/intellij-webassembly-plugin`

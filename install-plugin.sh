@@ -12,7 +12,7 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 ./gradlew buildPlugin
 
 # Find the built plugin
-PLUGIN_ZIP="build/distributions/web-assembly-plugin-1.5-gc.zip"
+PLUGIN_ZIP="build/distributions/intellij-webassembly-plugin-1.5-gc.zip"
 
 if [ ! -f "$PLUGIN_ZIP" ]; then
     echo "❌ Error: Plugin not found at $PLUGIN_ZIP"
@@ -68,8 +68,13 @@ for plugin_dir in "${FOUND_DIRS[@]}"; do
     mkdir -p "$plugin_dir"
 
     # Remove old installation if exists
-    if [ -d "$plugin_dir/web-assembly-plugin" ]; then
+    if [ -d "$plugin_dir/intellij-webassembly-plugin" ]; then
         echo "   Removing old installation..."
+        rm -rf "$plugin_dir/intellij-webassembly-plugin"
+    fi
+    # Also remove legacy name if exists
+    if [ -d "$plugin_dir/web-assembly-plugin" ]; then
+        echo "   Removing legacy installation..."
         rm -rf "$plugin_dir/web-assembly-plugin"
     fi
 
