@@ -20,33 +20,22 @@ fi
 
 echo "✅ Plugin built successfully: $PLUGIN_ZIP"
 
-# Find all IntelliJ-based IDE plugin directories
-PLUGIN_DIRS=(
-    "$HOME/Library/Application Support/JetBrains/IntelliJIdea2023.3/plugins"
-    "$HOME/Library/Application Support/JetBrains/IntelliJIdea2024.1/plugins"
-    "$HOME/Library/Application Support/JetBrains/IntelliJIdea2024.2/plugins"
-    "$HOME/Library/Application Support/JetBrains/IntelliJIdea2024.3/plugins"
-    "$HOME/Library/Application Support/JetBrains/IdeaIC2023.3/plugins"
-    "$HOME/Library/Application Support/JetBrains/IdeaIC2024.1/plugins"
-    "$HOME/Library/Application Support/JetBrains/IdeaIC2024.2/plugins"
-    "$HOME/Library/Application Support/JetBrains/IdeaIC2024.3/plugins"
-    "$HOME/Library/Application Support/JetBrains/CLion2023.3/plugins"
-    "$HOME/Library/Application Support/JetBrains/CLion2024.1/plugins"
-    "$HOME/Library/Application Support/JetBrains/CLion2024.2/plugins"
-    "$HOME/Library/Application Support/JetBrains/CLion2024.3/plugins"
-    "$HOME/Library/Application Support/JetBrains/RustRover2023.3/plugins"
-    "$HOME/Library/Application Support/JetBrains/RustRover2024.1/plugins"
-    "$HOME/Library/Application Support/JetBrains/RustRover2024.2/plugins"
-    "$HOME/Library/Application Support/JetBrains/RustRover2024.3/plugins"
-)
-
-# Auto-detect installed IDEs
+# Auto-detect all JetBrains IDE installations
+JETBRAINS_BASE="$HOME/Library/Application Support/JetBrains"
 FOUND_DIRS=()
-for dir in "${PLUGIN_DIRS[@]}"; do
-    if [ -d "$(dirname "$dir")" ]; then
-        FOUND_DIRS+=("$dir")
-    fi
-done
+
+if [ -d "$JETBRAINS_BASE" ]; then
+    # Find all IDE directories (IntelliJ, CLion, RustRover, etc.)
+    for ide_dir in "$JETBRAINS_BASE"/*; do
+        if [ -d "$ide_dir" ]; then
+            plugin_dir="$ide_dir/plugins"
+            # Check if this looks like a real IDE installation (has config or plugins)
+            if [ -d "$ide_dir" ]; then
+                FOUND_DIRS+=("$plugin_dir")
+            fi
+        fi
+    done
+fi
 
 if [ ${#FOUND_DIRS[@]} -eq 0 ]; then
     echo "❌ No JetBrains IDE installations found"
@@ -88,17 +77,13 @@ echo "✨ Installation complete!"
 echo ""
 echo "🔄 Restarting JetBrains IDEs..."
 
-# Kill running JetBrains IDEs
-# pkill -f "CLion" 2>/dev/null || true
+# Kill all running JetBrains IDEs to ensure plugin is loaded
 pkill -f "RustRover" 2>/dev/null || true
-# pkill -f "IntelliJ IDEA" 2>/dev/null || true
+pkill -f "CLion" 2>/dev/null || true
+pkill -f "IntelliJ IDEA" 2>/dev/null || true
+pkill -f "WebStorm" 2>/dev/null || true
+pkill -f "Rider" 2>/dev/null || true
 sleep 2
-
-# Restart CLion if it exists
-# if [ -d "/Applications/CLion.app" ]; then
-#     echo "   Starting CLion..."
-#     open -a "CLion" 2>/dev/null || echo "   ℹ️  CLion failed to start"
-# fi
 
 # Restart RustRover if it exists
 if [ -d "/Applications/RustRover.app" ]; then
@@ -108,9 +93,15 @@ fi
 
 echo ""
 echo "📋 Next steps:"
-echo "   1. Your JetBrains IDEs should restart automatically"
-echo "   2. The WebAssembly GC plugin should now be active"
+echo "   1. RustRover should start automatically"
+echo "   2. The WebAssembly GC plugin (v1.5-gc) should now be active"
 echo "   3. Open any .wat/.wast file to test GC syntax highlighting"
+echo ""
+echo "⚠️  Important: If the plugin doesn't load:"
+echo "   1. Fully quit RustRover (Cmd+Q)"
+echo "   2. Reopen RustRover"
+echo "   3. The plugin should now be loaded"
 echo ""
 echo "To verify installation:"
 echo "   Settings → Plugins → Installed → search for 'WebAssembly'"
+echo "   Version should show: 1.5-gc"
