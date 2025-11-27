@@ -56,6 +56,9 @@ For IntelliJ IDEA, you can check out this section in the <a href="https://www.je
     <completion.contributor language="WebAssembly"
                             implementationClass="com.intellij.webassembly.lang.WebAssemblyKeywordCompletionContributor"/>
 
+    <!-- Run Configuration -->
+    <configurationType implementation="com.intellij.webassembly.run.WebAssemblyRunConfigurationType"/>
+
   </extensions>
 
   <actions>
