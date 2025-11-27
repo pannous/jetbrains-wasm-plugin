@@ -8,12 +8,14 @@ https://github.com/JetBrains/intellij-plugins/tree/master/web-assembly-plugin
 
 # TODOs
 
-Completion templates for 
-- (module $name ) 
+# DONE Completion templates for
+- (module $name )
 - (import "env" "toNode" (func $toNode (type 1)))
 -   (func $main (result i64)  (local $result i64) )
 -     (export "main" (func $main))
--     ...
+-     (i32.const %CURSOR%)
+-     ... all other common wat expressions!
+✅ Implemented 28 live templates for WebAssembly including module, import, func, export, constants, variables, control flow, and memory operations
 
   - "Go to Definition" might not work
   - Symbol resolution needs investigation
@@ -30,3 +32,4 @@ Allow setting of brake points etc
 
 Maybe merge with wit types https://github.com/linux-china/wit-jetbrains-plugin /opt/wasm/wit-jetbrains-plugin
 - Do not report success before trying ./install-plugin.sh
+- You may get some inspiration from /opt/other/goo-jetbrains-plugin Things were great over there
