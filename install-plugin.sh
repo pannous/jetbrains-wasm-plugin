@@ -6,16 +6,8 @@ set -e
 
 echo "🚀 Installing WebAssembly GC Plugin..."
 
-# Build the plugin first
-echo "🔨 Building plugin..."
-export JAVA_HOME=$(/usr/libexec/java_home -v 17)
-
-# Note: Generated parser/lexer files in src/main/gen are committed to git
-# If you modify grammar files, regenerate with:
-# ./gradlew generateWebAssemblyLexer generateWebAssemblyParser
-# then commit the updated generated files before building
-
-./gradlew buildPlugin
+# Build the plugin using build.sh wrapper (handles Kotlin/Java compilation order)
+./build.sh
 
 # Find the built plugin
 PLUGIN_ZIP="build/distributions/intellij-webassembly-plugin-1.5-gc.zip"

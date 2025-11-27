@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("org.jetbrains.intellij") version "1.17.3"
     id("org.jetbrains.kotlin.jvm") version "1.9.20"
@@ -25,33 +23,9 @@ sourceSets {
     }
 }
 
-tasks.register<org.jetbrains.grammarkit.tasks.GenerateLexerTask>("generateWebAssemblyLexer") {
-    sourceFile.set(file("src/main/grammars/WebAssemblyLexer.flex"))
-    targetOutputDir.set(file("src/main/gen/com/intellij/webassembly/lang/lexer"))
-    purgeOldFiles.set(true)
-}
-
-tasks.register<org.jetbrains.grammarkit.tasks.GenerateParserTask>("generateWebAssemblyParser") {
-    sourceFile.set(file("src/main/grammars/WebAssemblyParser.bnf"))
-    targetRootOutputDir.set(file("src/main/gen"))
-    pathToParser.set("/com/intellij/webassembly/lang/parser/WebAssemblyParser.java")
-    pathToPsiRoot.set("/org/jetbrains/webstorm/lang/psi")
-    purgeOldFiles.set(true)
-}
-
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-proc:none")
-}
-
 tasks {
-    // Generate grammar files before any compilation
-    withType<KotlinCompile>().configureEach {
+    compileKotlin {
         kotlinOptions.jvmTarget = "17"
-        dependsOn("generateWebAssemblyLexer", "generateWebAssemblyParser")
-    }
-
-    compileJava {
-        dependsOn("generateWebAssemblyLexer", "generateWebAssemblyParser")
     }
 
     compileTestKotlin {
