@@ -14,7 +14,7 @@ object WebAssemblyBinaryFileType : FileType {
 
     override fun getIcon(): Icon = WebassemblyIcons.WebAssemblyFiletype
 
-    override fun isBinary(): Boolean = false
+    override fun isBinary(): Boolean = true
 
     override fun isReadOnly(): Boolean = true
 }
