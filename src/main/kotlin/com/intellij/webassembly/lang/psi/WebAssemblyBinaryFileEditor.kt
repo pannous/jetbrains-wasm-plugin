@@ -36,8 +36,14 @@ class WebAssemblyBinaryFileEditor(
         watFile = LightVirtualFile("${wasmFile.nameWithoutExtension}.wat", WebAssemblyLanguage, watContent)
         watFile.isWritable = true
 
+        // Store reference to the original .wasm file in the virtual file's user data
+        watFile.putUserData(WASM_FILE_KEY, wasmFile)
+
         // Create text editor for the WAT content
         textEditor = TextEditorProvider.getInstance().createEditor(project, watFile) as TextEditor
+
+        // Store reference to this editor in the document's user data for save handler
+        textEditor.editor.document.putUserData(WASM_EDITOR_KEY, this)
 
         // Listen for document changes
         textEditor.editor.document.addDocumentListener(object : com.intellij.openapi.editor.event.DocumentListener {
@@ -46,6 +52,11 @@ class WebAssemblyBinaryFileEditor(
                 FileDocumentManager.getInstance().requestWriting(textEditor.editor.document, project)
             }
         })
+    }
+
+    companion object {
+        private val WASM_FILE_KEY = Key.create<VirtualFile>("WASM_BINARY_FILE")
+        private val WASM_EDITOR_KEY = Key.create<WebAssemblyBinaryFileEditor>("WASM_BINARY_EDITOR")
     }
 
     override fun getComponent(): JComponent = textEditor.component
