@@ -110,7 +110,7 @@ class WebAssemblyBinaryFileEditor(
                 val result = com.intellij.webassembly.lang.WebAssemblyTools.compileWatToWasm(tempWat, tempWasm)
 
                 if (result.success) {
-                    // Compilation successful - write binary to original .wasm file
+                    // Compilation successful - overwrite original .wasm file
                     ApplicationManager.getApplication().runWriteAction {
                         wasmFile.setBinaryContent(tempWasm.readBytes())
                     }
@@ -118,16 +118,27 @@ class WebAssemblyBinaryFileEditor(
                     // Update last saved content
                     lastSavedContent = watContent
 
-                    // Refresh the file
-                    wasmFile.refresh(false, false)
+                    // Force VFS refresh to ensure file system is synced
+                    wasmFile.refresh(false, true)
+
+                    // Show success notification
+                    com.intellij.notification.Notifications.Bus.notify(
+                        com.intellij.notification.Notification(
+                            "WebAssembly",
+                            "WASM Saved",
+                            "Compiled and saved to ${wasmFile.name}",
+                            com.intellij.notification.NotificationType.INFORMATION
+                        ),
+                        project
+                    )
 
                     true
                 } else {
-                    // Compilation failed - show error
+                    // Compilation failed - show error (file not saved)
                     com.intellij.openapi.ui.Messages.showErrorDialog(
                         project,
                         result.error ?: "Unknown compilation error",
-                        "WebAssembly Compilation Error"
+                        "WebAssembly Compilation Error - File Not Saved"
                     )
                     false
                 }
