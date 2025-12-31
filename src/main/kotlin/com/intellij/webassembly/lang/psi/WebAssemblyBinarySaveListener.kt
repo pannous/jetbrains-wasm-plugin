@@ -25,6 +25,9 @@ class WebAssemblyBinarySaveListener : BulkFileListener {
     // Map from .wat file path to .wasm file path (persistent across saves)
     private val watToWasmMap = mutableMapOf<String, String>()
 
+    // Track .wat files that are currently being initialized (skip notification for first write)
+    private val initializingFiles = mutableSetOf<String>()
+
     init {
         val connection = ApplicationManager.getApplication().messageBus.connect()
         connection.subscribe(VirtualFileManager.VFS_CHANGES, this)
@@ -33,6 +36,8 @@ class WebAssemblyBinarySaveListener : BulkFileListener {
     fun registerMapping(watPath: String, wasmPath: String) {
         println("WebAssembly: Registering mapping: $watPath -> $wasmPath")
         watToWasmMap[watPath] = wasmPath
+        // Mark this file as initializing to skip notification on first write
+        initializingFiles.add(watPath)
     }
 
     override fun after(events: List<VFileEvent>) {
@@ -41,6 +46,12 @@ class WebAssemblyBinarySaveListener : BulkFileListener {
                 val watFile = event.file
                 println("WebAssembly: File changed: ${watFile.path}")
                 if (watFile.extension == "wat") {
+                    // Check if this is the initial decompilation (skip notification)
+                    if (initializingFiles.remove(watFile.path)) {
+                        println("WebAssembly: Skipping notification for initial decompilation")
+                        continue
+                    }
+
                     // Check if this .wat file was decompiled from a .wasm file
                     val wasmPath = watToWasmMap[watFile.path]
                     println("WebAssembly: .wat file changed, mapped wasmPath=$wasmPath")
