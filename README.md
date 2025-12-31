@@ -1,3 +1,11 @@
+⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+This repository is not deprecated in favor of:
+[[https://github.com/pannous/wasp-jetbrains-plugin]]
+⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+
+https://github.com/pannous/intellij-webassembly-plugin fow fork of official repo
+
+
 #### [WebAssembly](https://webassembly.org/) plugin for JetBrains IDEs
 
 ##### Key features for wat-files:
