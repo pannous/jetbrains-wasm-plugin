@@ -26,6 +26,8 @@ For IntelliJ IDEA, you can check out this section in the <a href="https://www.je
   </description>
 
   <extensions defaultExtensionNs="com.intellij">
+    <applicationService serviceImplementation="com.intellij.webassembly.lang.psi.WebAssemblyBinarySaveListener"/>
+
     <fileType name="WebAssembly file"
               implementationClass="com.intellij.webassembly.lang.psi.WebAssemblyFileType"
               fieldName="INSTANCE"

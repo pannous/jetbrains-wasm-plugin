@@ -8,7 +8,7 @@ import javax.swing.Icon
 object WebAssemblyBinaryFileType : FileType {
     override fun getName(): String = "WebAssembly Binary"
 
-    override fun getDescription(): String = "WebAssembly Binary File"
+    override fun getDescription(): String = "WebAssembly Binary File (editable decompiled view)"
 
     override fun getDefaultExtension(): String = "wasm"
 
@@ -16,5 +16,5 @@ object WebAssemblyBinaryFileType : FileType {
 
     override fun isBinary(): Boolean = true
 
-    override fun isReadOnly(): Boolean = true
+    override fun isReadOnly(): Boolean = false
 }
