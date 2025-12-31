@@ -26,3 +26,4 @@ build
 .gradle
 /idea-flex.skeleton
 version.properties
+test.wasm

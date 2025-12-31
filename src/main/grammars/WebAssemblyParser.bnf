@@ -22,6 +22,9 @@ modulefield ::= type | import | func | table | mem | global | export | start | e
 
 idx ::= UNSIGNED | IDENTIFIER
 
+// Heap types for GC (used in ref.null, ref.test, ref.cast, etc.)
+heaptype ::= FUNCKEY | EXTERNKEY | ANYKEY | EQKEY | I31KEY | NONEKEY | NOEXTERNKEY | NOFUNCKEY
+           | STRUCTKEY | ARRAYKEY | idx
 
 // TYPES
 valtype ::= NUMTYPE | REFTYPE | reftype_ref_
@@ -118,8 +121,8 @@ plaininstr ::=
              // control
                CONTROLINSTR | CONTROLINSTR_IDX idx | call_instr | BRTABLEINSTR idx+ | call_indirect_instr
              // reference
-             | REFISNULLINST | REFNULLINSTR (FUNCKEY | EXTERNKEY) | ref_func_instr
-             | REFTEST idx | REFCAST idx | REFEQ | REFI31 | I31GET | REFASNONNULL | EXTERNCONVERT
+             | REFISNULLINST | REFNULLINSTR heaptype | ref_func_instr
+             | REFTEST heaptype | REFCAST heaptype | REFEQ | REFI31 | I31GET | REFASNONNULL | EXTERNCONVERT
              // parametric
              | PARAMETRICINSTR
              // variable

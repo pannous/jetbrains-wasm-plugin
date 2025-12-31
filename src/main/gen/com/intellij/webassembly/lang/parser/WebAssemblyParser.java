@@ -1748,6 +1748,28 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // FUNCKEY | EXTERNKEY | ANYKEY | EQKEY | I31KEY | NONEKEY | NOEXTERNKEY | NOFUNCKEY
+  //            | STRUCTKEY | ARRAYKEY | idx
+  public static boolean heaptype(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "heaptype")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_, level_, _NONE_, HEAPTYPE, "<heaptype>");
+    result_ = consumeToken(builder_, FUNCKEY);
+    if (!result_) result_ = consumeToken(builder_, EXTERNKEY);
+    if (!result_) result_ = consumeToken(builder_, ANYKEY);
+    if (!result_) result_ = consumeToken(builder_, EQKEY);
+    if (!result_) result_ = consumeToken(builder_, I31KEY);
+    if (!result_) result_ = consumeToken(builder_, NONEKEY);
+    if (!result_) result_ = consumeToken(builder_, NOEXTERNKEY);
+    if (!result_) result_ = consumeToken(builder_, NOFUNCKEY);
+    if (!result_) result_ = consumeToken(builder_, STRUCTKEY);
+    if (!result_) result_ = consumeToken(builder_, ARRAYKEY);
+    if (!result_) result_ = idx(builder_, level_ + 1);
+    exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
   // UNSIGNED | IDENTIFIER
   public static boolean idx(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "idx")) return false;
@@ -2596,8 +2618,8 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // CONTROLINSTR | CONTROLINSTR_IDX idx | call_instr | BRTABLEINSTR idx+ | call_indirect_instr
   //              // reference
-  //              | REFISNULLINST | REFNULLINSTR (FUNCKEY | EXTERNKEY) | ref_func_instr
-  //              | REFTEST idx | REFCAST idx | REFEQ | REFI31 | I31GET | REFASNONNULL | EXTERNCONVERT
+  //              | REFISNULLINST | REFNULLINSTR heaptype | ref_func_instr
+  //              | REFTEST heaptype | REFCAST heaptype | REFEQ | REFI31 | I31GET | REFASNONNULL | EXTERNCONVERT
   //              // parametric
   //              | PARAMETRICINSTR
   //              // variable
@@ -2698,44 +2720,35 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
     return result_;
   }
 
-  // REFNULLINSTR (FUNCKEY | EXTERNKEY)
+  // REFNULLINSTR heaptype
   private static boolean plaininstr_6(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "plaininstr_6")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = consumeToken(builder_, REFNULLINSTR);
-    result_ = result_ && plaininstr_6_1(builder_, level_ + 1);
+    result_ = result_ && heaptype(builder_, level_ + 1);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }
 
-  // FUNCKEY | EXTERNKEY
-  private static boolean plaininstr_6_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "plaininstr_6_1")) return false;
-    boolean result_;
-    result_ = consumeToken(builder_, FUNCKEY);
-    if (!result_) result_ = consumeToken(builder_, EXTERNKEY);
-    return result_;
-  }
-
-  // REFTEST idx
+  // REFTEST heaptype
   private static boolean plaininstr_8(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "plaininstr_8")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = consumeToken(builder_, REFTEST);
-    result_ = result_ && idx(builder_, level_ + 1);
+    result_ = result_ && heaptype(builder_, level_ + 1);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }
 
-  // REFCAST idx
+  // REFCAST heaptype
   private static boolean plaininstr_9(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "plaininstr_9")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = consumeToken(builder_, REFCAST);
-    result_ = result_ && idx(builder_, level_ + 1);
+    result_ = result_ && heaptype(builder_, level_ + 1);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }

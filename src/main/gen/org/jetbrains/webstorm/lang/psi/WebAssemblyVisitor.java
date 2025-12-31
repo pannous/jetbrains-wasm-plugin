@@ -103,6 +103,10 @@ public class WebAssemblyVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitHeaptype(@NotNull WebAssemblyHeaptype o) {
+    visitPsiElement(o);
+  }
+
   public void visitIdx(@NotNull WebAssemblyIdx o) {
     visitPsiElement(o);
   }

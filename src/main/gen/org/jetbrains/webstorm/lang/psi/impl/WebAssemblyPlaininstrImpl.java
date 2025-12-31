@@ -83,6 +83,12 @@ public class WebAssemblyPlaininstrImpl extends ASTWrapperPsiElement implements W
 
   @Override
   @Nullable
+  public WebAssemblyHeaptype getHeaptype() {
+    return findChildByClass(WebAssemblyHeaptype.class);
+  }
+
+  @Override
+  @Nullable
   public WebAssemblyIdx getIdx() {
     return findChildByClass(WebAssemblyIdx.class);
   }

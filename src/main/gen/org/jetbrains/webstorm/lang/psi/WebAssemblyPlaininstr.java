@@ -35,6 +35,9 @@ public interface WebAssemblyPlaininstr extends PsiElement {
   WebAssemblyGlobalInstr getGlobalInstr();
 
   @Nullable
+  WebAssemblyHeaptype getHeaptype();
+
+  @Nullable
   WebAssemblyIdx getIdx();
 
   @Nullable

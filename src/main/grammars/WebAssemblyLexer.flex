@@ -184,6 +184,12 @@ NUMERICINSTR = i(32 | 64)\.(c[lt]z | popcnt | add | sub | mul | (div | rem | shr
     {PACKEDTYPE}                { return PACKEDTYPE; }
     "extern"                    { return EXTERNKEY; }
     "func"                      { return FUNCKEY; }
+    "any"                       { return ANYKEY; }
+    "eq"                        { return EQKEY; }
+    "i31"                       { return I31KEY; }
+    "none"                      { return NONEKEY; }
+    "noextern"                  { return NOEXTERNKEY; }
+    "nofunc"                    { return NOFUNCKEY; }
     "param"                     { return PARAMKEY; }
     "result"                    { return RESULTKEY; }
     "mut"                       { return MUTKEY; }

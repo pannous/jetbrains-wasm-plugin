@@ -34,6 +34,7 @@ public interface WebAssemblyTypes {
   IElementType GLOBAL = new WebAssemblyElementType("GLOBAL");
   IElementType GLOBALTYPE = new WebAssemblyElementType("GLOBALTYPE");
   IElementType GLOBAL_INSTR = new WebAssemblyElementType("GLOBAL_INSTR");
+  IElementType HEAPTYPE = new WebAssemblyElementType("HEAPTYPE");
   IElementType IDX = new WebAssemblyElementType("IDX");
   IElementType IMPORT = new WebAssemblyElementType("IMPORT");
   IElementType IMPORTDESC = new WebAssemblyElementType("IMPORTDESC");
@@ -73,6 +74,7 @@ public interface WebAssemblyTypes {
   IElementType VALTYPE = new WebAssemblyElementType("VALTYPE");
 
   IElementType ALIGNEQKEY = new WebAssemblyTokenType("ALIGNEQKEY");
+  IElementType ANYKEY = new WebAssemblyTokenType("ANYKEY");
   IElementType ARRAYCOPY = new WebAssemblyTokenType("ARRAYCOPY");
   IElementType ARRAYFILL = new WebAssemblyTokenType("ARRAYFILL");
   IElementType ARRAYGET = new WebAssemblyTokenType("ARRAYGET");
@@ -96,6 +98,7 @@ public interface WebAssemblyTypes {
   IElementType ELEMKEY = new WebAssemblyTokenType("ELEMKEY");
   IElementType ELSEKEY = new WebAssemblyTokenType("ELSEKEY");
   IElementType ENDKEY = new WebAssemblyTokenType("ENDKEY");
+  IElementType EQKEY = new WebAssemblyTokenType("EQKEY");
   IElementType EXPORTKEY = new WebAssemblyTokenType("EXPORTKEY");
   IElementType EXTERNCONVERT = new WebAssemblyTokenType("EXTERNCONVERT");
   IElementType EXTERNKEY = new WebAssemblyTokenType("EXTERNKEY");
@@ -107,6 +110,7 @@ public interface WebAssemblyTypes {
   IElementType GLOBALINSTR = new WebAssemblyTokenType("GLOBALINSTR");
   IElementType GLOBALKEY = new WebAssemblyTokenType("GLOBALKEY");
   IElementType I31GET = new WebAssemblyTokenType("I31GET");
+  IElementType I31KEY = new WebAssemblyTokenType("I31KEY");
   IElementType ICONST = new WebAssemblyTokenType("ICONST");
   IElementType IDENTIFIER = new WebAssemblyTokenType("IDENTIFIER");
   IElementType IFKEY = new WebAssemblyTokenType("IFKEY");
@@ -123,6 +127,9 @@ public interface WebAssemblyTypes {
   IElementType MEMORYKEY = new WebAssemblyTokenType("MEMORYKEY");
   IElementType MODULEKEY = new WebAssemblyTokenType("MODULEKEY");
   IElementType MUTKEY = new WebAssemblyTokenType("MUTKEY");
+  IElementType NOEXTERNKEY = new WebAssemblyTokenType("NOEXTERNKEY");
+  IElementType NOFUNCKEY = new WebAssemblyTokenType("NOFUNCKEY");
+  IElementType NONEKEY = new WebAssemblyTokenType("NONEKEY");
   IElementType NULLKEY = new WebAssemblyTokenType("NULLKEY");
   IElementType NUMERICINSTR = new WebAssemblyTokenType("NUMERICINSTR");
   IElementType NUMTYPE = new WebAssemblyTokenType("NUMTYPE");
@@ -234,6 +241,9 @@ public interface WebAssemblyTypes {
       }
       else if (type == GLOBAL_INSTR) {
         return new WebAssemblyGlobalInstrImpl(node);
+      }
+      else if (type == HEAPTYPE) {
+        return new WebAssemblyHeaptypeImpl(node);
       }
       else if (type == IDX) {
         return new WebAssemblyIdxImpl(node);
