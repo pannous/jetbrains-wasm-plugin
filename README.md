@@ -1,6 +1,6 @@
 ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
-This repository is not deprecated in favor of:
-[[https://github.com/pannous/wasp-jetbrains-plugin]]
+This repository is now deprecated in favor of:
+https://github.com/pannous/wasp-jetbrains-plugin
 ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
 
 https://github.com/pannous/intellij-webassembly-plugin fow fork of official repo
