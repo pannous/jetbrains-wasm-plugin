@@ -15,8 +15,9 @@ class WebAssemblyBinaryFileEditorProvider : FileEditorProvider, DumbAware {
     }
 
     override fun createEditor(project: Project, file: VirtualFile): FileEditor {
-        // Create .wat file in cache directory (dialog disabled for testing)
-        val cacheDir = File(System.getProperty("java.io.tmpdir"), "intellij-webassembly-decompiled")
+        // Create .wat file in project's .idea directory to avoid "non-project file" warnings
+        val projectPath = project.basePath ?: System.getProperty("user.home")
+        val cacheDir = File(projectPath, ".idea/webassembly-decompiled")
         cacheDir.mkdirs()
 
         val wasmPathHash = file.path.hashCode().toString().replace("-", "")
