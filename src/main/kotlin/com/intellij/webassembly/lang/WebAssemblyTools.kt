@@ -104,7 +104,7 @@ object WebAssemblyTools {
 
         return try {
             val args = when (toolchain) {
-                Toolchain.WASM_TOOLS -> listOf("print", "--name-unnamed", wasmFile.absolutePath)
+                Toolchain.WASM_TOOLS -> listOf("print", wasmFile.absolutePath)
                 Toolchain.WABT -> listOf(wasmFile.absolutePath)
                 Toolchain.BINARYEN -> listOf(wasmFile.absolutePath)
             }
