@@ -9,16 +9,18 @@ echo "🚀 Installing WebAssembly GC Plugin..."
 # Build the plugin using build.sh wrapper (handles Kotlin/Java compilation order)
 ./build.sh
 
-# Find the built plugin
-PLUGIN_ZIP="build/distributions/intellij-webassembly-plugin-1.5-gc.zip"
+# Find the built plugin (auto-detect latest version)
+PLUGIN_ZIP=$(ls -t build/distributions/intellij-webassembly-plugin-*.zip 2>/dev/null | head -1)
 
-if [ ! -f "$PLUGIN_ZIP" ]; then
-    echo "❌ Error: Plugin not found at $PLUGIN_ZIP"
+if [ -z "$PLUGIN_ZIP" ] || [ ! -f "$PLUGIN_ZIP" ]; then
+    echo "❌ Error: Plugin not found in build/distributions/"
     echo "Build may have failed"
     exit 1
 fi
 
-echo "✅ Plugin built successfully: $PLUGIN_ZIP"
+# Extract version from filename
+VERSION=$(basename "$PLUGIN_ZIP" | sed 's/intellij-webassembly-plugin-//' | sed 's/.zip//')
+echo "✅ Plugin built successfully: $PLUGIN_ZIP (v$VERSION)"
 
 # Auto-detect all JetBrains IDE installations
 JETBRAINS_BASE="$HOME/Library/Application Support/JetBrains"
@@ -94,8 +96,8 @@ fi
 echo ""
 echo "📋 Next steps:"
 echo "   1. RustRover should start automatically"
-echo "   2. The WebAssembly GC plugin (v1.5-gc) should now be active"
-echo "   3. Open any .wat/.wast file to test GC syntax highlighting"
+echo "   2. The WebAssembly plugin (v$VERSION) should now be active"
+echo "   3. Open any .wat/.wast/.wasm file to test syntax highlighting"
 echo ""
 echo "⚠️  Important: If the plugin doesn't load:"
 echo "   1. Fully quit RustRover (Cmd+Q)"
@@ -104,4 +106,4 @@ echo "   3. The plugin should now be loaded"
 echo ""
 echo "To verify installation:"
 echo "   Settings → Plugins → Installed → search for 'WebAssembly'"
-echo "   Version should show: 1.5-gc"
+echo "   Version should show: $VERSION"

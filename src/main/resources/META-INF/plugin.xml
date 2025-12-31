@@ -38,11 +38,8 @@ For IntelliJ IDEA, you can check out this section in the <a href="https://www.je
               fieldName="INSTANCE"
               extensions="wasm"/>
 
-    <filetype.decompiler filetype="WebAssembly Binary"
-                         implementationClass="com.intellij.webassembly.lang.psi.WebAssemblyBinaryFileDecompiler"/>
-
-    <lang.substitutor language="TEXT"
-                      implementationClass="com.intellij.webassembly.lang.psi.WebAssemblyBinaryLanguageSubstitutor"/>
+    <fileType.fileViewProviderFactory filetype="WebAssembly Binary"
+                                      implementationClass="com.intellij.webassembly.lang.psi.WebAssemblyBinaryFileViewProviderFactory"/>
 
     <lang.parserDefinition language="WebAssembly"
                            implementationClass="com.intellij.webassembly.lang.parser.WebAssemblyParserDefinition"/>

@@ -1,4 +1,5 @@
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
+import java.util.Properties
 
 plugins {
     id("org.jetbrains.intellij") version "1.17.3"
@@ -6,8 +7,26 @@ plugins {
     id("org.jetbrains.grammarkit") version "2022.3.2.2"
 }
 
+// Auto-increment version on each build
+val versionPropsFile = file("version.properties")
+val versionProps = Properties().apply {
+    if (versionPropsFile.exists()) {
+        versionPropsFile.inputStream().use { load(it) }
+    }
+}
+
+val major = versionProps.getProperty("major", "1").toInt()
+val minor = versionProps.getProperty("minor", "5").toInt()
+val patch = versionProps.getProperty("patch", "0").toInt()
+val suffix = versionProps.getProperty("suffix", "gc")
+
+// Increment patch version
+val newPatch = patch + 1
+versionProps.setProperty("patch", newPatch.toString())
+versionPropsFile.writer().use { versionProps.store(it, "Auto-incremented by build") }
+
 group = "org.jetbrains.webstorm"
-version = "1.5-gc"
+version = "$major.$minor.$newPatch-$suffix"
 
 repositories {
     mavenCentral()
