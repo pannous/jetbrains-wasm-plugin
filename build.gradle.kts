@@ -16,7 +16,7 @@ repositories {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version.set("2023.3.4")
-    type.set("IU")
+    type.set("IC")  // Use Community edition - much smaller download
 }
 
 sourceSets {

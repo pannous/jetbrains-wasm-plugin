@@ -56,20 +56,20 @@ for plugin_dir in "${FOUND_DIRS[@]}"; do
 
     # Remove old installation if exists
     if [ -d "$plugin_dir/intellij-webassembly-plugin" ]; then
-        echo "   Removing old installation..."
+        # echo "   Removing old installation..."
         rm -rf "$plugin_dir/intellij-webassembly-plugin"
     fi
     # Also remove legacy name if exists
     if [ -d "$plugin_dir/web-assembly-plugin" ]; then
-        echo "   Removing legacy installation..."
+        # echo "   Removing legacy installation..."
         rm -rf "$plugin_dir/web-assembly-plugin"
     fi
 
     # Unzip plugin to plugins directory
-    echo "   Extracting plugin..."
+    # echo "   Extracting plugin..."
     unzip -q "$PLUGIN_ZIP" -d "$plugin_dir/"
 
-    echo "   ✅ Installed to $ide_name"
+    # echo "   ✅ Installed to $ide_name"
 done
 
 echo ""

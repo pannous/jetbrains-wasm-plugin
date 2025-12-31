@@ -28,9 +28,17 @@ internal object WebAssemblyUtil {
   fun findModulefield(type: IElementType, parent: PsiElement): Array<WebAssemblyNamedElement> {
     val result: MutableList<WebAssemblyNamedElement> = mutableListOf()
 
-    parent.parent.children.forEach {
-      if (it.firstChild.elementType == type) {
-        result.add(it.firstChild as WebAssemblyNamedElement)
+    // Navigate up to the module level
+    // parent is a MODULEFIELD containing the instruction making the reference
+    // We need to find the MODULE (parent.parent) and search all its MODULEFIELD children
+    val module = parent.parent ?: return emptyArray()
+
+    // Iterate through all MODULEFIELD children of the MODULE
+    module.children.forEach { modulefield ->
+      // Each MODULEFIELD has a first child which is the actual definition (FUNC, TABLE, etc.)
+      val definition = modulefield.firstChild
+      if (definition?.elementType == type && definition is WebAssemblyNamedElement) {
+        result.add(definition)
       }
     }
 

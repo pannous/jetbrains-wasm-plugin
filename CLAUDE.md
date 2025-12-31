@@ -33,3 +33,4 @@ Allow setting of brake points etc
 Maybe merge with wit types https://github.com/linux-china/wit-jetbrains-plugin /opt/wasm/wit-jetbrains-plugin
 - Do not report success before trying ./install-plugin.sh
 - You may get some inspiration from /opt/other/goo-jetbrains-plugin Things were great over there
+- always finish work with ./install-plugin.sh which also recompiles everything
