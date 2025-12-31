@@ -34,8 +34,13 @@ class WebAssemblyBinaryFileEditorProvider : FileEditorProvider, DumbAware {
         val watVirtualFile = LocalFileSystem.getInstance().refreshAndFindFileByPath(watPath)
             ?: throw IllegalStateException("Failed to create .wat file at $watPath")
 
-        // Store reference to the original .wasm file
-        watVirtualFile.putUserData(WASM_SOURCE_FILE_KEY, file)
+        // Register mapping in the save listener
+        val listener = WebAssemblyBinarySaveListener.getInstance()
+        listener.registerMapping(watVirtualFile.path, file.path)
+
+        println("WebAssembly: Created .wat at: ${watVirtualFile.path}")
+        println("WebAssembly: Linked to .wasm at: ${file.path}")
+        println("WebAssembly: .wasm canonical path: ${File(file.path).canonicalPath}")
 
         // Open the .wat file in a text editor
         return TextEditorProvider.getInstance().createEditor(project, watVirtualFile)

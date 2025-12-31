@@ -8,6 +8,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.openapi.vfs.newvfs.BulkFileListener
@@ -21,21 +22,37 @@ import java.io.File
 @Service
 class WebAssemblyBinarySaveListener : BulkFileListener {
 
+    // Map from .wat file path to .wasm file path (persistent across saves)
+    private val watToWasmMap = mutableMapOf<String, String>()
+
     init {
         val connection = ApplicationManager.getApplication().messageBus.connect()
         connection.subscribe(VirtualFileManager.VFS_CHANGES, this)
+    }
+
+    fun registerMapping(watPath: String, wasmPath: String) {
+        println("WebAssembly: Registering mapping: $watPath -> $wasmPath")
+        watToWasmMap[watPath] = wasmPath
     }
 
     override fun after(events: List<VFileEvent>) {
         for (event in events) {
             if (event is VFileContentChangeEvent) {
                 val watFile = event.file
+                println("WebAssembly: File changed: ${watFile.path}")
                 if (watFile.extension == "wat") {
                     // Check if this .wat file was decompiled from a .wasm file
-                    val wasmFile = watFile.getUserData(WebAssemblyBinaryFileEditorProvider.WASM_SOURCE_FILE_KEY)
-                    if (wasmFile != null) {
-                        // This .wat file came from a .wasm - recompile it
-                        recompileWatToWasm(watFile, wasmFile)
+                    val wasmPath = watToWasmMap[watFile.path]
+                    println("WebAssembly: .wat file changed, mapped wasmPath=$wasmPath")
+                    if (wasmPath != null) {
+                        val wasmFile = LocalFileSystem.getInstance().findFileByPath(wasmPath)
+                        if (wasmFile != null) {
+                            // This .wat file came from a .wasm - recompile it
+                            println("WebAssembly: Recompiling ${watFile.path} -> ${wasmFile.path}")
+                            recompileWatToWasm(watFile, wasmFile)
+                        } else {
+                            println("WebAssembly: ERROR - wasmFile not found at $wasmPath")
+                        }
                     }
                 }
             }
@@ -47,8 +64,15 @@ class WebAssemblyBinarySaveListener : BulkFileListener {
             val watPath = File(watFile.path)
             val wasmPath = File(wasmFile.path)
 
+            println("WebAssembly: Starting compilation...")
+            println("WebAssembly: WAT file exists: ${watPath.exists()}, size: ${watPath.length()}")
+            println("WebAssembly: WASM file before: ${wasmPath.exists()}, size: ${wasmPath.length()}")
+
             // Compile WAT to WASM
             val result = com.intellij.webassembly.lang.WebAssemblyTools.compileWatToWasm(watPath, wasmPath)
+
+            println("WebAssembly: Compilation result: success=${result.success}, error=${result.error}")
+            println("WebAssembly: WASM file after: ${wasmPath.exists()}, size: ${wasmPath.length()}")
 
             // Find active project for notifications
             val project = findProject()
@@ -58,6 +82,7 @@ class WebAssemblyBinarySaveListener : BulkFileListener {
                 ApplicationManager.getApplication().runWriteAction {
                     wasmFile.refresh(false, false)
                 }
+                println("WebAssembly: VFS refresh completed")
 
                 // Show success notification
                 Notifications.Bus.notify(
