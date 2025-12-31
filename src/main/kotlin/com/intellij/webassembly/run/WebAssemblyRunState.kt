@@ -41,22 +41,8 @@ class WebAssemblyRunState(
     }
 
     private fun compileWatToWasm(watFile: File, wasmFile: File): CompileResult {
-        return try {
-            // Try wat2wasm (from WABT toolkit)
-            val commandLine = GeneralCommandLine("wat2wasm", watFile.absolutePath, "-o", wasmFile.absolutePath)
-            val process = commandLine.createProcess()
-            val exitCode = process.waitFor()
-
-            if (exitCode == 0) {
-                CompileResult(true, null)
-            } else {
-                val error = process.errorStream.bufferedReader().readText()
-                CompileResult(false, "wat2wasm failed with exit code $exitCode: $error")
-            }
-        } catch (e: Exception) {
-            CompileResult(false, "wat2wasm not found or failed: ${e.message}\n" +
-                "Please install WABT (WebAssembly Binary Toolkit): brew install wabt")
-        }
+        val result = com.intellij.webassembly.lang.WebAssemblyTools.compileWatToWasm(watFile, wasmFile)
+        return CompileResult(result.success, result.error)
     }
 
     private fun executeWasm(wasmFile: File): ProcessHandler {

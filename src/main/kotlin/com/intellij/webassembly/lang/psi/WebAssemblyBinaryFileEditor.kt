@@ -106,19 +106,10 @@ class WebAssemblyBinaryFileEditor(
                 // Write WAT content to temp file
                 tempWat.writeText(watContent)
 
-                // Compile WAT to WASM using wasm-tools
-                val process = ProcessBuilder(
-                    "wasm-tools",
-                    "parse",
-                    tempWat.absolutePath,
-                    "-o",
-                    tempWasm.absolutePath
-                ).redirectErrorStream(true).start()
+                // Compile WAT to WASM using available toolchain
+                val result = com.intellij.webassembly.lang.WebAssemblyTools.compileWatToWasm(tempWat, tempWasm)
 
-                val output = process.inputStream.bufferedReader().readText()
-                val exitCode = process.waitFor()
-
-                if (exitCode == 0) {
+                if (result.success) {
                     // Compilation successful - write binary to original .wasm file
                     ApplicationManager.getApplication().runWriteAction {
                         wasmFile.setBinaryContent(tempWasm.readBytes())
@@ -135,7 +126,7 @@ class WebAssemblyBinaryFileEditor(
                     // Compilation failed - show error
                     com.intellij.openapi.ui.Messages.showErrorDialog(
                         project,
-                        "Failed to compile WAT to WASM:\n\n$output",
+                        result.error ?: "Unknown compilation error",
                         "WebAssembly Compilation Error"
                     )
                     false
@@ -147,7 +138,7 @@ class WebAssemblyBinaryFileEditor(
         } catch (e: Exception) {
             com.intellij.openapi.ui.Messages.showErrorDialog(
                 project,
-                "Error during compilation:\n\n${e.message}\n\nMake sure wasm-tools is installed:\n  brew install wasm-tools",
+                "Error during compilation:\n\n${e.message}",
                 "WebAssembly Compilation Error"
             )
             false
@@ -159,36 +150,14 @@ class WebAssemblyBinaryFileEditor(
             val tempFile = File.createTempFile("wasm-", ".wasm")
             try {
                 tempFile.writeBytes(file.contentsToByteArray())
-
-                val process = ProcessBuilder(
-                    "wasm-tools",
-                    "print",
-                    "--name-unnamed",
-                    tempFile.absolutePath
-                ).redirectErrorStream(true).start()
-
-                val output = process.inputStream.bufferedReader().readText()
-                val exitCode = process.waitFor()
-
-                if (exitCode == 0) {
-                    output
-                } else {
-                    """;; Error decompiling WebAssembly binary:
-                       |;; $output
-                       |;;
-                       |;; Make sure wasm-tools is installed:
-                       |;;   brew install wasm-tools
-                    """.trimMargin()
-                }
+                val result = com.intellij.webassembly.lang.WebAssemblyTools.decompileWasmToWat(tempFile)
+                result.watContent
             } finally {
                 tempFile.delete()
             }
         } catch (e: Exception) {
             """;; Error: Failed to decompile WebAssembly binary
                |;; ${e.message}
-               |;;
-               |;; Please install wasm-tools:
-               |;;   brew install wasm-tools
             """.trimMargin()
         }
     }
