@@ -15,9 +15,13 @@ class WebAssemblyBinaryFileEditorProvider : FileEditorProvider, DumbAware {
     }
 
     override fun createEditor(project: Project, file: VirtualFile): FileEditor {
-        // Create a real .wat file on disk next to the .wasm file
-        val wasmPath = file.path
-        val watPath = wasmPath.removeSuffix(".wasm") + ".wat"
+        // Create a .wat file in IntelliJ's cache directory
+        val cacheDir = File(System.getProperty("java.io.tmpdir"), "intellij-webassembly-decompiled")
+        cacheDir.mkdirs()
+
+        // Use hash of wasm path to create unique .wat filename
+        val wasmPathHash = file.path.hashCode().toString().replace("-", "")
+        val watPath = File(cacheDir, "${file.nameWithoutExtension}_$wasmPathHash.wat").absolutePath
         val watFile = File(watPath)
 
         // Decompile .wasm to .wat and write to disk
