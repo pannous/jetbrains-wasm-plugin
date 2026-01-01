@@ -8,7 +8,16 @@ https://github.com/JetBrains/intellij-plugins/tree/master/web-assembly-plugin
 
 # TODOs
 
-# DONE Completion templates for
+# DONE
+
+## WIT Syntax Highlighting
+✅ Added WIT (WebAssembly Interface Type) syntax highlighting support
+- Integrated WIT lexer from wit-jetbrains-plugin
+- Created WIT language definition and file type registration
+- Syntax highlighting for keywords, types, comments, and literals
+- Plugin now recognizes .wit files and provides full syntax highlighting
+
+## Completion templates for
 - (module $name )
 - (import "env" "toNode" (func $toNode (type 1)))
 -   (func $main (result i64)  (local $result i64) )
