@@ -12,11 +12,12 @@
     <p>Provides <a href="https://webassembly.org/">WebAssembly</a> language support to all JetBrains IDEs that <a href="https://www.jetbrains.com/products/#lang=js&type=ide">support JavaScript</a>.
 <h2>Features</h2>
 <ul>
-  <li>Syntax highlighting
+  <li>Syntax highlighting for WAT, WAST, and WIT files
   <li>Brace matching, commenting, and code folding
   <li>Code completion
   <li>References and navigation
   <li>Bulk instructions and reference types support
+  <li>WIT (WebAssembly Interface Type) syntax highlighting
 </ul>
 
 <h2>Getting started</h2>
@@ -42,11 +43,25 @@ For IntelliJ IDEA, you can check out this section in the <a href="https://www.je
 
     <fileEditorProvider implementation="com.intellij.webassembly.lang.psi.WebAssemblyBinaryFileEditorProvider"/>
 
+    <!-- WIT (WebAssembly Interface Type) files -->
+    <fileType name="WIT file"
+              implementationClass="com.intellij.webassembly.wit.WitFileType"
+              fieldName="INSTANCE"
+              language="WIT"
+              extensions="wit"/>
+
     <lang.parserDefinition language="WebAssembly"
                            implementationClass="com.intellij.webassembly.lang.parser.WebAssemblyParserDefinition"/>
 
     <lang.syntaxHighlighterFactory language="WebAssembly"
                                    implementationClass="com.intellij.webassembly.ide.WebAssemblySyntaxHighlighterFactory"/>
+
+    <!-- WIT language support -->
+    <lang.parserDefinition language="WIT"
+                           implementationClass="com.intellij.webassembly.wit.WitParserDefinition"/>
+
+    <lang.syntaxHighlighterFactory language="WIT"
+                                   implementationClass="com.intellij.webassembly.wit.WitSyntaxHighlighterFactory"/>
 
     <colorSettingsPage implementation="com.intellij.webassembly.ide.colors.WebAssemblyColorSettingPage"/>
 

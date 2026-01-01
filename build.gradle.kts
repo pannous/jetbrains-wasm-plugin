@@ -1,4 +1,5 @@
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
+import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import java.util.Properties
 
 plugins {
@@ -54,15 +55,24 @@ tasks.register<GenerateParserTask>("generateWebAssemblyParser") {
     purgeOldFiles.set(false)  // Don't purge - only update parser
 }
 
+// Configure WIT lexer generation
+tasks.register<GenerateLexerTask>("generateWitLexer") {
+    sourceFile.set(file("src/main/grammars/wit.flex"))
+    targetOutputDir.set(file("src/main/gen/com/intellij/webassembly/wit/lexer"))
+    purgeOldFiles.set(false)
+}
+
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
+        dependsOn("generateWitLexer")
     }
 
     compileJava {
         options.release.set(17)
         // Java compilation needs to see the compiled Kotlin classes
         dependsOn(compileKotlin)
+        dependsOn("generateWitLexer")
         classpath += files(compileKotlin.get().destinationDirectory)
     }
 
