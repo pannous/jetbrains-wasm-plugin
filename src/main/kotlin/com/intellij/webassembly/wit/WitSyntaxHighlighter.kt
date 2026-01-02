@@ -40,14 +40,37 @@ class WitSyntaxHighlighter : SyntaxHighlighterBase() {
             WitTypes.WORLD_NAME,
             WitTypes.RECORD_ITEM_NAME -> DefaultLanguageHighlighterColors.INTERFACE_NAME
 
-            WitTypes.STRING_LITERAL -> DefaultLanguageHighlighterColors.STRING
+            WitTypes.STRING_LITERAL,
+            WitTypes.CHAR_LITERAL -> DefaultLanguageHighlighterColors.STRING
             WitTypes.INTEGER_LITERAL,
             WitTypes.DOUBLE_LITERAL -> DefaultLanguageHighlighterColors.NUMBER
+            WitTypes.SEMANTIC_VERSION -> DefaultLanguageHighlighterColors.NUMBER
+
+            WitTypes.IDENTIFIER -> DefaultLanguageHighlighterColors.IDENTIFIER
 
             WitTypes.COMMA -> DefaultLanguageHighlighterColors.COMMA
             WitTypes.LBRACE, WitTypes.RBRACE -> DefaultLanguageHighlighterColors.BRACES
             WitTypes.LPAREN, WitTypes.RPAREN -> DefaultLanguageHighlighterColors.PARENTHESES
+            WitTypes.LBRACK, WitTypes.RBRACK -> DefaultLanguageHighlighterColors.BRACKETS
             WitTypes.DOT -> DefaultLanguageHighlighterColors.DOT
+            WitTypes.SEMICOLON -> DefaultLanguageHighlighterColors.SEMICOLON
+
+            WitTypes.EQ,
+            WitTypes.PLUS,
+            WitTypes.MINUS,
+            WitTypes.MUL,
+            WitTypes.DIV,
+            WitTypes.REM,
+            WitTypes.OR,
+            WitTypes.LT,
+            WitTypes.GT,
+            WitTypes.COLON,
+            WitTypes.ARROW -> DefaultLanguageHighlighterColors.OPERATION_SIGN
+
+            WitTypes.AT,
+            WitTypes.GATE_UNSTABLE_WORD,
+            WitTypes.GATE_SINCE_WORD,
+            WitTypes.GATE_DEPRECATED_WORD -> DefaultLanguageHighlighterColors.METADATA
 
             else -> null
         }
