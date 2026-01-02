@@ -275,6 +275,8 @@ class WebAssemblyKeywordCompletionProvider : CompletionProvider<CompletionParame
     "i32.trunc_sat64_u",
     "i64.extend_i32_s",
     "i64.extend_i32_u",
+    "i64.extend_i32s",
+    "i64.extend_i32u",
     "i64.trunc_f32_s",
     "i64.trunc_f32_u",
     "i64.trunc_f64_s",
