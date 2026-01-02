@@ -45,7 +45,7 @@ For IntelliJ IDEA, you can check out this section in the <a href="https://www.je
 
     <!-- WIT (WebAssembly Interface Type) files -->
     <fileType name="WIT"
-              implementationClass="com.intellij.webassembly.wit.WitElementTypes$WitFileType"
+              implementationClass="com.intellij.webassembly.wit.WitFileType"
               fieldName="INSTANCE"
               language="WIT"
               extensions="wit"/>
