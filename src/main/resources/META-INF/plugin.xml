@@ -44,8 +44,8 @@ For IntelliJ IDEA, you can check out this section in the <a href="https://www.je
     <fileEditorProvider implementation="com.intellij.webassembly.lang.psi.WebAssemblyBinaryFileEditorProvider"/>
 
     <!-- WIT (WebAssembly Interface Type) files -->
-    <fileType name="WIT file"
-              implementationClass="com.intellij.webassembly.wit.WitFileType"
+    <fileType name="WIT"
+              implementationClass="com.intellij.webassembly.wit.WitElementTypes$WitFileType"
               fieldName="INSTANCE"
               language="WIT"
               extensions="wit"/>

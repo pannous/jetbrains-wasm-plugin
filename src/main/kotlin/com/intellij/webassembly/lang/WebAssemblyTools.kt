@@ -38,6 +38,7 @@ object WebAssemblyTools {
     }
 
     private var cachedToolchain: Toolchain? = null
+    private val resolvedPaths = mutableMapOf<String, String>()
 
     /**
      * Detect which WebAssembly toolchain is available, with fallback priority:
@@ -49,9 +50,34 @@ object WebAssemblyTools {
         if (cachedToolchain != null) return cachedToolchain
 
         for (toolchain in Toolchain.values()) {
-            if (isToolAvailable(toolchain.watToWasm)) {
+            val resolvedPath = findToolPath(toolchain.watToWasm)
+            if (resolvedPath != null) {
+                resolvedPaths[toolchain.watToWasm] = resolvedPath
+                resolvedPaths[toolchain.wasmToWat] = findToolPath(toolchain.wasmToWat) ?: toolchain.wasmToWat
                 cachedToolchain = toolchain
                 return toolchain
+            }
+        }
+
+        return null
+    }
+
+    private fun findToolPath(command: String): String? {
+        // Check if command is available in PATH first
+        if (checkCommandInPath(command)) return command
+
+        // Search common tool installation locations (macOS/Linux)
+        val searchPaths = listOf(
+            "/opt/homebrew/bin",  // macOS ARM Homebrew
+            "/usr/local/bin",      // macOS Intel Homebrew / Linux
+            "/usr/bin",            // System binaries
+            System.getProperty("user.home") + "/.cargo/bin"  // Rust cargo
+        )
+
+        for (path in searchPaths) {
+            val fullPath = "$path/$command"
+            if (File(fullPath).exists() && checkCommandInPath(fullPath)) {
+                return fullPath
             }
         }
 
@@ -69,13 +95,14 @@ object WebAssemblyTools {
                     "  - ${Toolchain.BINARYEN.installHint}")
 
         return try {
+            val command = resolvedPaths[toolchain.watToWasm] ?: toolchain.watToWasm
             val args = when (toolchain) {
                 Toolchain.WASM_TOOLS -> listOf("parse", watFile.absolutePath, "-o", wasmFile.absolutePath)
                 Toolchain.WABT -> listOf(watFile.absolutePath, "-o", wasmFile.absolutePath)
                 Toolchain.BINARYEN -> listOf(watFile.absolutePath, "-o", wasmFile.absolutePath)
             }
 
-            val process = ProcessBuilder(toolchain.watToWasm, *args.toTypedArray())
+            val process = ProcessBuilder(command, *args.toTypedArray())
                 .redirectErrorStream(true)
                 .start()
 
@@ -103,13 +130,14 @@ object WebAssemblyTools {
                     ";;   ${Toolchain.BINARYEN.installHint}")
 
         return try {
+            val command = resolvedPaths[toolchain.wasmToWat] ?: toolchain.wasmToWat
             val args = when (toolchain) {
                 Toolchain.WASM_TOOLS -> listOf("print", wasmFile.absolutePath)
                 Toolchain.WABT -> listOf(wasmFile.absolutePath)
                 Toolchain.BINARYEN -> listOf(wasmFile.absolutePath)
             }
 
-            val process = ProcessBuilder(toolchain.wasmToWat, *args.toTypedArray())
+            val process = ProcessBuilder(command, *args.toTypedArray())
                 .redirectErrorStream(true)
                 .start()
 
@@ -130,7 +158,7 @@ object WebAssemblyTools {
         }
     }
 
-    private fun isToolAvailable(command: String): Boolean {
+    private fun checkCommandInPath(command: String): Boolean {
         return try {
             val process = ProcessBuilder(command, "--version")
                 .redirectErrorStream(true)
@@ -146,6 +174,7 @@ object WebAssemblyTools {
      */
     fun clearCache() {
         cachedToolchain = null
+        resolvedPaths.clear()
     }
 
     data class CompileResult(
