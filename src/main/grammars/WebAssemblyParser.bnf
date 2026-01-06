@@ -30,8 +30,8 @@ heaptype ::= FUNCKEY | EXTERNKEY | ANYKEY | EQKEY | I31KEY | NONEKEY | NOEXTERNK
 valtype ::= NUMTYPE | REFTYPE | reftype_ref_
 storagetype ::= valtype | PACKEDTYPE
 
-// Reference types with optional type index: (ref $typename) or (ref null $typename)
-reftype_ref_ ::= LPAR REFKEY NULLKEY? idx RPAR { pin=2 }
+// Reference types with optional type index: (ref $typename) or (ref null heaptype)
+reftype_ref_ ::= LPAR REFKEY NULLKEY? heaptype RPAR { pin=2 }
 
 // GC composite types
 structtype ::= LPAR STRUCTKEY fieldtype* RPAR { pin=2 }

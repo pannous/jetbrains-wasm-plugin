@@ -29,8 +29,8 @@ public class WebAssemblyReftypeRef_Impl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
-  public WebAssemblyIdx getIdx() {
-    return findChildByClass(WebAssemblyIdx.class);
+  public WebAssemblyHeaptype getHeaptype() {
+    return findChildByClass(WebAssemblyHeaptype.class);
   }
 
 }

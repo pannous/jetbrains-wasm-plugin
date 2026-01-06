@@ -37,7 +37,8 @@ class DebugPsiTest : BasePlatformTestCase() {
 
             if (mf.firstChild?.node?.elementType == WebAssemblyTypes.FUNC) {
                 val func = mf.firstChild
-                println("  Function name ID: ${func?.let { PsiTreeUtil.findChildOfType(it, com.intellij.psi.PsiElement::class.java) { el -> el.node?.elementType == WebAssemblyTypes.IDENTIFIER }?.text }}")
+                val idElement = func?.children?.firstOrNull { it.node?.elementType == WebAssemblyTypes.IDENTIFIER }
+                println("  Function name ID: ${idElement?.text}")
             }
         }
 

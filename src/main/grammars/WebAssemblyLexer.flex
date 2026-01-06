@@ -1,5 +1,6 @@
 package com.intellij.webassembly.lang.lexer;
 
+import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
 import static com.intellij.webassembly.lang.psi.WebAssemblyTypes.*;

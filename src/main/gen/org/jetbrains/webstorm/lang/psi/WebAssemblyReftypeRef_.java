@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface WebAssemblyReftypeRef_ extends PsiElement {
 
   @Nullable
-  WebAssemblyIdx getIdx();
+  WebAssemblyHeaptype getHeaptype();
 
 }

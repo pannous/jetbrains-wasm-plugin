@@ -2882,7 +2882,7 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAR REFKEY NULLKEY? idx RPAR
+  // LPAR REFKEY NULLKEY? heaptype RPAR
   public static boolean reftype_ref_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "reftype_ref_")) return false;
     if (!nextTokenIs(builder_, LPAR)) return false;
@@ -2891,7 +2891,7 @@ public class WebAssemblyParser implements PsiParser, LightPsiParser {
     result_ = consumeTokens(builder_, 2, LPAR, REFKEY);
     pinned_ = result_; // pin = 2
     result_ = result_ && report_error_(builder_, reftype_ref__2(builder_, level_ + 1));
-    result_ = pinned_ && report_error_(builder_, idx(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && report_error_(builder_, heaptype(builder_, level_ + 1)) && result_;
     result_ = pinned_ && consumeToken(builder_, RPAR) && result_;
     exit_section_(builder_, level_, marker_, result_, pinned_, null);
     return result_ || pinned_;
